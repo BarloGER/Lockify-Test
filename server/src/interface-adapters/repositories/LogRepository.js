@@ -13,11 +13,10 @@ const logSchema = new Schema({
 
 const LogModel = model("Log", logSchema);
 
-class LogRepository {
+exports.LogRepository = class LogRepository {
   async saveLog(data) {
     const newLog = new LogModel(data);
     await newLog.save();
+    return "Saved";
   }
-}
-
-module.exports = LogRepository;
+};
