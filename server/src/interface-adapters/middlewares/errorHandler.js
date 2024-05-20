@@ -1,5 +1,7 @@
-const { errorCodes, errorTypes, statusMessages } = require("../utils");
-const LogRepository = require("../repositories/LogRepository");
+const { errorCodes, errorTypes, statusMessages } = require("../../utils");
+const { LogRepository } = require("../repositories/logRepository");
+
+const logRepository = new LogRepository();
 
 const logErrorToDatabase = async ({
   name,
@@ -23,7 +25,7 @@ const logErrorToDatabase = async ({
     devInfo,
     timestamp,
   };
-  const saveLog = await LogRepository.saveLog(data);
+  const saveLog = await logRepository.saveLog(data);
   if (!saveLog) {
     console.error("Error while saving logs");
   }
@@ -44,10 +46,10 @@ exports.errorHandler = async (err, req, res, next) => {
   const statusCode = errorCodeInfo.statusCode;
   const errorType = errorCodeInfo.errorType;
   const statusMessage = statusMessages[statusCode] || "Server Error";
-  const message = err.validationMessages || errorCodeInfo.message[language];
+  const message = errorCodeInfo.message[language];
 
   const clientResponse = {
-    message: message,
+    message,
     statusCode: statusCode,
     statusMessage: statusMessage,
     errorType: errorType,
@@ -62,6 +64,7 @@ exports.errorHandler = async (err, req, res, next) => {
 
   if (process.env.NODE_ENV === "production") {
     await logErrorToDatabase({
+      name: err.name,
       message,
       statusCode,
       statusMessage,
