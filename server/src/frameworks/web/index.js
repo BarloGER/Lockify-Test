@@ -1,5 +1,10 @@
 const express = require("express");
 const cors = require("cors");
+const { sessionConfig } = require("../configs/sessionConfig");
+const {
+  errorHandler,
+} = require("../../interface-adapters/middlewares/errorHandler");
+const { userRouter } = require("./routes/userRouter");
 
 const app = express();
 
@@ -7,7 +12,12 @@ app.use(cors({ origin: "*" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(sessionConfig);
+
+app.use("/user", userRouter);
 app.use("*", (req, res) => res.sendStatus(404));
+
+app.use(errorHandler);
 
 exports.start = (PORT) => {
   app.listen(PORT, () => {
