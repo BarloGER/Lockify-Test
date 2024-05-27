@@ -95,12 +95,26 @@ exports.UserRepository = class UserRepository {
     return user;
   }
 
-  async updateUserById(userId, updateData) {
-    const [updatedCount, updatedUsers] = await User.update(updateData, {
-      where: { userId },
-      returning: true,
+  async findUserById(userId) {
+    const user = await User.findByPk(userId);
+    return user;
+  }
+
+  async updateUser(userId, updateData) {
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return null;
+    }
+
+    // Update the user's fields.
+    Object.keys(updateData).forEach((key) => {
+      if (updateData[key] !== undefined) {
+        user[key] = updateData[key];
+      }
     });
-    return updatedCount > 0 ? updatedUsers[0] : null;
+
+    const savedUser = await user.save();
+    return savedUser;
   }
 
   async deleteUserById(userId) {

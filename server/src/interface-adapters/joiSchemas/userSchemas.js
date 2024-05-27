@@ -47,3 +47,21 @@ exports.loginUserSchema = (language = "EN") => {
     }),
   }).messages(unknownObjectMessage[language]);
 };
+
+exports.updateUserSchema = (language = "EN") => {
+  return Joi.object({
+    params: Joi.valid({}),
+    body: Joi.object({
+      username: Joi.string()
+        .alphanum()
+        .min(3)
+        .max(20)
+        .messages(usernameMessages[language]),
+      email: Joi.string().email().max(254).messages(emailMessages[language]),
+      password: Joi.string()
+        .min(8)
+        .max(20)
+        .messages(passwordMessages[language]),
+    }),
+  }).messages(unknownObjectMessage[language]);
+};

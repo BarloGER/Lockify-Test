@@ -43,7 +43,6 @@ exports.UserInteractor = class UserInteractor {
 
   async authenticateUser(userInput) {
     const credentials = userInputPort.authenticateUser(userInput);
-    console.log(credentials);
 
     const foundUser = await this.userRepository.findUserByEmail(
       credentials.email
@@ -72,6 +71,60 @@ exports.UserInteractor = class UserInteractor {
         DE: "Anmeldung erfolgreich.",
       },
       userId: foundUser.userId,
+    });
+  }
+
+  async editUser(userId, userInput) {
+    const updateData = userInputPort.editUser(userInput);
+
+    const foundUser = await this.userRepository.findUserById(userId);
+    if (!foundUser) {
+      throw new ErrorResponse({
+        errorCode: "USER_NOTFOUND_002",
+      });
+    }
+
+    if (userInput.username) {
+      if (await this.userRepository.existsByUsername(userInput.username)) {
+        throw new ErrorResponse({
+          errorCode: "USER_CONFLICT_001",
+        });
+      }
+      updateData.username = userInput.username;
+    }
+
+    if (userInput.email) {
+      if (await this.userRepository.existsByEmail(userInput.email)) {
+        throw new ErrorResponse({
+          errorCode: "USER_CONFLICT_002",
+        });
+      }
+      updateData.email = userInput.email;
+    }
+
+    if (userInput.password) {
+      updateData.password = await this.passwordHashingService.hashPassword(
+        userInput.password
+      );
+    }
+
+    const updatedUser = await this.userRepository.updateUser(
+      userId,
+      updateData
+    );
+    if (!updatedUser) {
+      throw new ErrorResponse({
+        errorCode: "DB_SERVICE_002",
+      });
+    }
+
+    return userOutput({
+      success: true,
+      message: {
+        EN: "User updated successfully.",
+        DE: "Benutzer erfolgreich aktualisiert.",
+      },
+      userId: updatedUser.userId,
     });
   }
 };
