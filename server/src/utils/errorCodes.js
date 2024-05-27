@@ -11,6 +11,38 @@ exports.errorCodes = {
       DE: "Keine Verbindung zur Datenbank möglich.",
     },
   },
+  USER_CONFLICT_001: {
+    statusCode: 409,
+    errorTypes: errorTypes.ConflictError,
+    message: {
+      EN: "Username already exists.",
+      DE: "Benutzername ist bereits vergeben.",
+    },
+  },
+  USER_CONFLICT_002: {
+    statusCode: 409,
+    errorTypes: errorTypes.ConflictError,
+    message: {
+      EN: "Email already exists.",
+      DE: "Email ist bereits vergeben.",
+    },
+  },
+  USER_CONFLICT_003: {
+    statusCode: 409,
+    errorTypes: errorTypes.ConflictError,
+    message: {
+      EN: "Wrong Password.",
+      DE: "Falsches Passwort.",
+    },
+  },
+  USER_NOT_FOUND_001: {
+    statusCode: 404,
+    errorTypes: errorTypes.NotFoundError,
+    message: {
+      EN: "There is no user with this email address.",
+      DE: "Es existiert kein Benutzer, mit dieser Email-Adresse.",
+    },
+  },
   USER_VALIDATION_001: {
     statusCode: 422,
     errorTypes: errorTypes.ValidationError,
@@ -63,8 +95,8 @@ exports.errorCodes = {
     statusCode: 422,
     errorTypes: errorTypes.ValidationError,
     message: {
-      EN: "Email must be a valid email address.",
-      DE: "Email muss eine gültige E-Mail-Adresse sein.",
+      EN: "Invalid email address.",
+      DE: "Ungültige Email-Adresse.",
     },
   },
   USER_VALIDATION_008: {
@@ -91,100 +123,12 @@ exports.errorCodes = {
       DE: "Passwort muss mindestens 8 Zeichen lang sein.",
     },
   },
-  USER_VALIDATION_011: {
-    statusCode: 422,
-    errorTypes: errorTypes.ValidationError,
+  SYS_SERVICE_001: {
+    statusCode: 500,
+    errorTypes: errorTypes.ServerError,
     message: {
-      EN: "'isVerified' is required.",
-      DE: "'isVerified' ist erforderlich.",
-    },
-  },
-  USER_VALIDATION_012: {
-    statusCode: 422,
-    errorTypes: errorTypes.ValidationError,
-    message: {
-      EN: "'isVerified' must be a boolean.",
-      DE: "'isVerified' muss ein Boolean sein.",
-    },
-  },
-  USER_VALIDATION_013: {
-    statusCode: 422,
-    errorTypes: errorTypes.ValidationError,
-    message: {
-      EN: "'isBlocked' is required.",
-      DE: "'isBlocked' ist erforderlich.",
-    },
-  },
-  USER_VALIDATION_014: {
-    statusCode: 422,
-    errorTypes: errorTypes.ValidationError,
-    message: {
-      EN: "'isBlocked' must be a boolean.",
-      DE: "'isBlocked' muss ein Boolean sein.",
-    },
-  },
-  USER_VALIDATION_015: {
-    statusCode: 422,
-    errorTypes: errorTypes.ValidationError,
-    message: {
-      EN: "'isNewsletterAllowed' is required.",
-      DE: "'isNewsletterAllowed' ist erforderlich.",
-    },
-  },
-  USER_VALIDATION_016: {
-    statusCode: 422,
-    errorTypes: errorTypes.ValidationError,
-    message: {
-      EN: "'isNewsletterAllowed' must be a boolean.",
-      DE: "'isNewsletterAllowed' muss ein Boolean sein.",
-    },
-  },
-  USER_VALIDATION_017: {
-    statusCode: 422,
-    errorTypes: errorTypes.ValidationError,
-    message: {
-      EN: "Verification code is required.",
-      DE: "Verifizierungscode ist erforderlich.",
-    },
-  },
-  USER_VALIDATION_018: {
-    statusCode: 422,
-    errorTypes: errorTypes.ValidationError,
-    message: {
-      EN: "Verification code must be a string.",
-      DE: "Verifizierungscode muss eine Zeichenkette sein.",
-    },
-  },
-  USER_VALIDATION_019: {
-    statusCode: 422,
-    errorTypes: errorTypes.ValidationError,
-    message: {
-      EN: "Verification code can only contain alphanumeric characters.",
-      DE: "Verifizierungscode darf nur alphanumerische Zeichen enthalten.",
-    },
-  },
-  USER_VALIDATION_020: {
-    statusCode: 422,
-    errorTypes: errorTypes.ValidationError,
-    message: {
-      EN: "Verification code must be 8 characters long.",
-      DE: "Verifizierungscode muss 8 Zeichen lang sein.",
-    },
-  },
-  USER_VALIDATION_021: {
-    statusCode: 422,
-    errorTypes: errorTypes.ValidationError,
-    message: {
-      EN: "Verification attempts is required.",
-      DE: "Verifizierungsversuche sind erforderlich.",
-    },
-  },
-  USER_VALIDATION_022: {
-    statusCode: 422,
-    errorTypes: errorTypes.ValidationError,
-    message: {
-      EN: "Verification attempts must be a number.",
-      DE: "Verifizierungsversuche müssen eine Zahl sein.",
+      EN: "The session could not be generated.",
+      DE: "Die Session konnte nicht generiert werden.",
     },
   },
 };
