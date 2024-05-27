@@ -1,11 +1,11 @@
 exports.UserPresenter = class UserPresenter {
-  present(output) {
+  present(language, output) {
     if (!output.success) {
       return { error: true, message: output.message };
     }
     return {
       success: true,
-      message: "Registration successful.",
+      message: output.message[language],
       userId: output.userId,
     };
   }

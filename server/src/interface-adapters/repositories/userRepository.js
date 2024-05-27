@@ -1,6 +1,4 @@
 const { Sequelize, Model, DataTypes } = require("sequelize");
-const { UserEntity } = require("../../entities/User");
-
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
   logging: false,
   dialectOptions: {
@@ -52,7 +50,7 @@ User.init(
       type: DataTypes.STRING,
     },
     verificationAttempts: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       defaultValue: 0,
     },
     lastVerificationAttempt: {
@@ -78,26 +76,37 @@ User.init(
 
 exports.UserRepository = class UserRepository {
   async existsByUsername(username) {
-    const user = await User.findOne({ where: { username } });
-    return user !== null;
+    const count = await User.count({ where: { username } });
+    return count > 0;
   }
 
   async existsByEmail(email) {
-    const user = await User.findOne({ where: { email } });
-    return user !== null;
+    const count = await User.count({ where: { email } });
+    return count > 0;
   }
 
   async createUser(userData) {
-    const userEntity = new UserEntity(userData);
-
-    const validationError = userEntity.validateCreateUser();
-    if (validationError) {
-      console.error("Validation errors:", validationErrors);
-      throw new Error("Validation failed. Please check the data.");
-    }
-
-    const newUser = User.create(userData);
-
+    const newUser = await User.create(userData);
     return newUser;
+  }
+
+  async findUserByEmail(email) {
+    const user = await User.findOne({ where: { email } });
+    return user;
+  }
+
+  async updateUserById(userId, updateData) {
+    const [updatedCount, updatedUsers] = await User.update(updateData, {
+      where: { userId },
+      returning: true,
+    });
+    return updatedCount > 0 ? updatedUsers[0] : null;
+  }
+
+  async deleteUserById(userId) {
+    const result = await User.destroy({
+      where: { userId },
+    });
+    return result > 0;
   }
 };

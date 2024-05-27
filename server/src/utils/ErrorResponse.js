@@ -1,9 +1,10 @@
 const { filterSensitiveData } = require("./filterSensitiveData.js");
 
 exports.ErrorResponse = class ErrorResponse extends Error {
-  constructor({ errorCode, body, params, input }) {
+  constructor({ errorCode, body, params, input, validationMessages }) {
     super(errorCode);
     this.errorCode = errorCode;
+    this.validationMessages = validationMessages;
 
     this.devInfo = {
       body: body ? filterSensitiveData(body) : undefined,

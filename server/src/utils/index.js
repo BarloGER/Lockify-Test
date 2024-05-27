@@ -3,6 +3,12 @@ const { ErrorResponse } = require("./ErrorResponse");
 const { errorTypes } = require("./errorTypes");
 const { filterSensitiveData } = require("./filterSensitiveData");
 const { statusMessages } = require("./statusMessages");
+const {
+  usernameMessages,
+  emailMessages,
+  passwordMessages,
+  unknownObjectMessage,
+} = require("./validationMessages");
 
 module.exports = {
   errorCodes,
@@ -10,4 +16,8 @@ module.exports = {
   errorTypes,
   filterSensitiveData,
   statusMessages,
+  usernameMessages,
+  emailMessages,
+  passwordMessages,
+  unknownObjectMessage,
 };

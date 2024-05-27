@@ -46,14 +46,14 @@ exports.errorHandler = async (err, req, res, next) => {
   const statusCode = errorCodeInfo.statusCode;
   const errorType = errorCodeInfo.errorType;
   const statusMessage = statusMessages[statusCode] || "Server Error";
-  const message = errorCodeInfo.message[language];
+  const message = err.validationMessages || errorCodeInfo.message[language];
 
   const clientResponse = {
     message,
-    statusCode: statusCode,
-    statusMessage: statusMessage,
-    errorType: errorType,
-    errorCode: errorCode,
+    statusCode,
+    statusMessage,
+    errorType,
+    errorCode,
   };
 
   if (process.env.NODE_ENV === "development") {
