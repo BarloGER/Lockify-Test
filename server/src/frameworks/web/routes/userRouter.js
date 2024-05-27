@@ -9,11 +9,13 @@ const {
   registerUserSchema,
   loginUserSchema,
   updateUserSchema,
+  deleteUserSchema,
 } = require("../../../interface-adapters/joiSchemas/userSchemas");
 const {
   registerUser,
   loginUser,
   updateUser,
+  deleteUser,
 } = require("../../../interface-adapters/controllers/userController");
 
 const userRouter = Router();
@@ -25,6 +27,12 @@ userRouter.put(
   validateCookie,
   validateJoi(updateUserSchema),
   updateUser
+);
+userRouter.delete(
+  "/delete",
+  validateCookie,
+  validateJoi(deleteUserSchema),
+  deleteUser
 );
 
 exports.userRouter = userRouter;

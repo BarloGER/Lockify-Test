@@ -117,7 +117,7 @@ exports.UserRepository = class UserRepository {
     return savedUser;
   }
 
-  async deleteUserById(userId) {
+  async deleteUser(userId) {
     const result = await User.destroy({
       where: { userId },
     });

@@ -64,7 +64,8 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
   const language = req.headers["accept-language"] === "de" ? "DE" : "EN";
   const { userId } = req;
 
-  if (req.session.userId !== userId) {
+  const isAuthenticated = req.session.userId === userId;
+  if (!isAuthenticated) {
     throw new ErrorResponse({ errorCode: "USER_AUTHENTICATION_001" });
   }
 
@@ -75,6 +76,23 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
   };
 
   const result = await userInteractor.editUser(userId, userInput);
+  const response = userPresenter.present(language, result);
+
+  res.status(200).json(response);
+});
+
+exports.deleteUser = asyncHandler(async (req, res, next) => {
+  const language = req.headers["accept-language"] === "de" ? "DE" : "EN";
+  const { userId } = req;
+
+  const isAuthenticated = req.session.userId === userId;
+  if (!isAuthenticated) {
+    throw new ErrorResponse({ errorCode: "USER_AUTHENTICATION_001" });
+  }
+
+  const userInput = {};
+
+  const result = await userInteractor.deleteUser(userId, userInput);
   const response = userPresenter.present(language, result);
 
   res.status(200).json(response);

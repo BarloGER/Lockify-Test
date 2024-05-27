@@ -49,9 +49,11 @@ exports.passwordMessages = {
 
 exports.unknownObjectMessage = {
   EN: {
+    "object.base": "The request must only include an empty object.",
     "object.unknown": "You have entered data that is not permitted!",
   },
   DE: {
+    "object.base": "Die Anfrage darf nur ein leeres Objekt beinhalten.",
     "object.unknown": "Du hast Daten angegeben, die nicht erlaubt sind!",
   },
 };

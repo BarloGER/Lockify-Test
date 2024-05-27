@@ -81,6 +81,19 @@ exports.UserEntity = class UserEntity {
     return null;
   }
 
+  validateForDelete() {
+    const validFields = [];
+    const extraFields = validFields.filter(
+      (field) => this[field] !== undefined
+    );
+
+    if (extraFields.length > 0) {
+      return "USER_VALIDATION_002";
+    }
+
+    return null;
+  }
+
   validateUsername(isRequired) {
     if (isRequired && !this.username) return "USER_VALIDATION_003";
     if (this.username && typeof this.username !== "string")

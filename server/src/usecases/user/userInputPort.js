@@ -41,4 +41,13 @@ exports.UserInputPort = class UserInputPort {
 
     return updateData;
   }
+
+  deleteUser(userInput) {
+    const data = new UserEntity(userInput);
+
+    const validationError = data.validateForDelete();
+    if (validationError) {
+      throw new ErrorResponse({ errorCode: `${validationError}` });
+    }
+  }
 };

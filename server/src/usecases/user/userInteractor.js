@@ -49,7 +49,7 @@ exports.UserInteractor = class UserInteractor {
     );
     if (!foundUser) {
       throw new ErrorResponse({
-        errorCode: "USER_NOTFOUND_001",
+        errorCode: "USER_NOT_FOUND_001",
       });
     }
 
@@ -80,7 +80,7 @@ exports.UserInteractor = class UserInteractor {
     const foundUser = await this.userRepository.findUserById(userId);
     if (!foundUser) {
       throw new ErrorResponse({
-        errorCode: "USER_NOTFOUND_002",
+        errorCode: "USER_NOT_FOUND_002",
       });
     }
 
@@ -125,6 +125,32 @@ exports.UserInteractor = class UserInteractor {
         DE: "Benutzer erfolgreich aktualisiert.",
       },
       userId: updatedUser.userId,
+    });
+  }
+
+  async deleteUser(userId, userInput) {
+    const data = userInputPort.deleteUser(userInput);
+
+    const foundUser = await this.userRepository.findUserById(userId);
+    if (!foundUser) {
+      throw new ErrorResponse({
+        errorCode: "USER_NOT_FOUND_002",
+      });
+    }
+
+    const deletedUser = await this.userRepository.deleteUser(userId, data);
+    if (!deletedUser) {
+      throw new ErrorResponse({
+        errorCode: "DB_SERVICE_002",
+      });
+    }
+
+    return userOutput({
+      success: true,
+      message: {
+        EN: "User deleted successfully.",
+        DE: "Benutzer erfolgreich gelöscht.",
+      },
     });
   }
 };
