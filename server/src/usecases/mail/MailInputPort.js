@@ -1,4 +1,5 @@
 const { MailEntity } = require("../../entities/Mail");
+const { ErrorResponse } = require("../../utils");
 
 exports.MailInputPort = class MailInputPort {
   createMail({ email, subject, message }) {

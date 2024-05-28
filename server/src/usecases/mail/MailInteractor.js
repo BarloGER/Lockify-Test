@@ -14,10 +14,10 @@ exports.MailInteractor = class MailInteractor {
     return this.sendMail({ email, subject, message });
   }
 
-  async sendNewPassword(email, newPassword) {
+  async sendNewPassword({ email, newPassword }) {
     const subject = "Passwort zurücksetzen";
-    const html = `<p>Hier dein neues Passwort: ${newPassword}</p><p>Du solltest es sobald möglich ändern</p>`;
-    return this.sendMail(email, subject, html);
+    const message = `<p>Hier dein neues Passwort: ${newPassword}</p><p>Du solltest es sobald möglich ändern</p>`;
+    return this.sendMail({ email, subject, message });
   }
 
   async sendMail({ email, subject, message }) {

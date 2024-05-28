@@ -4,7 +4,6 @@ exports.UserEntity = class UserEntity {
     if (options.isNewUser) {
       this.isVerified = false;
       this.isBlocked = false;
-      this.isNewsletterAllowed = false;
       this.verificationCode = null;
       this.verificationAttempts = 0;
     }
@@ -47,7 +46,8 @@ exports.UserEntity = class UserEntity {
     return (
       this.validateUsername(true) ||
       this.validateEmail(true) ||
-      this.validatePassword(true)
+      this.validatePassword(true) ||
+      this.validateIsNewsletterAllowed(true)
     );
   }
 
@@ -60,11 +60,15 @@ exports.UserEntity = class UserEntity {
   }
 
   validateForUpdate() {
-    const validFields = ["username", "email", "password"];
+    const validFields = [
+      "username",
+      "email",
+      "password",
+      "isNewsletterAllowed",
+    ];
     const fieldsToUpdate = validFields.filter(
       (field) => this[field] !== undefined
     );
-
     if (fieldsToUpdate.length === 0) {
       return "USER_VALIDATION_001";
     }
@@ -103,6 +107,14 @@ exports.UserEntity = class UserEntity {
   }
 
   validateForUpdateVerificationCode() {
+    const validFields = ["email"];
+    const result = this.validateValidFields(validFields);
+    if (result) return result;
+
+    return this.validateEmail(true);
+  }
+
+  validateForUpdatePassword() {
     const validFields = ["email"];
     const result = this.validateValidFields(validFields);
     if (result) return result;
@@ -152,6 +164,18 @@ exports.UserEntity = class UserEntity {
       return "USER_VALIDATION_015";
     if (this.verificationCode && this.verificationCode.length !== 8)
       return "USER_VALIDATION_016";
+
+    return null;
+  }
+
+  validateIsNewsletterAllowed(isRequired) {
+    if (isRequired && this.isNewsletterAllowed === undefined)
+      return "USER_VALIDATION_017";
+    if (
+      this.isNewsletterAllowed &&
+      typeof this.isNewsletterAllowed !== "boolean"
+    )
+      return "USER_VALIDATION_018";
 
     return null;
   }

@@ -203,7 +203,14 @@ exports.errorCodes = {
       DE: "Bitte warte 15 Minuten bevor du einen neuen Code anforderst.",
     },
   },
-
+  USER_REQUEST_002: {
+    statusCode: 429,
+    errorType: errorTypes.RateLimitError,
+    message: {
+      EN: "Please wait 15 minutes before requesting a new password.",
+      DE: "Bitte warte 15 Minuten bevor du ein neues Passwort anforderst.",
+    },
+  },
   USER_VALIDATION_001: {
     statusCode: 411,
     errorType: errorTypes.LengthRequiredError,
@@ -330,6 +337,22 @@ exports.errorCodes = {
     message: {
       EN: "The verification code must be exactly 8 characters long.",
       DE: "Der Verifizierungscode muss genau 8 Zeichen lang sein.",
+    },
+  },
+  USER_VALIDATION_017: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "Newsletter is required.",
+      DE: "Der Newsletter muss angegeben werden.",
+    },
+  },
+  USER_VALIDATION_018: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The newsletter must be a boolean.",
+      DE: "Der Newsletter muss ein boolean sein.",
     },
   },
   SYS_SERVICE_001: {

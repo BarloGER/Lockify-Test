@@ -20,6 +20,7 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
     username: req.body.username,
     email: req.body.email,
     password: req.body.password,
+    isNewsletterAllowed: req.body.isNewsletterAllowed,
   };
 
   const result = await userInteractor.createUser(userInput);
@@ -73,6 +74,7 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
     username: req.body.username,
     email: req.body.email,
     password: req.body.password,
+    isNewsletterAllowed: req.body.isNewsletterAllowed,
   };
 
   const result = await userInteractor.editUser(userId, userInput);
@@ -133,6 +135,19 @@ exports.sendNewVerificationCode = asyncHandler(async (req, res, next) => {
   };
 
   const result = await userInteractor.updateVerificationCode(userId, userInput);
+  const response = userPresenter.present(language, result);
+
+  res.status(200).json(response);
+});
+
+exports.sendNewPassword = asyncHandler(async (req, res, next) => {
+  const language = req.headers["accept-language"] === "de" ? "DE" : "EN";
+
+  const userInput = {
+    email: req.body.email,
+  };
+
+  const result = await userInteractor.updatePassword(userInput);
   const response = userPresenter.present(language, result);
 
   res.status(200).json(response);

@@ -3,6 +3,8 @@ const {
   usernameMessages,
   emailMessages,
   passwordMessages,
+  newsletterMessages,
+  verificationMessages,
   unknownObjectMessage,
 } = require("../../utils");
 
@@ -26,6 +28,9 @@ exports.registerUserSchema = (language = "EN") => {
         .max(20)
         .required()
         .messages(passwordMessages[language]),
+      isNewsletterAllowed: Joi.boolean()
+        .required()
+        .messages(newsletterMessages[language]),
     }),
   }).messages(unknownObjectMessage[language]);
 };
@@ -62,6 +67,7 @@ exports.updateUserSchema = (language = "EN") => {
         .min(8)
         .max(20)
         .messages(passwordMessages[language]),
+      isNewsletterAllowed: Joi.boolean().messages(newsletterMessages[language]),
     }),
   }).messages(unknownObjectMessage[language]);
 };
@@ -70,5 +76,26 @@ exports.deleteUserSchema = (language = "EN") => {
   return Joi.object({
     params: Joi.object().keys({}).unknown(false),
     body: Joi.object().keys({}).unknown(false),
+  }).messages(unknownObjectMessage[language]);
+};
+
+exports.confirmEmailSchema = (language = "EN") => {
+  return Joi.object({
+    params: Joi.valid({}),
+    body: Joi.object({
+      verificationCode: Joi.string()
+        .alphanum()
+        .length(8)
+        .messages(verificationMessages[language]),
+    }),
+  }).messages(unknownObjectMessage[language]);
+};
+
+exports.sendMailSchema = (language = "EN") => {
+  return Joi.object({
+    params: Joi.valid({}),
+    body: Joi.object({
+      email: Joi.string().email().max(254).messages(emailMessages[language]),
+    }),
   }).messages(unknownObjectMessage[language]);
 };

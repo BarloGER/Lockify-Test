@@ -32,6 +32,7 @@ exports.UserInputPort = class UserInputPort {
       username: userInput.username,
       email: userInput.email,
       password: userInput.password,
+      isNewsletterAllowed: userInput.isNewsletterAllowed,
     });
 
     const validationError = updateData.validateForUpdate();
@@ -65,6 +66,19 @@ exports.UserInputPort = class UserInputPort {
   }
 
   updateVerificationCode(userInput) {
+    const userData = new UserEntity({
+      email: userInput.email,
+    });
+
+    const validationError = userData.validateForUpdateVerificationCode();
+    if (validationError) {
+      throw new ErrorResponse({ errorCode: `${validationError}` });
+    }
+
+    return userData;
+  }
+
+  updatePassword(userInput) {
     const userData = new UserEntity({
       email: userInput.email,
     });

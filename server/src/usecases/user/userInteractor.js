@@ -135,6 +135,10 @@ exports.UserInteractor = class UserInteractor {
       );
     }
 
+    if (userInput.isNewsletterAllowed) {
+      updateData.isNewsletterAllowed = userInput.isNewsletterAllowed;
+    }
+
     const updatedUser = await this.userRepository.updateUser(
       userId,
       updateData
@@ -312,6 +316,70 @@ exports.UserInteractor = class UserInteractor {
       message: {
         EN: "A new verification code has been sent to your email address. Don't forget to check your spam folder as well.",
         DE: "Dir wurde ein neuer Verifizierungscode an deine Email Adresse gesendet. Vergiss nicht auch deinen Spam Ordner zu überprüfen.",
+      },
+    };
+
+    return this.userOutputPort.output(userOutputData);
+  }
+
+  async updatePassword(userInput) {
+    const userData = this.userInputPort.updatePassword(userInput);
+
+    const foundUser = await this.userRepository.findUserByEmail(userData.email);
+    if (!foundUser) {
+      throw new ErrorResponse({
+        errorCode: "USER_NOT_FOUND_002",
+      });
+    }
+
+    const isBlocked = foundUser.isBlocked;
+    if (isBlocked) {
+      throw new ErrorResponse({ errorCode: "USER_AUTHORIZATION_001" });
+    }
+
+    const generatePassword = () => {
+      const randomBytes = crypto.randomBytes(12);
+      const password = randomBytes.toString("hex");
+
+      return password.substring(0, 12);
+    };
+
+    const newPassword = generatePassword();
+    const newPasswordHash = await this.passwordHashingService.hashPassword(
+      newPassword
+    );
+
+    const currentTime = new Date();
+    const lastVerificationAttempt = foundUser.lastVerificationAttempt;
+    if (lastVerificationAttempt !== null) {
+      const timeSinceLastVerification = currentTime - lastVerificationAttempt;
+
+      // Check whether the waiting time of 15 minutes has expired
+      if (timeSinceLastVerification < 15 * 60 * 1000) {
+        throw new ErrorResponse({
+          errorCode: "USER_REQUEST_002",
+        });
+      }
+    }
+
+    await this.mailInteractor.sendNewPassword({
+      email: userData.email,
+      newPassword,
+    });
+
+    const updateData = {
+      lastVerificationAttempt: currentTime,
+      password: newPasswordHash,
+    };
+
+    const userId = foundUser.userId;
+    await this.userRepository.updateUser(userId, updateData);
+
+    const userOutputData = {
+      success: true,
+      message: {
+        EN: "A new password has been sent to your email address. Don't forget to check your spam folder as well.",
+        DE: "Dir wurde ein neues Passwort an deine Email Adresse gesendet. Vergiss nicht auch deinen Spam Ordner zu überprüfen.",
       },
     };
 
