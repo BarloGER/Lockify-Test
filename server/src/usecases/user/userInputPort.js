@@ -32,6 +32,7 @@ exports.UserInputPort = class UserInputPort {
       username: userInput.username,
       email: userInput.email,
       password: userInput.password,
+      isNewsletterAllowed: userInput.isNewsletterAllowed,
     });
 
     const validationError = updateData.validateForUpdate();

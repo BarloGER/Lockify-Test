@@ -20,6 +20,7 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
     username: req.body.username,
     email: req.body.email,
     password: req.body.password,
+    isNewsletterAllowed: req.body.isNewsletterAllowed,
   };
 
   const result = await userInteractor.createUser(userInput);
@@ -73,6 +74,7 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
     username: req.body.username,
     email: req.body.email,
     password: req.body.password,
+    isNewsletterAllowed: req.body.isNewsletterAllowed,
   };
 
   const result = await userInteractor.editUser(userId, userInput);

@@ -7,6 +7,7 @@ const {
   usernameMessages,
   emailMessages,
   passwordMessages,
+  newsletterMessages,
   verificationMessages,
   unknownObjectMessage,
 } = require("./validationMessages");
@@ -20,6 +21,7 @@ module.exports = {
   usernameMessages,
   emailMessages,
   passwordMessages,
+  newsletterMessages,
   verificationMessages,
   unknownObjectMessage,
 };

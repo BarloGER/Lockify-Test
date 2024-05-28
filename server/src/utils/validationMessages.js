@@ -51,6 +51,17 @@ exports.passwordMessages = {
   },
 };
 
+exports.newsletterMessages = {
+  EN: {
+    "boolean.base": "Newsletter must be a boolean.",
+    "any.required": "Newsletter is required.",
+  },
+  DE: {
+    "boolean.base": "Der Newsletter muss ein boolean sein.",
+    "any.required": "Der Newsletter ist erforderlich.",
+  },
+};
+
 exports.verificationMessages = {
   EN: {
     "string.base": "The verification code must be a string.",

@@ -339,6 +339,22 @@ exports.errorCodes = {
       DE: "Der Verifizierungscode muss genau 8 Zeichen lang sein.",
     },
   },
+  USER_VALIDATION_017: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "Newsletter is required.",
+      DE: "Der Newsletter muss angegeben werden.",
+    },
+  },
+  USER_VALIDATION_018: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The newsletter must be a boolean.",
+      DE: "Der Newsletter muss ein boolean sein.",
+    },
+  },
   SYS_SERVICE_001: {
     statusCode: 500,
     errorTypes: errorTypes.ServerError,

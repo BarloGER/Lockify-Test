@@ -135,6 +135,10 @@ exports.UserInteractor = class UserInteractor {
       );
     }
 
+    if (userInput.isNewsletterAllowed) {
+      updateData.isNewsletterAllowed = userInput.isNewsletterAllowed;
+    }
+
     const updatedUser = await this.userRepository.updateUser(
       userId,
       updateData

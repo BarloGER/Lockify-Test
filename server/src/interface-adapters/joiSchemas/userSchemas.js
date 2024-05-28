@@ -3,8 +3,9 @@ const {
   usernameMessages,
   emailMessages,
   passwordMessages,
-  unknownObjectMessage,
+  newsletterMessages,
   verificationMessages,
+  unknownObjectMessage,
 } = require("../../utils");
 
 exports.registerUserSchema = (language = "EN") => {
@@ -27,6 +28,9 @@ exports.registerUserSchema = (language = "EN") => {
         .max(20)
         .required()
         .messages(passwordMessages[language]),
+      isNewsletterAllowed: Joi.boolean()
+        .required()
+        .messages(newsletterMessages[language]),
     }),
   }).messages(unknownObjectMessage[language]);
 };
@@ -63,6 +67,7 @@ exports.updateUserSchema = (language = "EN") => {
         .min(8)
         .max(20)
         .messages(passwordMessages[language]),
+      isNewsletterAllowed: Joi.boolean().messages(newsletterMessages[language]),
     }),
   }).messages(unknownObjectMessage[language]);
 };
