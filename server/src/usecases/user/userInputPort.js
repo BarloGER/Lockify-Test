@@ -76,4 +76,17 @@ exports.UserInputPort = class UserInputPort {
 
     return userData;
   }
+
+  updatePassword(userInput) {
+    const userData = new UserEntity({
+      email: userInput.email,
+    });
+
+    const validationError = userData.validateForUpdateVerificationCode();
+    if (validationError) {
+      throw new ErrorResponse({ errorCode: `${validationError}` });
+    }
+
+    return userData;
+  }
 };

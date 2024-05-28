@@ -203,7 +203,14 @@ exports.errorCodes = {
       DE: "Bitte warte 15 Minuten bevor du einen neuen Code anforderst.",
     },
   },
-
+  USER_REQUEST_002: {
+    statusCode: 429,
+    errorType: errorTypes.RateLimitError,
+    message: {
+      EN: "Please wait 15 minutes before requesting a new password.",
+      DE: "Bitte warte 15 Minuten bevor du ein neues Passwort anforderst.",
+    },
+  },
   USER_VALIDATION_001: {
     statusCode: 411,
     errorType: errorTypes.LengthRequiredError,

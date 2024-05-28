@@ -110,6 +110,14 @@ exports.UserEntity = class UserEntity {
     return this.validateEmail(true);
   }
 
+  validateForUpdatePassword() {
+    const validFields = ["email"];
+    const result = this.validateValidFields(validFields);
+    if (result) return result;
+
+    return this.validateEmail(true);
+  }
+
   validateUsername(isRequired) {
     if (isRequired && !this.username) return "USER_VALIDATION_003";
     if (this.username && typeof this.username !== "string")

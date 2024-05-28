@@ -4,6 +4,7 @@ const {
   emailMessages,
   passwordMessages,
   unknownObjectMessage,
+  verificationMessages,
 } = require("../../utils");
 
 exports.registerUserSchema = (language = "EN") => {
@@ -70,5 +71,26 @@ exports.deleteUserSchema = (language = "EN") => {
   return Joi.object({
     params: Joi.object().keys({}).unknown(false),
     body: Joi.object().keys({}).unknown(false),
+  }).messages(unknownObjectMessage[language]);
+};
+
+exports.confirmEmailSchema = (language = "EN") => {
+  return Joi.object({
+    params: Joi.valid({}),
+    body: Joi.object({
+      verificationCode: Joi.string()
+        .alphanum()
+        .length(8)
+        .messages(verificationMessages[language]),
+    }),
+  }).messages(unknownObjectMessage[language]);
+};
+
+exports.sendMailSchema = (language = "EN") => {
+  return Joi.object({
+    params: Joi.valid({}),
+    body: Joi.object({
+      email: Joi.string().email().max(254).messages(emailMessages[language]),
+    }),
   }).messages(unknownObjectMessage[language]);
 };
