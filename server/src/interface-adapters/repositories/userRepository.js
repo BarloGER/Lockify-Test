@@ -55,7 +55,7 @@ User.init(
     },
     lastVerificationAttempt: {
       type: DataTypes.DATE,
-      defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+      defaultValue: null,
     },
     createdAt: {
       type: DataTypes.DATE,
@@ -63,7 +63,7 @@ User.init(
     },
     updatedAt: {
       type: DataTypes.DATE,
-      defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+      defaultValue: null,
     },
   },
   {
@@ -85,11 +85,6 @@ exports.UserRepository = class UserRepository {
     return count > 0;
   }
 
-  async createUser(userData) {
-    const newUser = await User.create(userData);
-    return newUser;
-  }
-
   async findUserByEmail(email) {
     const user = await User.findOne({ where: { email } });
     return user;
@@ -98,6 +93,11 @@ exports.UserRepository = class UserRepository {
   async findUserById(userId) {
     const user = await User.findByPk(userId);
     return user;
+  }
+
+  async createUser(userData) {
+    const newUser = await User.create(userData);
+    return newUser;
   }
 
   async updateUser(userId, updateData) {
@@ -117,7 +117,7 @@ exports.UserRepository = class UserRepository {
     return savedUser;
   }
 
-  async deleteUserById(userId) {
+  async deleteUser(userId) {
     const result = await User.destroy({
       where: { userId },
     });

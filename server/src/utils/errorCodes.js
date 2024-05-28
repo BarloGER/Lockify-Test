@@ -19,6 +19,78 @@ exports.errorCodes = {
       DE: "Beim Speichern der Daten ist ein Fehler augetreten, versuche es später erneut, oder wende dich an den Support.",
     },
   },
+  MAIL_SERVICE_001: {
+    statusCode: 424,
+    errorType: errorTypes.DependencyError,
+    message: {
+      EN: "The mail server is currently unavailable, please try again later.",
+      DE: "Der Mailserver ist derzeit nicht erreichbar, versuche es bitte später erneut.",
+    },
+  },
+  MAIL_VALIDATION_001: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "Email is required.",
+      DE: "Email ist erforderlich.",
+    },
+  },
+  MAIL_VALIDATION_002: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "Email must be a string.",
+      DE: "Email muss eine Zeichenkette sein.",
+    },
+  },
+  MAIL_VALIDATION_003: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "Invalid email address.",
+      DE: "Ungültige Email-Adresse.",
+    },
+  },
+  MAIL_VALIDATION_004: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The subject must be specified.",
+      DE: "Der Betreff muss angegeben werden.",
+    },
+  },
+  MAIL_VALIDATION_005: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The subject must be a string.",
+      DE: "Der Betreff muss eine Zeichenkette sein.",
+    },
+  },
+  MAIL_VALIDATION_006: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The subject must be between 5 and 78 characters long.",
+      DE: "Der Betreff muss zwischen 5 und 78 Zeichen lang sein.",
+    },
+  },
+  MAIL_VALIDATION_007: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "A message must be entered.",
+      DE: "Es muss eine Nachricht angegeben werden.",
+    },
+  },
+  MAIL_VALIDATION_008: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The message must be a string.",
+      DE: "Die Nachricht muss eine Zeichenkette sein.",
+    },
+  },
   USER_AUTHENTICATION_001: {
     statusCode: 403,
     errorType: errorTypes.AuthenticationError,
@@ -51,6 +123,22 @@ exports.errorCodes = {
       DE: "Deine Session ist abgelaufen. Bitte melde dich erneut an, um weiterhin Zugriff zu haben.",
     },
   },
+  USER_AUTHORIZATION_001: {
+    statusCode: 403,
+    errorType: errorTypes.AuthorizationError,
+    message: {
+      EN: "Your account has been blocked, please contact support.",
+      DE: "Dein Konto wurde gesperrt, wende dich an den Support.",
+    },
+  },
+  USER_AUTHORIZATION_002: {
+    statusCode: 403,
+    errorType: errorTypes.AuthorizationError,
+    message: {
+      EN: "Too many verification attempts! Your account has been blocked, please contact support.",
+      DE: "Zu viele Verifizierungsversuche! Dein Konto wurde gesperrt, wende dich an den Support.",
+    },
+  },
   USER_CONFLICT_001: {
     statusCode: 409,
     errorType: errorTypes.ConflictError,
@@ -75,6 +163,22 @@ exports.errorCodes = {
       DE: "Falsches Passwort.",
     },
   },
+  USER_CONFLICT_004: {
+    statusCode: 409,
+    errorType: errorTypes.ConflictError,
+    message: {
+      EN: "The verification code does not match!",
+      DE: "Der Verifizierungscode stimmt nicht überein!",
+    },
+  },
+  USER_CONFLICT_005: {
+    statusCode: 409,
+    errorType: errorTypes.ConflictError,
+    message: {
+      EN: "You have already confirmed your email address.",
+      DE: "Du hast deine Email-Addresse bereits bestätigt.",
+    },
+  },
   USER_NOT_FOUND_001: {
     statusCode: 404,
     errorType: errorTypes.NotFoundError,
@@ -91,6 +195,15 @@ exports.errorCodes = {
       DE: "Es existiert kein Benutzer, mit dieser ID.",
     },
   },
+  USER_REQUEST_001: {
+    statusCode: 429,
+    errorType: errorTypes.RateLimitError,
+    message: {
+      EN: "Please wait 15 minutes before requesting a new code.",
+      DE: "Bitte warte 15 Minuten bevor du einen neuen Code anforderst.",
+    },
+  },
+
   USER_VALIDATION_001: {
     statusCode: 411,
     errorType: errorTypes.LengthRequiredError,
@@ -185,6 +298,38 @@ exports.errorCodes = {
     message: {
       EN: "Password must be at least 8 characters long.",
       DE: "Passwort muss mindestens 8 Zeichen lang sein.",
+    },
+  },
+  USER_VALIDATION_013: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The verification code is required.",
+      DE: "Der Verifizierungscode ist erforderlich.",
+    },
+  },
+  USER_VALIDATION_014: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The verification code must be a string.",
+      DE: "Der Verifizierungscode muss eine Zeichenkette sein.",
+    },
+  },
+  USER_VALIDATION_015: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The verification code can only contain alphanumeric characters.",
+      DE: "Der Verifizierungscode darf nur alphanumerische Zeichen enthalten.",
+    },
+  },
+  USER_VALIDATION_016: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The verification code must be exactly 8 characters long.",
+      DE: "Der Verifizierungscode muss genau 8 Zeichen lang sein.",
     },
   },
   SYS_SERVICE_001: {

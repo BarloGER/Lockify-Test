@@ -9,11 +9,15 @@ const {
   registerUserSchema,
   loginUserSchema,
   updateUserSchema,
+  deleteUserSchema,
 } = require("../../../interface-adapters/joiSchemas/userSchemas");
 const {
   registerUser,
   loginUser,
   updateUser,
+  deleteUser,
+  confirmEmailAddress,
+  sendNewVerificationCode,
 } = require("../../../interface-adapters/controllers/userController");
 
 const userRouter = Router();
@@ -26,5 +30,13 @@ userRouter.put(
   validateJoi(updateUserSchema),
   updateUser
 );
+userRouter.delete(
+  "/delete",
+  validateCookie,
+  validateJoi(deleteUserSchema),
+  deleteUser
+);
+userRouter.post("/confirm-email", validateCookie, confirmEmailAddress);
+userRouter.post("/send-new-code", validateCookie, sendNewVerificationCode);
 
 exports.userRouter = userRouter;

@@ -65,3 +65,10 @@ exports.updateUserSchema = (language = "EN") => {
     }),
   }).messages(unknownObjectMessage[language]);
 };
+
+exports.deleteUserSchema = (language = "EN") => {
+  return Joi.object({
+    params: Joi.object().keys({}).unknown(false),
+    body: Joi.object().keys({}).unknown(false),
+  }).messages(unknownObjectMessage[language]);
+};

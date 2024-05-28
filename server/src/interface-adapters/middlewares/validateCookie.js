@@ -1,7 +1,6 @@
 const { ErrorResponse } = require("../../utils");
 
 exports.validateCookie = (req, res, next) => {
-  console.log(req.session);
   const session = req.session;
   if (!session) {
     throw new ErrorResponse({ errorCode: "USER_AUTHENTICATION_002" });
