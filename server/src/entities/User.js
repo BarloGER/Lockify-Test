@@ -94,6 +94,22 @@ exports.UserEntity = class UserEntity {
     return null;
   }
 
+  validateForVerification() {
+    const validFields = ["verificationCode"];
+    const result = this.validateValidFields(validFields);
+    if (result) return result;
+
+    return this.validateVerificationCode(true);
+  }
+
+  validateForUpdateVerificationCode() {
+    const validFields = ["email"];
+    const result = this.validateValidFields(validFields);
+    if (result) return result;
+
+    return this.validateEmail(true);
+  }
+
   validateUsername(isRequired) {
     if (isRequired && !this.username) return "USER_VALIDATION_003";
     if (this.username && typeof this.username !== "string")
@@ -105,6 +121,7 @@ exports.UserEntity = class UserEntity {
       (this.username.length < 3 || this.username.length > 20)
     )
       return "USER_VALIDATION_006";
+
     return null;
   }
 
@@ -114,6 +131,7 @@ exports.UserEntity = class UserEntity {
       return "USER_VALIDATION_008";
     if (this.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email))
       return "USER_VALIDATION_009";
+
     return null;
   }
 
@@ -122,6 +140,19 @@ exports.UserEntity = class UserEntity {
     if (this.password && typeof this.password !== "string")
       return "USER_VALIDATION_011";
     if (this.password && this.password.length < 8) return "USER_VALIDATION_012";
+
+    return null;
+  }
+
+  validateVerificationCode(isRequired) {
+    if (isRequired && !this.verificationCode) return "USER_VALIDATION_013";
+    if (this.verificationCode && typeof this.verificationCode !== "string")
+      return "USER_VALIDATION_014";
+    if (this.verificationCode && !/^[a-zA-Z0-9]*$/.test(this.verificationCode))
+      return "USER_VALIDATION_015";
+    if (this.verificationCode && this.verificationCode.length !== 8)
+      return "USER_VALIDATION_016";
+
     return null;
   }
 };

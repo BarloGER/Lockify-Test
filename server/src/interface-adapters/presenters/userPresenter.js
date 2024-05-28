@@ -1,3 +1,4 @@
+// Will only output if success is true for now
 exports.UserPresenter = class UserPresenter {
   present(language, output) {
     if (!output.success) {

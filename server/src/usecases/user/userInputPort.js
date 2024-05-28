@@ -1,5 +1,5 @@
 const { UserEntity } = require("../../entities/User");
-const { ErrorResponse, errorCodes } = require("../../utils");
+const { ErrorResponse } = require("../../utils");
 
 exports.UserInputPort = class UserInputPort {
   createUser(userInput) {
@@ -49,5 +49,31 @@ exports.UserInputPort = class UserInputPort {
     if (validationError) {
       throw new ErrorResponse({ errorCode: `${validationError}` });
     }
+  }
+
+  verifyCode(userInput) {
+    const verificationData = new UserEntity({
+      verificationCode: userInput.verificationCode,
+    });
+
+    const validationError = verificationData.validateForVerification();
+    if (validationError) {
+      throw new ErrorResponse({ errorCode: `${validationError}` });
+    }
+
+    return verificationData;
+  }
+
+  updateVerificationCode(userInput) {
+    const userData = new UserEntity({
+      email: userInput.email,
+    });
+
+    const validationError = userData.validateForUpdateVerificationCode();
+    if (validationError) {
+      throw new ErrorResponse({ errorCode: `${validationError}` });
+    }
+
+    return userData;
   }
 };
