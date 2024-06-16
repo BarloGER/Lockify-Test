@@ -1,0 +1,19 @@
+.input__container {
+  margin-bottom: 16px;
+}
+
+.input__label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text-color);
+}
+
+.input__field {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-color);
+  background-color: var(--input-color);
+  outline: none;
+}

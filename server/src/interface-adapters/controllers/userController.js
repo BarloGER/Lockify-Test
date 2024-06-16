@@ -1,20 +1,23 @@
-const { UserInteractor } = require("../../usecases/user/userInteractor");
-const { UserRepository } = require("../repositories/userRepository");
-const { UserPresenter } = require("../presenters/userPresenter");
+const { UserInteractor } = require("../../usecases/user/UserInteractor");
+const { UserRepository } = require("../repositories/UserRepository");
+const { UserPresenter } = require("../presenters/UserPresenter");
+const { MailRepository } = require("../repositories/MailRepository");
 const { PasswordHashingService } = require("../utils/PasswordHashingService");
 const { asyncHandler } = require("../utils/asyncHandler");
 const { ErrorResponse } = require("../../utils/ErrorResponse");
 
 const userRepository = new UserRepository();
 const userPresenter = new UserPresenter();
+const mailRepository = new MailRepository();
 const passwordHashingService = new PasswordHashingService();
 const userInteractor = new UserInteractor(
   userRepository,
+  mailRepository,
   passwordHashingService
 );
 
 exports.registerUser = asyncHandler(async (req, res, next) => {
-  const language = req.headers["accept-language"] === "de" ? "DE" : "EN";
+  const language = req.headers["accept-language"].includes("de") ? "DE" : "EN";
 
   const userInput = {
     username: req.body.username,
@@ -24,7 +27,7 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
   };
 
   const result = await userInteractor.createUser(userInput);
-  const response = userPresenter.present(language, result);
+  const response = userPresenter.presentUser(language, result);
 
   req.session.regenerate((err) => {
     if (err) {
@@ -34,12 +37,12 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
     }
   });
 
-  req.session.userId = result.userId;
+  req.session.userId = result.user.userId;
   res.status(201).json(response);
 });
 
 exports.loginUser = asyncHandler(async (req, res, next) => {
-  const language = req.headers["accept-language"] === "de" ? "DE" : "EN";
+  const language = req.headers["accept-language"].includes("de") ? "DE" : "EN";
 
   const userInput = {
     email: req.body.email,
@@ -47,7 +50,7 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
   };
 
   const result = await userInteractor.authenticateUser(userInput);
-  const response = userPresenter.present(language, result);
+  const response = userPresenter.presentUser(language, result);
 
   req.session.regenerate((err) => {
     if (err) {
@@ -56,13 +59,28 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
       });
     }
 
-    req.session.userId = result.userId;
+    req.session.userId = result.user.userId;
     res.status(200).json(response);
   });
 });
 
+exports.getUser = asyncHandler(async (req, res, next) => {
+  const language = req.headers["accept-language"].includes("de") ? "DE" : "EN";
+  const { userId } = req;
+
+  const isAuthenticated = req.session.userId === userId;
+  if (!isAuthenticated) {
+    throw new ErrorResponse({ errorCode: "USER_AUTHENTICATION_001" });
+  }
+
+  const result = await userInteractor.getUser(userId);
+  const response = userPresenter.presentUser(language, result);
+
+  res.status(200).json(response);
+});
+
 exports.updateUser = asyncHandler(async (req, res, next) => {
-  const language = req.headers["accept-language"] === "de" ? "DE" : "EN";
+  const language = req.headers["accept-language"].includes("de") ? "DE" : "EN";
   const { userId } = req;
 
   const isAuthenticated = req.session.userId === userId;
@@ -78,13 +96,13 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
   };
 
   const result = await userInteractor.editUser(userId, userInput);
-  const response = userPresenter.present(language, result);
+  const response = userPresenter.presentUser(language, result);
 
   res.status(200).json(response);
 });
 
 exports.deleteUser = asyncHandler(async (req, res, next) => {
-  const language = req.headers["accept-language"] === "de" ? "DE" : "EN";
+  const language = req.headers["accept-language"].includes("de") ? "DE" : "EN";
   const { userId } = req;
 
   const isAuthenticated = req.session.userId === userId;
@@ -101,8 +119,7 @@ exports.deleteUser = asyncHandler(async (req, res, next) => {
 });
 
 exports.confirmEmailAddress = asyncHandler(async (req, res, next) => {
-  const language = req.headers["accept-language"] === "de" ? "DE" : "EN";
-
+  const language = req.headers["accept-language"].includes("de") ? "DE" : "EN";
   const { userId } = req;
 
   const isAuthenticated = req.session.userId === userId;
@@ -121,7 +138,7 @@ exports.confirmEmailAddress = asyncHandler(async (req, res, next) => {
 });
 
 exports.sendNewVerificationCode = asyncHandler(async (req, res, next) => {
-  const language = req.headers["accept-language"] === "de" ? "DE" : "EN";
+  const language = req.headers["accept-language"].includes("de") ? "DE" : "EN";
 
   const { userId } = req;
 
@@ -141,7 +158,7 @@ exports.sendNewVerificationCode = asyncHandler(async (req, res, next) => {
 });
 
 exports.sendNewPassword = asyncHandler(async (req, res, next) => {
-  const language = req.headers["accept-language"] === "de" ? "DE" : "EN";
+  const language = req.headers["accept-language"].includes("de") ? "DE" : "EN";
 
   const userInput = {
     email: req.body.email,

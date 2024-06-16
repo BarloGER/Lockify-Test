@@ -1,9 +1,24 @@
-// Filters sensitive Data for logging
-exports.filterSensitiveData = (object) => {
+exports.filterSensitiveData = (object, additionalSensitiveKeys = []) => {
   const filtered = {};
+  const defaultSensitiveKeys = [
+    "password",
+    "verificationCode",
+    "verificationAttempts",
+    "lastVerificationAttempt",
+    "createdAt",
+    "updatedAt",
+  ];
+  const allSensitiveKeys = [
+    ...defaultSensitiveKeys,
+    ...additionalSensitiveKeys,
+  ];
+
   Object.keys(object).forEach((key) => {
-    // Check whether the key name contains potentially sensitive data, e.g. password
-    if (key.toLowerCase().includes("pass")) {
+    if (
+      allSensitiveKeys.some((sensitiveKey) =>
+        key.toLowerCase().includes(sensitiveKey)
+      )
+    ) {
       filtered[key] = "***";
     } else {
       filtered[key] = object[key];

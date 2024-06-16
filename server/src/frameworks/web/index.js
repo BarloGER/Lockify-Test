@@ -8,7 +8,14 @@ const { userRouter } = require("./routes/userRouter");
 
 const app = express();
 
-app.use(cors({ origin: "*" }));
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  })
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

@@ -1,0 +1,10 @@
+.checkbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: var(--text-color);
+}
+
+.checkbox__input {
+  margin-left: 8px;
+}

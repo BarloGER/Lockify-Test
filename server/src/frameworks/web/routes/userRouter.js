@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const {
-  validateCookie,
-} = require("../../../interface-adapters/middlewares/validateCookie");
+  validateSession,
+} = require("../../../interface-adapters/middlewares/validateSession");
 const {
   validateJoi,
 } = require("../../../interface-adapters/middlewares/validateJoi");
@@ -16,6 +16,7 @@ const {
 const {
   registerUser,
   loginUser,
+  getUser,
   updateUser,
   deleteUser,
   confirmEmailAddress,
@@ -27,27 +28,28 @@ const userRouter = Router();
 
 userRouter.post("/register", validateJoi(registerUserSchema), registerUser);
 userRouter.post("/login", validateJoi(loginUserSchema), loginUser);
+userRouter.get("/get-user", validateSession, getUser);
 userRouter.put(
   "/update",
-  validateCookie,
+  validateSession,
   validateJoi(updateUserSchema),
   updateUser
 );
 userRouter.delete(
   "/delete",
-  validateCookie,
+  validateSession,
   validateJoi(deleteUserSchema),
   deleteUser
 );
 userRouter.post(
   "/confirm-email",
-  validateCookie,
+  validateSession,
   validateJoi(confirmEmailSchema),
   confirmEmailAddress
 );
 userRouter.post(
   "/send-new-code",
-  validateCookie,
+  validateSession,
   validateJoi(sendMailSchema),
   sendNewVerificationCode
 );

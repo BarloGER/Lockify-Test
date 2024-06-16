@@ -111,8 +111,8 @@ exports.errorCodes = {
     statusCode: 401,
     errorType: errorTypes.AuthenticationError,
     message: {
-      EN: "No user ID was found in the session. You must log in to access this resource.",
-      DE: "In der Session wurde keine Benutzer-ID gefunden. Du musst dich anmelden, um auf diese Ressource zugreifen zu können.",
+      EN: "You must log in to access this resource.",
+      DE: "Du musst dich anmelden, um auf diese Ressource zugreifen zu können.",
     },
   },
   USER_AUTHENTICATION_004: {

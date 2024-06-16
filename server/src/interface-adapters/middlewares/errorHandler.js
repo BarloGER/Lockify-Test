@@ -1,5 +1,5 @@
 const { errorCodes, errorTypes, statusMessages } = require("../../utils");
-const { LogRepository } = require("../repositories/logRepository");
+const { LogRepository } = require("../repositories/LogRepository");
 
 const logRepository = new LogRepository();
 
@@ -32,7 +32,7 @@ const logErrorToDatabase = async ({
 };
 
 exports.errorHandler = async (err, req, res, next) => {
-  const language = req.headers["accept-language"] === "de" ? "DE" : "EN";
+  const language = req.headers["accept-language"].includes("de") ? "DE" : "EN";
   const errorCode = err.errorCode || "UNHANDLED_ERROR";
   const errorCodeInfo = errorCodes[errorCode] || {
     statusCode: 500,

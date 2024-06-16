@@ -1,9 +1,11 @@
 exports.MailOutputPort = class MailOutputPort {
-  prepareSuccessOutput({ response }) {
+  output(data) {
+    this.success = data.success;
+    this.message = data.message;
+
     return {
-      success: true,
-      data: response,
-      message: "Email successfully sent",
+      success: this.success,
+      message: this.message,
     };
   }
 };

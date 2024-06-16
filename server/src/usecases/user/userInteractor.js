@@ -7,12 +7,13 @@ const { ErrorResponse } = require("../../utils/ErrorResponse");
 //? Maybe rename lastVerificationAttempts
 
 exports.UserInteractor = class UserInteractor {
-  constructor(userRepository, passwordHashingService) {
+  constructor(userRepository, mailRepository, passwordHashingService) {
     this.userRepository = userRepository;
+    this.mailRepository = mailRepository;
     this.passwordHashingService = passwordHashingService;
     this.userInputPort = new UserInputPort();
     this.userOutputPort = new UserOutputPort();
-    this.mailInteractor = new MailInteractor();
+    this.mailInteractor = new MailInteractor(mailRepository);
   }
 
   async createUser(userInput) {
@@ -50,10 +51,10 @@ exports.UserInteractor = class UserInteractor {
         EN: "Your registration was successful! Please confirm your e-mail address by entering the verification code we sent you. Don't forget to check your spam folder too.",
         DE: "Deine Registrierung war erfolgreich! Bitte bestätige deine E-Mail-Adresse durch Eingabe des Verifizierungscodes, den wir dir zugesendet haben. Vergiss nicht, auch deinen Spam-Ordner zu überprüfen.",
       },
-      userId: savedUser.userId,
+      user: savedUser,
     };
 
-    return this.userOutputPort.output(userOutputData);
+    return this.userOutputPort.userOutput(userOutputData);
   }
 
   async authenticateUser(userInput) {
@@ -90,10 +91,35 @@ exports.UserInteractor = class UserInteractor {
         EN: "Login successful.",
         DE: "Anmeldung erfolgreich.",
       },
-      userId: foundUser.userId,
+      user: foundUser,
     };
 
-    return this.userOutputPort.output(userOutputData);
+    return this.userOutputPort.userOutput(userOutputData);
+  }
+
+  async getUser(userId) {
+    const foundUser = await this.userRepository.findUserById(userId);
+    if (!foundUser) {
+      throw new ErrorResponse({
+        errorCode: "USER_NOT_FOUND_002",
+      });
+    }
+
+    const isBlocked = foundUser.isBlocked;
+    if (isBlocked) {
+      throw new ErrorResponse({ errorCode: "USER_AUTHORIZATION_001" });
+    }
+
+    const userOutputData = {
+      success: true,
+      message: {
+        EN: "Login successful.",
+        DE: "Anmeldung erfolgreich.",
+      },
+      user: foundUser,
+    };
+
+    return this.userOutputPort.userOutput(userOutputData);
   }
 
   async editUser(userId, userInput) {
@@ -155,9 +181,10 @@ exports.UserInteractor = class UserInteractor {
         EN: "User updated successfully.",
         DE: "Benutzer erfolgreich aktualisiert",
       },
+      user: updateData,
     };
 
-    return this.userOutputPort.output(userOutputData);
+    return this.userOutputPort.userOutput(userOutputData);
   }
 
   async deleteUser(userId, userInput) {

@@ -1,0 +1,43 @@
+{
+  "externalService": {
+    "serverError": "Der Service ist aktuell nicht erreichbar, bitte versuche es später erneut."
+  },
+  "login": {
+    "title": "Anmelden",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "loginButton": "Anmelden",
+    "linkButton": "Registrieren",
+    "linkMessage": "Noch nicht registriert?",
+    "forgotMessage": "Passwort vergessen?",
+    "forgotLink": "Neues Passwort anfordern"
+  },
+  "register": {
+    "title": "Registrieren",
+    "username": "Benutzername",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "newsletter": "Newsletter",
+    "registerButton": "Registrieren",
+    "linkButton": "Anmelden",
+    "linkMessage": "Bereits registriert?"
+  },
+  "verification": {
+    "label": "Verifizierungscode",
+    "submit": "Email verifizieren",
+    "text": "Keinen Code erhalten?",
+    "newCodeButton": "Neuen Code anfordern"
+  },
+  "forgotPassword": {
+    "email": "E-Mail",
+    "submitButton": "Neues Passwort anfordern",
+    "linkButton": "Zurück"
+  },
+  "support": {
+    "subject": "Betreff",
+    "email": "Deine E-Mail Adresse",
+    "textarea": "Nachricht",
+    "placeholder": "Hier Problem beschreiben, maximal 500 Zeichen.",
+    "supportButton": "Absenden"
+  }
+}
