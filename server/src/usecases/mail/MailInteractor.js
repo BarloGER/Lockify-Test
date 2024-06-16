@@ -3,7 +3,8 @@ const { MailOutputPort } = require("./MailOutputPort");
 const { ErrorResponse } = require("../../utils");
 
 exports.MailInteractor = class MailInteractor {
-  constructor() {
+  constructor(mailRepository) {
+    this.mailRepository = mailRepository;
     this.mailInputPort = new MailInputPort();
     this.mailOutputPort = new MailOutputPort();
   }
@@ -27,28 +28,22 @@ exports.MailInteractor = class MailInteractor {
       message,
     });
 
-    const url = `${process.env.MAILSERVER_URL}/mail/send-mail`;
-    const body = {
-      email: mailEntity.email,
-      subject: mailEntity.subject,
-      html: mailEntity.message,
+    const mail = await this.mailRepository.sendMail(mailEntity);
+    console.log(mail);
+
+    const mailOutputData = {
+      success: true,
+      message: {
+        EN: "E-mail successfully sent.",
+        DE: "E-Mail erfolgreich versendet.",
+      },
     };
 
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-
-      if (!response.ok) throw new Error("Failed to send mail");
-      return this.mailOutputPort.prepareSuccessOutput({
-        response: await response.json(),
-      });
-    } catch (error) {
-      throw new ErrorResponse({
-        errorCode: "MAIL_SERVICE_001",
-      });
-    }
+    return this.mailOutputPort.output(mailOutputData);
   }
+  // catch(error) {
+  //   throw new ErrorResponse({
+  //     errorCode: "MAIL_SERVICE_001",
+  //   });
+  // }
 };
