@@ -1,0 +1,12 @@
+.link {
+  background-color: var(--button-color);
+  color: var(--text-color);
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.link--hover:hover {
+  background-color: var(--button-color-hover);
+}
