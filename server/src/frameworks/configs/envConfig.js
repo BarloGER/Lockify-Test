@@ -2,6 +2,7 @@ exports.validateEnvs = () => {
   const requiredEnvs = [
     "NODE_ENV",
     "SESSION_SECRET",
+    "CLIENT_URL",
     "MAILSERVER_URL",
     "MONGO_URI",
     "DATABASE_URL",
