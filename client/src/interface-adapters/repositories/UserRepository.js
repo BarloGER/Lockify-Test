@@ -4,27 +4,7 @@ const URL = import.meta.env.VITE_API_KEY;
 const MAILSERVER_URL = import.meta.env.VITE_MAILSERVER_URL;
 
 export const UserRepository = class UserRepository {
-  async login(credentials) {
-    try {
-      const response = await fetch(`${URL}/user/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept-Language": language,
-        },
-        body: JSON.stringify({
-          email: credentials.email,
-          password: credentials.password,
-        }),
-        credentials: "include",
-      });
-      return response.json();
-    } catch (error) {
-      return error;
-    }
-  }
-
-  async register(userData) {
+  async registerUser(userData) {
     try {
       const response = await fetch(`${URL}/user/register`, {
         method: "POST",
@@ -46,16 +26,17 @@ export const UserRepository = class UserRepository {
     }
   }
 
-  async verify(userData) {
+  async loginUser(credentials) {
     try {
-      const response = await fetch(`${URL}/user/confirm-email`, {
+      const response = await fetch(`${URL}/user/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Accept-Language": language,
         },
         body: JSON.stringify({
-          verificationCode: userData.verificationCode,
+          email: credentials.email,
+          password: credentials.password,
         }),
         credentials: "include",
       });
@@ -65,7 +46,27 @@ export const UserRepository = class UserRepository {
     }
   }
 
-  async getUser() {
+  async confirmEmailAddress(verificationData) {
+    try {
+      const response = await fetch(`${URL}/user/confirm-email`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept-Language": language,
+        },
+        body: JSON.stringify({
+          verificationCode: verificationData.verificationCode,
+        }),
+        credentials: "include",
+      });
+
+      return response.json();
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async checkAuthAndGetUser() {
     try {
       const response = await fetch(`${URL}/user/get-user`, {
         method: "GET",
@@ -75,13 +76,14 @@ export const UserRepository = class UserRepository {
         },
         credentials: "include",
       });
+
       return response.json();
     } catch (error) {
       return error.message;
     }
   }
 
-  async sendNewCode(userData) {
+  async requestNewVerificationCode(requestData) {
     try {
       const response = await fetch(`${URL}/user/send-new-code`, {
         method: "POST",
@@ -90,17 +92,18 @@ export const UserRepository = class UserRepository {
           "Accept-Language": language,
         },
         body: JSON.stringify({
-          email: userData.email,
+          email: requestData.email,
         }),
         credentials: "include",
       });
+
       return response.json();
     } catch (error) {
       return error;
     }
   }
 
-  async sendNewPassword(userData) {
+  async requestNewPassword(requestData) {
     try {
       const response = await fetch(`${URL}/user/send-new-password`, {
         method: "POST",
@@ -109,10 +112,11 @@ export const UserRepository = class UserRepository {
           "Accept-Language": language,
         },
         body: JSON.stringify({
-          email: userData.email,
+          email: requestData.email,
         }),
         credentials: "include",
       });
+
       return response.json();
     } catch (error) {
       return error;
@@ -132,6 +136,7 @@ export const UserRepository = class UserRepository {
           html: userData.html,
         }),
       });
+
       return response.json();
     } catch (error) {
       return error;
