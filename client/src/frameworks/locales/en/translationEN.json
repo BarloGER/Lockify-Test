@@ -34,10 +34,40 @@
     "linkButton": "Back"
   },
   "support": {
+    "text": "Your account has been blocked. You may have verified yourself incorrectly too often or asked to have your account blocked. You can contact support here.",
     "subject": "Subject",
     "email": "Your E-Mail address",
     "textarea": "Message",
     "placeholder": "Describe the problem here, maximum 500 characters.",
     "supportButton": "Sending"
+  },
+  "validationError": {
+    "MAIL_VALIDATION_001": "Email is required.",
+    "MAIL_VALIDATION_002": "Email must be a string.",
+    "MAIL_VALIDATION_003": "Invalid email address.",
+    "MAIL_VALIDATION_004": "The subject must be specified.",
+    "MAIL_VALIDATION_005": "The subject must be a string.",
+    "MAIL_VALIDATION_006": "The subject must be between 5 and 78 characters long.",
+    "MAIL_VALIDATION_007": "A message must be entered.",
+    "MAIL_VALIDATION_008": "The message must be a string.",
+
+    "USER_VALIDATION_001": "No data was transmitted.",
+    "USER_VALIDATION_002": "Fields have been specified that are not allowed!",
+    "USER_VALIDATION_003": "Username is required.",
+    "USER_VALIDATION_004": "Username must be a string.",
+    "USER_VALIDATION_005": "Username can only contain alphanumeric characters.",
+    "USER_VALIDATION_006": "Username must be between 3 and 20 characters long.",
+    "USER_VALIDATION_007": "Email is required.",
+    "USER_VALIDATION_008": "Email must be a string.",
+    "USER_VALIDATION_009": "Invalid email address.",
+    "USER_VALIDATION_010": "Password is required.",
+    "USER_VALIDATION_011": "Password must be a string.",
+    "USER_VALIDATION_012": "Password must be at least 8 characters long.",
+    "USER_VALIDATION_013": "The verification code is required.",
+    "USER_VALIDATION_014": "The verification code must be a string.",
+    "USER_VALIDATION_015": "The verification code can only contain alphanumeric characters.",
+    "USER_VALIDATION_016": "The verification code must be exactly 8 characters long.",
+    "USER_VALIDATION_017": "Newsletter is required.",
+    "USER_VALIDATION_018": "The newsletter must be a boolean."
   }
 }

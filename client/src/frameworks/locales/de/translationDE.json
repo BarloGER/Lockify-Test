@@ -34,10 +34,40 @@
     "linkButton": "Zurück"
   },
   "support": {
+    "text": "Dein Konto wurde gesperrt. Möglicherweise hast du dich zu oft falsch verifiziert, oder darum gebeten dein Konto sperren zu lassen. Hier kannst du dich an den Support wenden.",
     "subject": "Betreff",
     "email": "Deine E-Mail Adresse",
     "textarea": "Nachricht",
     "placeholder": "Hier Problem beschreiben, maximal 500 Zeichen.",
     "supportButton": "Absenden"
+  },
+  "validationError": {
+    "MAIL_VALIDATION_001": "Email ist erforderlich.",
+    "MAIL_VALIDATION_002": "Email muss eine Zeichenkette sein.",
+    "MAIL_VALIDATION_003": "Ungültige Email-Adresse.",
+    "MAIL_VALIDATION_004": "Der Betreff muss angegeben werden.",
+    "MAIL_VALIDATION_005": "Der Betreff muss eine Zeichenkette sein.",
+    "MAIL_VALIDATION_006": "Der Betreff muss zwischen 5 und 78 Zeichen lang sein.",
+    "MAIL_VALIDATION_007": "Es muss eine Nachricht angegeben werden.",
+    "MAIL_VALIDATION_008": "Die Nachricht muss eine Zeichenkette sein.",
+
+    "USER_VALIDATION_001": "Es wurden keine Daten übermittelt.",
+    "USER_VALIDATION_002": "Es wurden Felder angegeben, die nicht erlaubt sind!",
+    "USER_VALIDATION_003": "Benutzername ist erforderlich.",
+    "USER_VALIDATION_004": "Benutzername muss eine Zeichenkette sein.",
+    "USER_VALIDATION_005": "Benutzername darf nur alphanumerische Zeichen enthalten.",
+    "USER_VALIDATION_006": "Benutzername muss zwischen 3 und 20 Zeichen lang sein.",
+    "USER_VALIDATION_007": "Email ist erforderlich.",
+    "USER_VALIDATION_008": "Email muss eine Zeichenkette sein.",
+    "USER_VALIDATION_009": "Ungültige Email-Adresse.",
+    "USER_VALIDATION_010": "Passwort ist erforderlich.",
+    "USER_VALIDATION_011": "Passwort muss eine Zeichenkette sein.",
+    "USER_VALIDATION_012": "Passwort muss mindestens 8 Zeichen lang sein.",
+    "USER_VALIDATION_013": "Der Verifizierungscode ist erforderlich.",
+    "USER_VALIDATION_014": "Der Verifizierungscode muss eine Zeichenkette sein.",
+    "USER_VALIDATION_015": "Der Verifizierungscode darf nur alphanumerische Zeichen enthalten.",
+    "USER_VALIDATION_016": "Der Verifizierungscode muss genau 8 Zeichen lang sein.",
+    "USER_VALIDATION_017": "Der Newsletter muss angegeben werden.",
+    "USER_VALIDATION_018": "Der Newsletter muss ein boolean sein."
   }
 }
