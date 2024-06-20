@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { UserInteractor } from "../../../usecases/UserInteractor";
+import { UserInteractor } from "../../../usecases/user/UserInteractor";
 import { UserRepository } from "../../repositories/UserRepository";
 
 import { AuthContext } from "../../context/AuthContext";
@@ -14,7 +14,10 @@ const userInteractor = new UserInteractor(userRepository);
 export const ForgotPasswordPage = () => {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
+
   const [email, setEmail] = useState("");
+  const [isPasswordRequestLoading, setIsPasswordRequestLoading] =
+    useState(false);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
 
@@ -24,22 +27,36 @@ export const ForgotPasswordPage = () => {
     }
   });
 
-  const handleSubmit = async (e) => {
+  const handleNewPasswordRequest = async (e) => {
     e.preventDefault();
+    setIsPasswordRequestLoading(true);
 
-    const sendMail = await userInteractor.sendNewPassword({ email });
-    if (!sendMail.success && sendMail.message === "Failed to fetch") {
+    const passwordRequestResponse = await userInteractor.requestNewPassword({
+      email,
+    });
+    if (passwordRequestResponse.validationError) {
+      setIsPasswordRequestLoading(false);
+      setMessage(`validationError.${passwordRequestResponse.validationError}`);
+      setMessageType("error");
+      return;
+    } else if (
+      !passwordRequestResponse.success &&
+      passwordRequestResponse.message === "Failed to fetch"
+    ) {
+      setIsPasswordRequestLoading(false);
       setMessage("externalService.serverError");
       setMessageType("error");
       return;
-    } else if (!sendMail.success) {
-      setMessage(sendMail.message);
+    } else if (!passwordRequestResponse.success) {
+      setIsPasswordRequestLoading(false);
+      setMessage(passwordRequestResponse.message);
       setMessageType("error");
       return;
     }
 
     setEmail("");
-    setMessage(sendMail.message);
+    setIsPasswordRequestLoading(false);
+    setMessage(passwordRequestResponse.message);
     setMessageType("success");
   };
 
@@ -48,7 +65,8 @@ export const ForgotPasswordPage = () => {
       <ForgotPasswordForm
         email={email}
         setEmail={setEmail}
-        handleSubmit={handleSubmit}
+        handleNewPasswordRequest={handleNewPasswordRequest}
+        isPasswordRequestLoading={isPasswordRequestLoading}
         message={message}
         setMessage={setMessage}
         messageType={messageType}

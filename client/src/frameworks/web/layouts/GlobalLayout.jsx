@@ -7,18 +7,21 @@ import {
 } from "../../../interface-adapters/components/Pages";
 
 export const GlobalLayout = () => {
-  const { user, isAuthenticated, isLoading } = useContext(AuthContext);
+  const { user, isBlocked, isAuthenticated, loadingAuthRequest } =
+    useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (isBlocked) {
+      navigate("/blocked");
+    } else if (!isAuthenticated) {
       navigate("/login");
     } else if (user && !user.isVerified) {
       navigate("/confirm-email");
     }
-  }, [isAuthenticated, user, navigate]);
+  }, [isBlocked, isAuthenticated, user, navigate]);
 
-  if (isLoading) {
+  if (loadingAuthRequest) {
     return <LoadingScreenPage />;
   }
 

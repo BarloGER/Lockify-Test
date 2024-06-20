@@ -14,7 +14,7 @@ exports.MailRepository = class MailRepository {
           html: mailEntity.message,
         }),
       });
-      console.log(response);
+
       return response.json();
     } catch (error) {
       return error;

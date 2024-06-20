@@ -1,4 +1,4 @@
-exports.MailOutputPort = class MailOutputPort {
+export class MailOutputPort {
   constructor() {
     this.success = false;
     this.message = {};
@@ -12,4 +12,4 @@ exports.MailOutputPort = class MailOutputPort {
       message: this.message,
     };
   }
-};
+}

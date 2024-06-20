@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
-import { Button, Input, Textarea } from "../atoms";
-import { FlashMessage } from "../molecules";
+import { Paragraph, Input, Textarea } from "../atoms";
+import { FlashMessage, SubmitButton } from "../molecules";
 import "./assets/support-form.css";
 
 export const SupportForm = ({
@@ -11,12 +11,14 @@ export const SupportForm = ({
   html,
   setHtml,
   handleSubmitSupportMessage,
+  isSupportMailLoading,
   message,
   setMessage,
   messageType,
 }) => {
   return (
     <form onSubmit={handleSubmitSupportMessage}>
+      <Paragraph text="support.text" />
       <Input
         label="support.subject"
         type="text"
@@ -35,9 +37,13 @@ export const SupportForm = ({
         value={html}
         onChange={(e) => setHtml(e.target.value)}
       />
-      <Button type="submit" className="support-form__button" modifier="hover">
+      <SubmitButton
+        className="support-form__button"
+        modifier="hover"
+        isLoading={isSupportMailLoading}
+      >
         {"support.supportButton"}
-      </Button>
+      </SubmitButton>
       <FlashMessage
         message={message}
         setMessage={setMessage}
@@ -56,6 +62,7 @@ SupportForm.propTypes = {
   html: PropTypes.string.isRequired,
   setHtml: PropTypes.func.isRequired,
   handleSubmitSupportMessage: PropTypes.func.isRequired,
+  isSupportMailLoading: PropTypes.bool.isRequired,
   message: PropTypes.string.isRequired,
   setMessage: PropTypes.func.isRequired,
   messageType: PropTypes.string.isRequired,

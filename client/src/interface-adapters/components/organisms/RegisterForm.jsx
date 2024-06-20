@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
-import { Input, Button, RouterLink, Paragraph } from "../atoms";
+import { Input, RouterLink, Paragraph } from "../atoms";
+import { SubmitButton } from "../molecules";
 import { FlashMessage, Checkbox } from "../molecules";
 import { useTranslation } from "react-i18next";
 import "./assets/register-form.css";
@@ -13,14 +14,15 @@ export const RegisterForm = ({
   setPassword,
   isNewsletterAllowed,
   setIsNewsletterAllowed,
-  handleRegister,
+  handleRegistration,
+  isRegistrationLoading,
   message,
   setMessage,
   messageType,
 }) => {
   const { t } = useTranslation();
   return (
-    <form onSubmit={handleRegister}>
+    <form onSubmit={handleRegistration}>
       <Input
         label={t("register.username")}
         type="text"
@@ -44,9 +46,13 @@ export const RegisterForm = ({
         checked={isNewsletterAllowed}
         onChange={(e) => setIsNewsletterAllowed(e.target.checked)}
       />
-      <Button type="submit" className="register-form__button" modifier="hover">
+      <SubmitButton
+        className="register-form__button"
+        modifier="hover"
+        isLoading={isRegistrationLoading}
+      >
         {t("register.registerButton")}
-      </Button>
+      </SubmitButton>
 
       <Paragraph text="register.linkMessage" />
 
@@ -77,7 +83,8 @@ RegisterForm.propTypes = {
   setPassword: PropTypes.func.isRequired,
   isNewsletterAllowed: PropTypes.bool.isRequired,
   setIsNewsletterAllowed: PropTypes.func.isRequired,
-  handleRegister: PropTypes.func.isRequired,
+  handleRegistration: PropTypes.func.isRequired,
+  isRegistrationLoading: PropTypes.bool.isRequired,
   message: PropTypes.string.isRequired,
   setMessage: PropTypes.func.isRequired,
   messageType: PropTypes.string.isRequired,

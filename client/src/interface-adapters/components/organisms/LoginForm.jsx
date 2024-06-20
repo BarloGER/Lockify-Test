@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
-import { Input, Button, Paragraph, RouterLink } from "../atoms";
+import { Input, Paragraph, RouterLink } from "../atoms";
+import { SubmitButton } from "../molecules";
 import { FlashMessage } from "../molecules";
 import "./assets/login-form.css";
 
@@ -9,6 +10,7 @@ export const LoginForm = ({
   password,
   setPassword,
   handleLogin,
+  isLoginLoading,
   message,
   setMessage,
   messageType,
@@ -27,9 +29,13 @@ export const LoginForm = ({
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <Button type="submit" className="login-form__button" modifier="hover">
+      <SubmitButton
+        className="login-form__button"
+        modifier="hover"
+        isLoading={isLoginLoading}
+      >
         {"login.loginButton"}
-      </Button>
+      </SubmitButton>
 
       <Paragraph text="login.linkMessage" />
 
@@ -67,6 +73,7 @@ LoginForm.propTypes = {
   password: PropTypes.string.isRequired,
   setPassword: PropTypes.func.isRequired,
   handleLogin: PropTypes.func.isRequired,
+  isLoginLoading: PropTypes.bool.isRequired,
   message: PropTypes.string.isRequired,
   setMessage: PropTypes.func.isRequired,
   messageType: PropTypes.string.isRequired,

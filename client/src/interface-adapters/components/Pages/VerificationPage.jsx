@@ -1,23 +1,25 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { UserInteractor } from "../../../usecases/UserInteractor.js";
+import { UserInteractor } from "../../../usecases/user/UserInteractor.js";
 import { UserRepository } from "../../repositories/UserRepository.js";
 
 import { AuthContext } from "../../context/AuthContext.jsx";
 import { AuthTemplate } from "../templates";
 import { VerificationForm } from "../organisms";
 
+// ? Add alternativ email
+
 const userRepository = new UserRepository();
 const userInteractor = new UserInteractor(userRepository);
 
 export const VerificationPage = () => {
   const navigate = useNavigate();
-  const { user, isAuthenticated } = useContext(AuthContext);
-
-  console.log("VerificationPage", user);
+  const { user, setUser, isAuthenticated } = useContext(AuthContext);
 
   const [verificationCode, setVerificationCode] = useState("");
+  const [isVerificationLoading, setIsVerificationLoading] = useState(false);
+  const [isCodeRequestLoading, setIsCodeRequestLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
 
@@ -31,40 +33,68 @@ export const VerificationPage = () => {
 
   const handleVerification = async (e) => {
     e.preventDefault();
+    setIsVerificationLoading(true);
 
-    const verify = await userInteractor.verify({
+    const verificationResponse = await userInteractor.confirmEmailAddress({
       verificationCode,
     });
-    console.log(verify);
-    if (!verify.success && verify.message === "Failed to fetch") {
+    if (verificationResponse.validationError) {
+      setIsVerificationLoading(false);
+      setMessage(`validationError.${verificationResponse.validationError}`);
+      setMessageType("error");
+      return;
+    } else if (
+      !verificationResponse.success &&
+      verificationResponse.message === "Failed to fetch"
+    ) {
+      setIsVerificationLoading(false);
       setMessage("externalService.serverError");
       setMessageType("error");
       return;
-    } else if (!verify.success) {
-      setMessage(verify.message);
+    } else if (!verificationResponse.success) {
+      setIsVerificationLoading(false);
+      setMessage(verificationResponse.message);
       setMessageType("error");
       return;
     }
 
-    setMessage(verify.message);
+    setIsVerificationLoading(false);
+    setMessage(verificationResponse.message);
     setMessageType("success");
+    setUser((prevUser) => ({ ...prevUser, isVerified: true }));
   };
 
-  const sendNewCode = async () => {
-    const email = user.email;
-    const sendMail = await userInteractor.sendNewCode({ email });
+  const handleNewVerificationCodeRequest = async (e) => {
+    e.preventDefault();
+    setIsCodeRequestLoading(true);
 
-    if (!sendMail.success && sendMail.message === "Failed to fetch") {
+    const email = user.email;
+    const codeRequestResponse = await userInteractor.requestNewVerificationCode(
+      { email }
+    );
+
+    if (codeRequestResponse.validationError) {
+      setIsCodeRequestLoading(false);
+      setMessage(`validationError.${codeRequestResponse.validationError}`);
+      setMessageType("error");
+      return;
+    } else if (
+      !codeRequestResponse.success &&
+      codeRequestResponse.message === "Failed to fetch"
+    ) {
+      setIsCodeRequestLoading(false);
       setMessage("externalService.serverError");
       setMessageType("error");
       return;
-    } else if (!sendMail.success) {
-      setMessage(sendMail.message);
+    } else if (!codeRequestResponse.success) {
+      setIsCodeRequestLoading(false);
+      setMessage(codeRequestResponse.message);
       setMessageType("error");
       return;
     }
 
-    setMessage(sendMail.message);
+    setIsCodeRequestLoading(false);
+    setMessage(codeRequestResponse.message);
     setMessageType("success");
   };
 
@@ -74,7 +104,9 @@ export const VerificationPage = () => {
         verificationCode={verificationCode}
         setVerificationCode={setVerificationCode}
         handleVerification={handleVerification}
-        sendNewCode={sendNewCode}
+        handleNewVerificationCodeRequest={handleNewVerificationCodeRequest}
+        isVerificationLoading={isVerificationLoading}
+        isCodeRequestLoading={isCodeRequestLoading}
         message={message}
         setMessage={setMessage}
         messageType={messageType}

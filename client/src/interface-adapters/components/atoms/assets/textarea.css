@@ -17,3 +17,7 @@
   background-color: var(--input-color);
   outline: none;
 }
+
+.textarea__remaining {
+  color: var(--text-color);
+}

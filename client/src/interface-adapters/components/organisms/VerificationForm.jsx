@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
-import { Input, Button, Paragraph } from "../atoms";
+import { Input, Paragraph } from "../atoms";
+import { SubmitButton } from "../molecules";
 import { FlashMessage } from "../molecules";
 import "./assets/verification-form.css";
 
@@ -7,41 +8,50 @@ export const VerificationForm = ({
   verificationCode,
   setVerificationCode,
   handleVerification,
-  sendNewCode,
+  handleNewVerificationCodeRequest,
+  isVerificationLoading,
+  isCodeRequestLoading,
   message,
   setMessage,
   messageType,
 }) => {
   return (
-    <form className="verification-form" onSubmit={handleVerification}>
-      <Input
-        label="verification.label"
-        type="text"
-        value={verificationCode}
-        onChange={(e) => setVerificationCode(e.target.value)}
-      />
-      <Button
-        type="submit"
-        className="verification-form__button"
-        modifier="hover"
+    <>
+      <form className="verification-form" onSubmit={handleVerification}>
+        <Input
+          label="verification.label"
+          type="text"
+          value={verificationCode}
+          onChange={(e) => setVerificationCode(e.target.value)}
+        />
+        <SubmitButton
+          className="verification-form__button"
+          modifier="hover"
+          isLoading={isVerificationLoading}
+        >
+          {"verification.submit"}
+        </SubmitButton>
+      </form>
+      <form
+        className="verification-form"
+        onSubmit={handleNewVerificationCodeRequest}
       >
-        {"verification.submit"}
-      </Button>
-      <Paragraph text="verification.text" />
-      <Button
-        className="verification-form__button"
-        modifier="hover"
-        onClick={sendNewCode}
-      >
-        {"verification.newCodeButton"}
-      </Button>
-      <FlashMessage
-        message={message}
-        setMessage={setMessage}
-        type={messageType}
-        className="verification-form__flash-message"
-      />
-    </form>
+        <Paragraph text="verification.text" />
+        <SubmitButton
+          className="verification-form__button"
+          modifier="hover"
+          isLoading={isCodeRequestLoading}
+        >
+          {"verification.newCodeButton"}
+        </SubmitButton>
+        <FlashMessage
+          message={message}
+          setMessage={setMessage}
+          type={messageType}
+          className="verification-form__flash-message"
+        />
+      </form>
+    </>
   );
 };
 
@@ -49,7 +59,9 @@ VerificationForm.propTypes = {
   verificationCode: PropTypes.string.isRequired,
   setVerificationCode: PropTypes.func.isRequired,
   handleVerification: PropTypes.func.isRequired,
-  sendNewCode: PropTypes.func.isRequired,
+  handleNewVerificationCodeRequest: PropTypes.func.isRequired,
+  isVerificationLoading: PropTypes.bool.isRequired,
+  isCodeRequestLoading: PropTypes.bool.isRequired,
   message: PropTypes.string.isRequired,
   setMessage: PropTypes.func.isRequired,
   messageType: PropTypes.string.isRequired,

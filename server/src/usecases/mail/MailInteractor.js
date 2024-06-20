@@ -1,6 +1,5 @@
 const { MailInputPort } = require("./MailInputPort");
 const { MailOutputPort } = require("./MailOutputPort");
-const { ErrorResponse } = require("../../utils");
 
 exports.MailInteractor = class MailInteractor {
   constructor(mailRepository) {
@@ -9,27 +8,36 @@ exports.MailInteractor = class MailInteractor {
     this.mailOutputPort = new MailOutputPort();
   }
 
-  async sendVerificationMail({ email, verificationCode }) {
+  async sendVerificationMail(mailData) {
     const subject = "Registrierungsbestätigung";
-    const message = `<p>Hier dein Verifizierungscode: ${verificationCode}</p>`;
-    return this.sendMail({ email, subject, message });
-  }
+    const html = `<p>Hier dein Verifizierungscode: ${mailData.verificationCode}</p>`;
 
-  async sendNewPassword({ email, newPassword }) {
-    const subject = "Passwort zurücksetzen";
-    const message = `<p>Hier dein neues Passwort: ${newPassword}</p><p>Du solltest es sobald möglich ändern</p>`;
-    return this.sendMail({ email, subject, message });
-  }
-
-  async sendMail({ email, subject, message }) {
-    const mailEntity = this.mailInputPort.createMail({
-      email,
+    const mailPayload = {
+      email: mailData.email,
       subject,
-      message,
-    });
+      html,
+    };
 
-    const mail = await this.mailRepository.sendMail(mailEntity);
-    console.log(mail);
+    return this.sendMail(mailPayload);
+  }
+
+  async sendNewPasswordMail(mailData) {
+    const subject = "Passwort zurücksetzen";
+    const html = `<p>Hier dein neues Passwort: ${mailData.newPassword}</p><p>Du solltest es sobald möglich ändern</p>`;
+
+    const mailPayload = {
+      email: mailData.email,
+      subject,
+      html,
+    };
+
+    return this.sendMail(mailPayload);
+  }
+
+  async sendMail(mailPayload) {
+    const mail = this.mailInputPort.validateMailInput(mailPayload);
+
+    await this.mailRepository.sendMail(mail);
 
     const mailOutputData = {
       success: true,
@@ -39,11 +47,6 @@ exports.MailInteractor = class MailInteractor {
       },
     };
 
-    return this.mailOutputPort.output(mailOutputData);
+    return this.mailOutputPort.prepareMailOutput(mailOutputData);
   }
-  // catch(error) {
-  //   throw new ErrorResponse({
-  //     errorCode: "MAIL_SERVICE_001",
-  //   });
-  // }
 };
