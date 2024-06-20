@@ -6,7 +6,7 @@ import {
   Route,
 } from "react-router-dom";
 
-import { UserInteractor } from "../../usecases/UserInteractor.js";
+import { UserInteractor } from "../../usecases/user/UserInteractor.js";
 import { UserRepository } from "../../interface-adapters/repositories/UserRepository.js";
 
 import { AuthProvider } from "../../interface-adapters/context/AuthContext.jsx";

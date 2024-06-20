@@ -25,7 +25,7 @@ export const Button = ({
 Button.propTypes = {
   children: PropTypes.string.isRequired,
   onClick: PropTypes.func,
-  type: PropTypes.string.isRequired,
+  type: PropTypes.string,
   className: PropTypes.string.isRequired,
   modifier: PropTypes.string,
 };

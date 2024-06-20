@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../../context/AuthContext.jsx";
-import { UserInteractor } from "../../../usecases/UserInteractor.js";
+import { UserInteractor } from "../../../usecases/user/UserInteractor.js";
 import { UserRepository } from "../../repositories/UserRepository.js";
 
 import { AuthTemplate } from "../templates";
@@ -20,6 +20,7 @@ export const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
+  const [isLoginLoading, setIsLoginLoading] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -31,24 +32,37 @@ export const LoginPage = () => {
     }
   }, [isAuthenticated, user, navigate]);
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setIsLoginLoading(true);
 
-    const login = await userInteractor.login({ email, password });
-    if (!login.success && login.message === "Failed to fetch") {
+    const loginResponse = await userInteractor.loginUser({ email, password });
+    if (loginResponse.validationError) {
+      setIsLoginLoading(false);
+      setMessage(`validationError.${loginResponse.validationError}`);
+      setMessageType("error");
+      return;
+    } else if (
+      !loginResponse.success &&
+      loginResponse.message === "Failed to fetch"
+    ) {
+      setIsLoginLoading(false);
       setMessage("externalService.serverError");
       setMessageType("error");
       return;
-    } else if (!login.success) {
-      setMessage(login.message);
+    } else if (!loginResponse.success) {
+      setIsLoginLoading(false);
+      setMessage(loginResponse.message);
       setMessageType("error");
       return;
     }
 
-    setUser(login.user.dataValues);
+    setUser(loginResponse.user.dataValues);
     setIsAuthenticated(true);
-    setMessage(login.message);
+    setIsLoginLoading(false);
+    setMessage(loginResponse.message);
     setMessageType("success");
+
     navigate("/");
   };
 
@@ -60,6 +74,7 @@ export const LoginPage = () => {
         password={password}
         setPassword={setPassword}
         handleLogin={handleLogin}
+        isLoginLoading={isLoginLoading}
         message={message}
         setMessage={setMessage}
         messageType={messageType}

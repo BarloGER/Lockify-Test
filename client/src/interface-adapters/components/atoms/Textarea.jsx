@@ -49,8 +49,8 @@ Textarea.propTypes = {
   placeholder: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  minLength: PropTypes.string.isRequired,
-  maxLength: PropTypes.string.isRequired,
-  rows: PropTypes.string.isRequired,
-  columns: PropTypes.string.isRequired,
+  minLength: PropTypes.string,
+  maxLength: PropTypes.string,
+  rows: PropTypes.string,
+  columns: PropTypes.string,
 };

@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { UserInteractor } from "../../../usecases/UserInteractor.js";
+import { UserInteractor } from "../../../usecases/user/UserInteractor.js";
 import { UserRepository } from "../../repositories/UserRepository.js";
 
 import { AuthContext } from "../../context/AuthContext.jsx";
@@ -20,6 +20,7 @@ export const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isNewsletterAllowed, setIsNewsletterAllowed] = useState(false);
+  const [isRegistrationLoading, setIsRegistrationLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
 
@@ -29,31 +30,43 @@ export const RegisterPage = () => {
     }
   }, [isAuthenticated, navigate]);
 
-  const handleRegister = async (event) => {
-    event.preventDefault();
+  const handleRegistration = async (e) => {
+    e.preventDefault();
+    setIsRegistrationLoading(true);
 
-    const register = await userInteractor.register({
+    const registrationResponse = await userInteractor.registerUser({
       username,
       email,
       password,
       isNewsletterAllowed,
     });
-    console.log(register);
-    if (!register.success && register.message === "Failed to fetch") {
+    if (registrationResponse.validationError) {
+      setIsRegistrationLoading(false);
+      setMessage(`validationError.${registrationResponse.validationError}`);
+      setMessageType("error");
+      return;
+    } else if (
+      !registrationResponse.success &&
+      registrationResponse.message === "Failed to fetch"
+    ) {
+      setIsRegistrationLoading(false);
       setMessage("externalService.serverError");
       setMessageType("error");
       return;
-    } else if (!register.success) {
-      setMessage(register.message);
+    } else if (!registrationResponse.success) {
+      setIsRegistrationLoading(false);
+      setMessage(registrationResponse.message);
       setMessageType("error");
       return;
     }
 
-    setUser(register.user.dataValues);
+    setUser(registrationResponse.user.dataValues);
     setIsAuthenticated(true);
-    setMessage(register.message);
+    setIsRegistrationLoading(false);
+    setMessage(registrationResponse.message);
     setMessageType("success");
-    navigate("/");
+
+    navigate("/confirm-email");
   };
 
   return (
@@ -67,7 +80,8 @@ export const RegisterPage = () => {
         setPassword={setPassword}
         isNewsletterAllowed={isNewsletterAllowed}
         setIsNewsletterAllowed={setIsNewsletterAllowed}
-        handleRegister={handleRegister}
+        handleRegistration={handleRegistration}
+        isRegistrationLoading={isRegistrationLoading}
         message={message}
         setMessage={setMessage}
         messageType={messageType}
