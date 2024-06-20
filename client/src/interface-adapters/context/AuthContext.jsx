@@ -5,26 +5,32 @@ export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children, userInteractor }) => {
   const [user, setUser] = useState(null);
-  const [isLoading, setLoading] = useState(true);
+  const [loadingAuthRequest, setLoadingAuthRequest] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(false);
 
   const checkAuthentication = useCallback(async () => {
-    setLoading(true);
-    try {
-      const response = await userInteractor.getUser();
-      if (response.success) {
-        setUser(response.user.dataValues);
-        setIsAuthenticated(true);
-      } else {
-        throw new Error(response.message || "No active session");
-      }
-    } catch (error) {
-      console.error(error);
+    setLoadingAuthRequest(true);
+
+    const authenticationResponse = await userInteractor.checkAuthAndGetUser();
+    if (
+      !authenticationResponse.success &&
+      authenticationResponse.errorCode === "USER_AUTHORIZATION_001"
+    ) {
+      setUser(null);
+      setIsBlocked(true);
+      setIsAuthenticated(false);
+      setLoadingAuthRequest(false);
+    } else if (!authenticationResponse.success) {
       setUser(null);
       setIsAuthenticated(false);
-    } finally {
-      setLoading(false);
+      setLoadingAuthRequest(false);
     }
+
+    setUser(authenticationResponse.user.dataValues);
+    setIsAuthenticated(true);
+
+    setLoadingAuthRequest(false);
   }, [userInteractor]);
 
   useEffect(() => {
@@ -33,7 +39,15 @@ export const AuthProvider = ({ children, userInteractor }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, setUser, isAuthenticated, setIsAuthenticated, isLoading }}
+      value={{
+        user,
+        setUser,
+        isAuthenticated,
+        setIsAuthenticated,
+        isBlocked,
+        setIsBlocked,
+        loadingAuthRequest,
+      }}
     >
       {children}
     </AuthContext.Provider>
