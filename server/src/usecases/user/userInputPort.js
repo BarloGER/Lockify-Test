@@ -1,4 +1,4 @@
-const { UserEntity } = require("../../entities/User");
+const { UserEntity } = require("../../entities/UserEntity");
 const { ErrorResponse } = require("../../utils");
 
 exports.UserInputPort = class UserInputPort {

@@ -389,7 +389,7 @@ exports.UserInteractor = class UserInteractor {
       }
     }
 
-    await this.mailInteractor.sendNewPassword({
+    await this.mailInteractor.sendNewPasswordMail({
       email: userData.email,
       newPassword,
     });

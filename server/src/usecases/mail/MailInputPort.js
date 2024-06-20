@@ -1,19 +1,15 @@
-const { MailEntity } = require("../../entities/Mail");
+const { MailEntity } = require("../../entities/MailEntity");
 const { ErrorResponse } = require("../../utils");
 
 exports.MailInputPort = class MailInputPort {
-  createMail({ email, subject, message }) {
-    const mailData = new MailEntity({
-      email,
-      subject,
-      message,
-    });
+  validateMailInput(userInput) {
+    const mail = new MailEntity(userInput);
 
-    const validationError = mailData.validateAll();
+    const validationError = mail.validateForSendMail(mail);
     if (validationError) {
       throw new ErrorResponse({ errorCode: `${validationError}` });
     }
 
-    return mailData;
+    return mail;
   }
 };
