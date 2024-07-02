@@ -1,10 +1,8 @@
 import { useEffect, useContext } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../interface-adapters/context/AuthContext";
-import {
-  NavBarPage,
-  LoadingScreenPage,
-} from "../../../interface-adapters/components/Pages";
+import { LoadingScreenPage } from "../../../interface-adapters/components/Pages";
+import { NavBar } from "../../../interface-adapters/components/organisms";
 
 export const GlobalLayout = () => {
   const { user, isBlocked, isAuthenticated, loadingAuthRequest } =
@@ -28,7 +26,7 @@ export const GlobalLayout = () => {
   return (
     <>
       <>
-        <NavBarPage />
+        <NavBar />
         <Outlet />
       </>
     </>

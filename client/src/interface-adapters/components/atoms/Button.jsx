@@ -6,7 +6,7 @@ export const Button = ({
   children,
   onClick,
   type = "button",
-  className = "",
+  className = "button",
   modifier = "",
 }) => {
   const { t } = useTranslation();
@@ -26,6 +26,6 @@ Button.propTypes = {
   children: PropTypes.string.isRequired,
   onClick: PropTypes.func,
   type: PropTypes.string,
-  className: PropTypes.string.isRequired,
+  className: PropTypes.string,
   modifier: PropTypes.string,
 };
