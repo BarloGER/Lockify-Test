@@ -7,7 +7,7 @@ export const SubmitButton = ({
   children,
   isLoading,
   type = "submit",
-  className = "",
+  className = "submit-button",
   modifier = "",
 }) => {
   const { t } = useTranslation();
@@ -25,7 +25,7 @@ export const SubmitButton = ({
   };
 
   return (
-    <button type={type} className={buttonClass}>
+    <button type={type} className={buttonClass} disabled={isLoading}>
       {renderContent()}
     </button>
   );

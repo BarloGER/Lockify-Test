@@ -3,6 +3,231 @@ const { errorTypes } = require("./errorTypes.js");
 // [MODULE_ERROR_NUMBER]
 
 exports.errorCodes = {
+  ACCOUNT_VALIDATION_001: {
+    statusCode: 411,
+    errorType: errorTypes.LengthRequiredError,
+    message: {
+      EN: "No data was transmitted.",
+      DE: "Es wurden keine Daten übermittelt.",
+    },
+  },
+  ACCOUNT_VALIDATION_002: {
+    statusCode: 409,
+    errorTypes: errorTypes.DataIntegrityError,
+    message: {
+      EN: "Fields have been specified that are not allowed!",
+      DE: "Es wurden Felder angegeben, die nicht erlaubt sind!",
+    },
+  },
+  ACCOUNT_VALIDATION_003: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The account name is required.",
+      DE: "Der Benutzerkonto Name ist erforderlich.",
+    },
+  },
+  ACCOUNT_VALIDATION_004: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The account name must be a string.",
+      DE: "Der Benutzerkonto Name muss eine Zeichenkette sein.",
+    },
+  },
+  ACCOUNT_VALIDATION_005: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The account name contains invalid characters.",
+      DE: "Der Benutzerkonto Name enthält ungültige Zeichen.",
+    },
+  },
+  ACCOUNT_VALIDATION_006: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The account name must be between 3 and 20 characters long.",
+      DE: "Der Benutzerkonto Name muss zwischen 3 und 20 Zeichen lang sein.",
+    },
+  },
+  ACCOUNT_VALIDATION_007: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The website address is required.",
+      DE: "Die Website Adresse ist erforderlich.",
+    },
+  },
+  ACCOUNT_VALIDATION_008: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The website address must be a string.",
+      DE: "Die Website Adresse muss eine Zeichenkette sein.",
+    },
+  },
+  ACCOUNT_VALIDATION_009: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The website address contains invalid characters.",
+      DE: "Die Website Adresse enthält ungültige Zeichen.",
+    },
+  },
+  ACCOUNT_VALIDATION_010: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The username is required.",
+      DE: "Der Benutzername ist erforderlich.",
+    },
+  },
+  ACCOUNT_VALIDATION_011: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The username must be a string.",
+      DE: "Der Benutzername muss eine Zeichenkette sein.",
+    },
+  },
+  ACCOUNT_VALIDATION_012: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The username may only contain alphanumeric characters.",
+      DE: "Der Benutzername darf nur alphanumerische Zeichen enthalten.",
+    },
+  },
+  ACCOUNT_VALIDATION_013: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The username must be between 3 and 20 characters long.",
+      DE: "Der Benutzername muss zwischen 3 und 20 Zeichen lang sein.",
+    },
+  },
+  ACCOUNT_VALIDATION_014: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The email address is required.",
+      DE: "Die Email Adresse ist erforderlich.",
+    },
+  },
+  ACCOUNT_VALIDATION_015: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The email address must be a string.",
+      DE: "Die Email Adresse muss eine Zeichenkette sein.",
+    },
+  },
+  ACCOUNT_VALIDATION_016: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The email address is not a valid email format.",
+      DE: "Die Email Adresse ist kein gültiges Email Format.",
+    },
+  },
+  ACCOUNT_VALIDATION_017: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The encrypted password must be entered..",
+      DE: "Das Verschlüsselte Passwort muss anegegeben werden.",
+    },
+  },
+  ACCOUNT_VALIDATION_018: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The encrypted password must be a string.",
+      DE: "Das Verschlüsselte Passwort muss eine Zeichenkette sein.",
+    },
+  },
+  ACCOUNT_VALIDATION_019: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The initialization vector for password encryption must be specified.",
+      DE: "Der Initialisierungsvektor für die Passwortverschlüsselung muss angegeben werden.",
+    },
+  },
+  ACCOUNT_VALIDATION_020: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The initialization vector for password encryption must be a string.",
+      DE: "Der Initialisierungsvektor für die Passwortverschlüsselung muss eine Zeichenkette sein.",
+    },
+  },
+  ACCOUNT_VALIDATION_021: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The salt for password encryption must be specified.",
+      DE: "Der Salt für die Passwortverschlüsselung muss angegeben werden.",
+    },
+  },
+  ACCOUNT_VALIDATION_022: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The salt for password encryption must be a string.",
+      DE: "Der Salt für die Passwortverschlüsselung muss eine Zeichenkette sein.",
+    },
+  },
+  ACCOUNT_VALIDATION_023: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The encrypted notes must be specified.",
+      DE: "Die verschlüsselten Notizen müssen angegeben werden.",
+    },
+  },
+  ACCOUNT_VALIDATION_024: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The encrypted notes must be a string.",
+      DE: "Die verschlüsselten Notizen müssen eine Zeichenkette sein.",
+    },
+  },
+  ACCOUNT_VALIDATION_025: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The initialization vector for the note encryption must be specified.",
+      DE: "Der Initialisierungsvektor für die Notizverschlüsselung muss angegeben werden.",
+    },
+  },
+  ACCOUNT_VALIDATION_026: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The initialization vector for note encryption must be a string",
+      DE: "Der Initialisierungsvektor für die Notizverschlüsselung muss eine Zeichenkette sein.",
+    },
+  },
+  ACCOUNT_VALIDATION_027: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "Der Salt für die Notizverschlüsselung muss angegeben werden.",
+      DE: "Benutzername ist erforderlich.",
+    },
+  },
+  ACCOUNT_VALIDATION_028: {
+    statusCode: 422,
+    errorTypes: errorTypes.ValidationError,
+    message: {
+      EN: "The salt for the note encryption must be a string.",
+      DE: "Der Salt für die Notizverschlüsselung muss eine Zeichenkette sein.",
+    },
+  },
+
   DB_SERVICE_001: {
     statusCode: 503,
     errorType: errorTypes.ServiceUnavailableError,
@@ -19,6 +244,7 @@ exports.errorCodes = {
       DE: "Beim Speichern der Daten ist ein Fehler augetreten, versuche es später erneut, oder wende dich an den Support.",
     },
   },
+
   MAIL_SERVICE_001: {
     statusCode: 424,
     errorType: errorTypes.DependencyError,
@@ -27,6 +253,7 @@ exports.errorCodes = {
       DE: "Der Mailserver ist derzeit nicht erreichbar, versuche es bitte später erneut.",
     },
   },
+
   MAIL_VALIDATION_001: {
     statusCode: 422,
     errorTypes: errorTypes.ValidationError,
@@ -91,6 +318,7 @@ exports.errorCodes = {
       DE: "Die Nachricht muss eine Zeichenkette sein.",
     },
   },
+
   USER_AUTHENTICATION_001: {
     statusCode: 403,
     errorType: errorTypes.AuthenticationError,
@@ -123,6 +351,7 @@ exports.errorCodes = {
       DE: "Deine Session ist abgelaufen. Bitte melde dich erneut an, um weiterhin Zugriff zu haben.",
     },
   },
+
   USER_AUTHORIZATION_001: {
     statusCode: 403,
     errorType: errorTypes.AuthorizationError,
@@ -139,6 +368,7 @@ exports.errorCodes = {
       DE: "Zu viele Verifizierungsversuche! Dein Konto wurde gesperrt, wende dich an den Support.",
     },
   },
+
   USER_CONFLICT_001: {
     statusCode: 409,
     errorType: errorTypes.ConflictError,
@@ -179,6 +409,7 @@ exports.errorCodes = {
       DE: "Du hast deine Email-Addresse bereits bestätigt.",
     },
   },
+
   USER_NOT_FOUND_001: {
     statusCode: 404,
     errorType: errorTypes.NotFoundError,
@@ -195,6 +426,7 @@ exports.errorCodes = {
       DE: "Es existiert kein Benutzer, mit dieser ID.",
     },
   },
+
   USER_REQUEST_001: {
     statusCode: 429,
     errorType: errorTypes.RateLimitError,
@@ -211,6 +443,7 @@ exports.errorCodes = {
       DE: "Bitte warte 15 Minuten bevor du ein neues Passwort anforderst.",
     },
   },
+
   USER_VALIDATION_001: {
     statusCode: 411,
     errorType: errorTypes.LengthRequiredError,
@@ -355,6 +588,7 @@ exports.errorCodes = {
       DE: "Der Newsletter muss ein boolean sein.",
     },
   },
+
   SYS_SERVICE_001: {
     statusCode: 500,
     errorTypes: errorTypes.ServerError,

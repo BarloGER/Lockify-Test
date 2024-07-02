@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { UserInteractor } from "../../../usecases/user/UserInteractor.js";
 import { UserRepository } from "../../repositories/UserRepository.js";
+import { CryptographyInteractor } from "../../../usecases/cryptography/CryptographyInteractor.js";
 
 import { AuthContext } from "../../context/AuthContext.jsx";
 import { AuthTemplate } from "../templates";
@@ -10,6 +11,7 @@ import { RegisterForm } from "../organisms";
 
 const userRepository = new UserRepository();
 const userInteractor = new UserInteractor(userRepository);
+const cryptographyInteractor = new CryptographyInteractor();
 
 export const RegisterPage = () => {
   const navigate = useNavigate();
@@ -19,6 +21,7 @@ export const RegisterPage = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [masterPassword, setMasterPassword] = useState("");
   const [isNewsletterAllowed, setIsNewsletterAllowed] = useState(false);
   const [isRegistrationLoading, setIsRegistrationLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -34,39 +37,36 @@ export const RegisterPage = () => {
     e.preventDefault();
     setIsRegistrationLoading(true);
 
+    const encryptedDataObj = await cryptographyInteractor.encryptData(
+      import.meta.env.VITE_SECRET_STRING,
+      masterPassword
+    );
+
     const registrationResponse = await userInteractor.registerUser({
       username,
       email,
       password,
+      encryptedSecret: encryptedDataObj.encryptedData,
+      encryptionIv: encryptedDataObj.iv,
+      encryptionSalt: encryptedDataObj.salt,
       isNewsletterAllowed,
     });
+
     if (registrationResponse.validationError) {
-      setIsRegistrationLoading(false);
       setMessage(`validationError.${registrationResponse.validationError}`);
       setMessageType("error");
-      return;
-    } else if (
-      !registrationResponse.success &&
-      registrationResponse.message === "Failed to fetch"
-    ) {
-      setIsRegistrationLoading(false);
-      setMessage("externalService.serverError");
-      setMessageType("error");
-      return;
     } else if (!registrationResponse.success) {
-      setIsRegistrationLoading(false);
       setMessage(registrationResponse.message);
       setMessageType("error");
-      return;
+    } else {
+      setUser(registrationResponse.user.dataValues);
+      setIsAuthenticated(true);
+      setMessage(registrationResponse.message);
+      setMessageType("success");
+      navigate("/confirm-email");
     }
 
-    setUser(registrationResponse.user.dataValues);
-    setIsAuthenticated(true);
     setIsRegistrationLoading(false);
-    setMessage(registrationResponse.message);
-    setMessageType("success");
-
-    navigate("/confirm-email");
   };
 
   return (
@@ -78,6 +78,8 @@ export const RegisterPage = () => {
         setEmail={setEmail}
         password={password}
         setPassword={setPassword}
+        masterPassword={masterPassword}
+        setMasterPassword={setMasterPassword}
         isNewsletterAllowed={isNewsletterAllowed}
         setIsNewsletterAllowed={setIsNewsletterAllowed}
         handleRegistration={handleRegistration}

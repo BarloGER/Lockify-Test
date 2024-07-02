@@ -12,6 +12,8 @@ export const RegisterForm = ({
   setEmail,
   password,
   setPassword,
+  masterPassword,
+  setMasterPassword,
   isNewsletterAllowed,
   setIsNewsletterAllowed,
   handleRegistration,
@@ -24,24 +26,40 @@ export const RegisterForm = ({
   return (
     <form onSubmit={handleRegistration}>
       <Input
+        id="username"
+        name="username"
         label={t("register.username")}
         type="text"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
       />
       <Input
+        id="email"
+        name="email"
         label={t("register.email")}
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
       <Input
+        id="password"
+        name="password"
         label={t("register.password")}
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
+      <Input
+        id="masterPassword"
+        name="masterPassword"
+        label={t("register.masterPassword")}
+        type="password"
+        value={masterPassword}
+        onChange={(e) => setMasterPassword(e.target.value)}
+      />
       <Checkbox
+        id="newsletter"
+        name="newsletter"
         label={t("register.newsletter")}
         checked={isNewsletterAllowed}
         onChange={(e) => setIsNewsletterAllowed(e.target.checked)}
@@ -81,6 +99,8 @@ RegisterForm.propTypes = {
   setEmail: PropTypes.func.isRequired,
   password: PropTypes.string.isRequired,
   setPassword: PropTypes.func.isRequired,
+  masterPassword: PropTypes.string.isRequired,
+  setMasterPassword: PropTypes.func.isRequired,
   isNewsletterAllowed: PropTypes.bool.isRequired,
   setIsNewsletterAllowed: PropTypes.func.isRequired,
   handleRegistration: PropTypes.func.isRequired,
