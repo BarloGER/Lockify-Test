@@ -19,10 +19,15 @@ const userInteractor = new UserInteractor(
 exports.registerUser = asyncHandler(async (req, res, next) => {
   const language = req.headers["accept-language"].includes("de") ? "DE" : "EN";
 
+  console.log("req.body", req.body);
+
   const userInput = {
     username: req.body.username,
     email: req.body.email,
     password: req.body.password,
+    encryptedSecret: req.body.encryptedSecret,
+    encryptionIv: req.body.encryptionIv,
+    encryptionSalt: req.body.encryptionSalt,
     isNewsletterAllowed: req.body.isNewsletterAllowed,
   };
 

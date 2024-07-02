@@ -26,6 +26,9 @@ export class UserEntity {
       "username",
       "email",
       "password",
+      "encryptedSecret",
+      "encryptionIv",
+      "encryptionSalt",
       "isNewsletterAllowed",
     ];
     const result = this.validateValidFields(validFields);
