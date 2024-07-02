@@ -1,6 +1,10 @@
+export { NewAccountForm } from "./NewAccountForm";
+export { AccountsOverview } from "./AccountsOverview";
+export { DataVaultForm } from "./DataVaultForm";
 export { ForgotPasswordForm } from "./ForgotPasswordForm";
 export { LoadingOrganism } from "./LoadingOrganism";
 export { LoginForm } from "./LoginForm";
+export { NavBar } from "./NavBar";
 export { RegisterForm } from "./RegisterForm";
 export { SupportForm } from "./SupportForm";
 export { VerificationForm } from "./VerificationForm";
