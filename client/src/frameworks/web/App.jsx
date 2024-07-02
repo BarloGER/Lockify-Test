@@ -12,12 +12,14 @@ import { UserRepository } from "../../interface-adapters/repositories/UserReposi
 import { AuthProvider } from "../../interface-adapters/context/AuthContext.jsx";
 import { GlobalLayout, ProtectedLayout } from "./layouts";
 import {
+  AccountsPage,
   DashboardPage,
   LoginPage,
   RegisterPage,
   VerificationPage,
   BlockedPage,
   ForgotPasswordPage,
+  DataVaultPage,
 } from "../../interface-adapters/components/Pages";
 
 export const App = () => {
@@ -36,7 +38,11 @@ export const App = () => {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/confirm-email" element={<VerificationPage />} />
         <Route path="/blocked" element={<BlockedPage />} />
-        <Route path="/auth" element={<ProtectedLayout />}></Route>
+        <Route path="/auth" element={<ProtectedLayout />}>
+          <Route path="data-vault" element={<DataVaultPage />}>
+            <Route path="accounts" element={<AccountsPage />} />
+          </Route>
+        </Route>
       </Route>
     )
   );

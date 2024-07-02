@@ -5,8 +5,10 @@ export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children, userInteractor }) => {
   const [user, setUser] = useState(null);
+  const [masterPassword, setMasterPassword] = useState("");
   const [loadingAuthRequest, setLoadingAuthRequest] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isDataVaultUnlocked, setIsDataVaultUnlocked] = useState(false);
   const [isBlocked, setIsBlocked] = useState(false);
 
   const checkAuthentication = useCallback(async () => {
@@ -21,10 +23,13 @@ export const AuthProvider = ({ children, userInteractor }) => {
       setIsBlocked(true);
       setIsAuthenticated(false);
       setLoadingAuthRequest(false);
+      return;
     } else if (!authenticationResponse.success) {
       setUser(null);
+      setMasterPassword("");
       setIsAuthenticated(false);
       setLoadingAuthRequest(false);
+      return;
     }
 
     setUser(authenticationResponse.user.dataValues);
@@ -42,8 +47,12 @@ export const AuthProvider = ({ children, userInteractor }) => {
       value={{
         user,
         setUser,
+        masterPassword,
+        setMasterPassword,
         isAuthenticated,
         setIsAuthenticated,
+        isDataVaultUnlocked,
+        setIsDataVaultUnlocked,
         isBlocked,
         setIsBlocked,
         loadingAuthRequest,
