@@ -18,12 +18,16 @@ export const LoginForm = ({
   return (
     <form className="login-form" onSubmit={handleLogin}>
       <Input
+        id="email"
+        name="email"
         label="login.email"
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
       <Input
+        id="password"
+        name="password"
         label="login.password"
         type="password"
         value={password}

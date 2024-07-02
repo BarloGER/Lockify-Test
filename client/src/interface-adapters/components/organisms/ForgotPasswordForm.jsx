@@ -16,6 +16,8 @@ export const ForgotPasswordForm = ({
   return (
     <form className="forgot-password-form" onSubmit={handleNewPasswordRequest}>
       <Input
+        id="email"
+        name="email"
         label="forgotPassword.email"
         type="email"
         value={email}
