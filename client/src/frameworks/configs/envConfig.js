@@ -3,6 +3,7 @@ export const validateEnvs = () => {
     "VITE_API_KEY",
     "VITE_MAILSERVER_URL",
     "VITE_MAIL_ADDRESS",
+    "VITE_SECRET_STRING",
   ];
 
   requiredEnvs.forEach((key) => {
