@@ -37,18 +37,18 @@ export const RegisterPage = () => {
     e.preventDefault();
     setIsRegistrationLoading(true);
 
-    const encryptedDataObj = await cryptographyInteractor.encryptData(
-      import.meta.env.VITE_SECRET_STRING,
-      masterPassword
-    );
+    const encryptedDataObj = await cryptographyInteractor.encryptData({
+      text: import.meta.env.VITE_SECRET_STRING,
+      masterPassword: masterPassword,
+    });
 
     const registrationResponse = await userInteractor.registerUser({
       username,
       email,
       password,
-      encryptedSecret: encryptedDataObj.encryptedData,
-      encryptionIv: encryptedDataObj.iv,
-      encryptionSalt: encryptedDataObj.salt,
+      encryptedSecret: encryptedDataObj.data.encryptedData,
+      encryptionIv: encryptedDataObj.data.iv,
+      encryptionSalt: encryptedDataObj.data.salt,
       isNewsletterAllowed,
     });
 

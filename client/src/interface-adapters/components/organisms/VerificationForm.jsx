@@ -19,6 +19,8 @@ export const VerificationForm = ({
     <>
       <form className="verification-form" onSubmit={handleVerification}>
         <Input
+          id="verificationCode"
+          name="verificationCode"
           label="verification.label"
           type="text"
           value={verificationCode}

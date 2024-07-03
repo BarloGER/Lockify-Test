@@ -32,8 +32,8 @@ export const AuthProvider = ({ children, userInteractor }) => {
       return;
     }
 
-    setUser(authenticationResponse.user.dataValues);
     setIsAuthenticated(true);
+    setUser(authenticationResponse.user.dataValues);
 
     setLoadingAuthRequest(false);
   }, [userInteractor]);
