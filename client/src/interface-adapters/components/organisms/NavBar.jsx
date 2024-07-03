@@ -14,6 +14,7 @@ export const NavBar = () => {
     <nav>
       <ul>
         <NavLink to="/">{t("navBar.home")}</NavLink>
+        <NavLink to="/user-profile">{t("navBar.userProfile")}</NavLink>
         <NavLink to="/auth/data-vault">{t("navBar.dataVault")}</NavLink>
         {isDataVaultUnlocked && (
           <ul>

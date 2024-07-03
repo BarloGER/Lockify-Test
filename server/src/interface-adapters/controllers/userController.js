@@ -94,10 +94,10 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
   }
 
   const userInput = {
-    username: req.body.username,
-    email: req.body.email,
-    password: req.body.password,
-    isNewsletterAllowed: req.body.isNewsletterAllowed,
+    username: req.body.updatedData.username,
+    email: req.body.updatedData.email,
+    password: req.body.updatedData.password,
+    isNewsletterAllowed: req.body.updatedData.isNewsletterAllowed,
   };
 
   const result = await userInteractor.editUser(userId, userInput);

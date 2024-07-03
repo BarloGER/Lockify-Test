@@ -23,21 +23,16 @@ export class UserInputPort {
     return credentials;
   }
 
-  // editUser(userInput) {
-  //   const updateData = new UserEntity({
-  //     username: userInput.username,
-  //     email: userInput.email,
-  //     password: userInput.password,
-  //     isNewsletterAllowed: userInput.isNewsletterAllowed,
-  //   });
+  validateUpdateInput(userInput) {
+    const user = new UserEntity(userInput);
 
-  //   const validationError = updateData.validateForUpdate();
-  //   if (validationError) {
-  //     throw new ErrorResponse({ errorCode: `${validationError}` });
-  //   }
+    const validationError = user.validateForUpdate();
+    if (validationError) {
+      return { validationError };
+    }
 
-  //   return updateData;
-  // }
+    return user;
+  }
 
   // deleteUser(userInput) {
   //   const data = new UserEntity(userInput);

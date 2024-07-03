@@ -4,6 +4,23 @@ const URL = import.meta.env.VITE_API_KEY;
 const MAILSERVER_URL = import.meta.env.VITE_MAILSERVER_URL;
 
 export const UserRepository = class UserRepository {
+  async checkAuthAndGetUser() {
+    try {
+      const response = await fetch(`${URL}/user/get-user`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept-Language": language,
+        },
+        credentials: "include",
+      });
+
+      return response.json();
+    } catch (error) {
+      return error.message;
+    }
+  }
+
   async registerUser(userData) {
     try {
       const response = await fetch(`${URL}/user/register`, {
@@ -49,6 +66,41 @@ export const UserRepository = class UserRepository {
     }
   }
 
+  async updateUser(updatedData) {
+    try {
+      const response = await fetch(`${URL}/user/update`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept-Language": language,
+        },
+        body: JSON.stringify({
+          updatedData,
+        }),
+        credentials: "include",
+      });
+      return response.json();
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async deleteUser() {
+    try {
+      const response = await fetch(`${URL}/user/delete`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept-Language": language,
+        },
+        credentials: "include",
+      });
+      return response.json();
+    } catch (error) {
+      return error;
+    }
+  }
+
   async confirmEmailAddress(verificationData) {
     try {
       const response = await fetch(`${URL}/user/confirm-email`, {
@@ -66,23 +118,6 @@ export const UserRepository = class UserRepository {
       return response.json();
     } catch (error) {
       return error;
-    }
-  }
-
-  async checkAuthAndGetUser() {
-    try {
-      const response = await fetch(`${URL}/user/get-user`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept-Language": language,
-        },
-        credentials: "include",
-      });
-
-      return response.json();
-    } catch (error) {
-      return error.message;
     }
   }
 

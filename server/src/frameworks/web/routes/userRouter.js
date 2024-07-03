@@ -32,7 +32,7 @@ userRouter.get("/get-user", validateSession, getUser);
 userRouter.put(
   "/update",
   validateSession,
-  validateJoi(updateUserSchema),
+  // validateJoi(updateUserSchema),
   updateUser
 );
 userRouter.delete(

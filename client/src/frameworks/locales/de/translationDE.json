@@ -50,6 +50,7 @@
   },
   "navBar": {
     "home": "Dashboard",
+    "userProfile": "Profil",
     "dataVault": "Datentresor",
     "accounts": "Accounts",
     "addresses": "Adressen",
@@ -70,6 +71,17 @@
     "submitEdit": "Speichern",
     "delete": "Löschen",
     "submitDelete": "Wirklich löschen?"
+  },
+  "userProfile": {
+    "username": "Benutzername",
+    "email": "E-Mail Adresse",
+    "password": "Passwort",
+    "confirmPassword": "Passwort Bestätigen",
+    "newsletter": "Newsletter",
+    "submit": "Speichern",
+    "delete": "Benutzerkonto löschen",
+    "submitDelete": "Wirklich löschen?",
+    "cancel": "Abbrechen"
   },
   "validationError": {
     "ACCOUNT_VALIDATION_001": "Es wurden keine Daten übermittelt.",
