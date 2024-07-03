@@ -48,6 +48,7 @@
   },
   "navBar": {
     "home": "Dashboard",
+    "userProfile": "Profile",
     "dataVault": "Data Vault",
     "accounts": "Accounts",
     "addresses": "Addresses",
@@ -68,6 +69,17 @@
     "submitEdit": "Save",
     "delete": "Delete",
     "submitDelete": "Really delete?"
+  },
+  "userProfile": {
+    "username": "Username",
+    "email": "E-Mail Address",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "newsletter": "Newsletter",
+    "submit": "Save",
+    "delete": "Delete Account",
+    "submitDelete": "Really delete?",
+    "cancel": "Cancel"
   },
   "validationError": {
     "ACCOUNT_VALIDATION_001": "No data was transmitted.",

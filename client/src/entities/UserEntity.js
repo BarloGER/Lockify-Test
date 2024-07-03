@@ -38,6 +38,9 @@ export class UserEntity {
       this.validateUsername(true) ||
       this.validateEmail(true) ||
       this.validatePassword(true) ||
+      this.validateEncryptedSecret(true) ||
+      this.validateEncryptionIv(true) ||
+      this.validateEncryptionSalt(true) ||
       this.validateIsNewsletterAllowed(true)
     );
   }
@@ -135,6 +138,30 @@ export class UserEntity {
     if (this.password && typeof this.password !== "string")
       return "USER_VALIDATION_011";
     if (this.password && this.password.length < 8) return "USER_VALIDATION_012";
+
+    return null;
+  }
+
+  validateEncryptedSecret(isRequired) {
+    if (isRequired && !this.encryptedSecret) return "ACCOUNT_VALIDATION_022";
+    if (this.encryptedSecret && typeof this.encryptedSecret !== "string")
+      return "ACCOUNT_VALIDATION_023";
+
+    return null;
+  }
+
+  validateEncryptionIv(isRequired) {
+    if (isRequired && !this.encryptionIv) return "ACCOUNT_VALIDATION_024";
+    if (this.encryptionIv && typeof this.encryptionIv !== "string")
+      return "ACCOUNT_VALIDATION_025";
+
+    return null;
+  }
+
+  validateEncryptionSalt(isRequired) {
+    if (isRequired && !this.encryptionSalt) return "ACCOUNT_VALIDATION_026";
+    if (this.encryptionSalt && typeof this.encryptionSalt !== "string")
+      return "ACCOUNT_VALIDATION_027";
 
     return null;
   }

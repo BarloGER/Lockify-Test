@@ -7,4 +7,5 @@ export { LoginForm } from "./LoginForm";
 export { NavBar } from "./NavBar";
 export { RegisterForm } from "./RegisterForm";
 export { SupportForm } from "./SupportForm";
+export { UserProfileForm } from "./UserProfileForm";
 export { VerificationForm } from "./VerificationForm";

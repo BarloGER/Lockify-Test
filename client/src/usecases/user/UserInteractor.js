@@ -26,6 +26,7 @@ export class UserInteractor {
   }
 
   async registerUser(userInput) {
+    console.log(userInput);
     const user = this.userInputPort.validateRegistrationInput(userInput);
     if (user.validationError) {
       return { validationError: user.validationError };
@@ -57,6 +58,34 @@ export class UserInteractor {
     };
 
     return this.userOutputPort.prepareUserOutput(userOutputData);
+  }
+
+  async editUser(userInput) {
+    const user = this.userInputPort.validateUpdateInput(userInput);
+    if (user.validationError) {
+      return { validationError: user.validationError };
+    }
+
+    const registrationResult = await this.userRepository.updateUser(user);
+
+    const outputData = {
+      success: registrationResult.success,
+      message: registrationResult.message,
+      user: registrationResult.user,
+    };
+
+    return this.userOutputPort.prepareUserOutput(outputData);
+  }
+
+  async deleteUser() {
+    const registrationResult = await this.userRepository.deleteUser();
+
+    const outputData = {
+      success: registrationResult.success,
+      message: registrationResult.message,
+    };
+
+    return this.userOutputPort.prepareOutput(outputData);
   }
 
   async confirmEmailAddress(userInput) {

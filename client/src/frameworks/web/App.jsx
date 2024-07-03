@@ -13,13 +13,14 @@ import { AuthProvider } from "../../interface-adapters/context/AuthContext.jsx";
 import { GlobalLayout, ProtectedLayout } from "./layouts";
 import {
   AccountsPage,
+  BlockedPage,
   DashboardPage,
+  DataVaultPage,
+  ForgotPasswordPage,
   LoginPage,
   RegisterPage,
+  UserProfile,
   VerificationPage,
-  BlockedPage,
-  ForgotPasswordPage,
-  DataVaultPage,
 } from "../../interface-adapters/components/Pages";
 
 export const App = () => {
@@ -35,6 +36,7 @@ export const App = () => {
         <Route index element={<DashboardPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/user-profile" element={<UserProfile />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/confirm-email" element={<VerificationPage />} />
         <Route path="/blocked" element={<BlockedPage />} />

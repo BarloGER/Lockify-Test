@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../../context/AuthContext.jsx";
@@ -13,24 +13,13 @@ const userInteractor = new UserInteractor(userRepository);
 
 export const LoginPage = () => {
   const navigate = useNavigate();
-  const { user, setUser, isAuthenticated, setIsAuthenticated } =
-    useContext(AuthContext);
+  const { setUser, setIsAuthenticated } = useContext(AuthContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
   const [isLoginLoading, setIsLoginLoading] = useState(false);
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      if (user && user.isVerified) {
-        navigate("/");
-      } else {
-        navigate("/confirm-email");
-      }
-    }
-  }, [isAuthenticated, user, navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();

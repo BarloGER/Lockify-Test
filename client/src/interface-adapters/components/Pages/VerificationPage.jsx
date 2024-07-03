@@ -24,9 +24,7 @@ export const VerificationPage = () => {
   const [messageType, setMessageType] = useState("");
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      navigate("/login");
-    } else if (isAuthenticated && user.isVerified) {
+    if (isAuthenticated && user.isVerified) {
       navigate("/");
     }
   }, [isAuthenticated, user, navigate]);

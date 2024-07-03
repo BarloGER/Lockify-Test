@@ -8,11 +8,14 @@ import { DataVaultForm } from "../organisms";
 
 // ! Add verificationAttempts increment on failed decryption
 
+const cryptographyInteractor = new CryptographyInteractor();
+
 export const DataVaultPage = () => {
   const {
     user,
     masterPassword,
     setMasterPassword,
+    isAuthenticated,
     isDataVaultUnlocked,
     setIsDataVaultUnlocked,
   } = useContext(AuthContext);
@@ -22,7 +25,9 @@ export const DataVaultPage = () => {
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
 
-  const cryptographyInteractor = new CryptographyInteractor();
+  if (!isAuthenticated) {
+    return;
+  }
 
   const handleMasterPasswordVerification = async (e) => {
     e.preventDefault();

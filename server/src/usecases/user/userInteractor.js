@@ -181,7 +181,7 @@ exports.UserInteractor = class UserInteractor {
         EN: "User updated successfully.",
         DE: "Benutzer erfolgreich aktualisiert",
       },
-      user: updateData,
+      user: updatedUser.dataValues,
     };
 
     return this.userOutputPort.userOutput(userOutputData);
@@ -202,7 +202,7 @@ exports.UserInteractor = class UserInteractor {
       throw new ErrorResponse({ errorCode: "USER_AUTHORIZATION_001" });
     }
 
-    const deletedUser = await this.userRepository.deleteUser(userId, data);
+    const deletedUser = await this.userRepository.deleteUser(userId);
     if (!deletedUser) {
       throw new ErrorResponse({
         errorCode: "DB_SERVICE_002",

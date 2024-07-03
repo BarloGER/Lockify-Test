@@ -6,4 +6,5 @@ export { DataVaultPage } from "./DataVaultPage";
 export { LoadingScreenPage } from "./LoadingScreenPage";
 export { LoginPage } from "./LoginPage";
 export { RegisterPage } from "./RegisterPage";
+export { UserProfile } from "./UserProfile";
 export { VerificationPage } from "./VerificationPage";

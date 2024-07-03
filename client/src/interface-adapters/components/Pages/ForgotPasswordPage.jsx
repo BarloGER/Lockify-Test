@@ -13,7 +13,7 @@ const userInteractor = new UserInteractor(userRepository);
 
 export const ForgotPasswordPage = () => {
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { isAuthenticated } = useContext(AuthContext);
 
   const [email, setEmail] = useState("");
   const [isPasswordRequestLoading, setIsPasswordRequestLoading] =
@@ -22,7 +22,7 @@ export const ForgotPasswordPage = () => {
   const [messageType, setMessageType] = useState("");
 
   useEffect(() => {
-    if (user) {
+    if (isAuthenticated) {
       navigate("/");
     }
   });
