@@ -26,18 +26,22 @@ exports.BankEntity = class BankEntity {
       "bankName",
       "accountHolderFirstName",
       "accountHolderLastName",
-      "iban",
+      "encryptedIban",
+      "ibanEncryptionIv",
+      "ibanEncryptionSalt",
       "swiftBic",
       "accountType",
       "branchCode",
       "cardHolderFirstName",
       "cardHolderLastName",
-      "cardNumber",
+      "encryptedCardNumber",
+      "cardNumberEncryptionIv",
+      "cardNumberEncryptionSalt",
       "expiryDate",
-      "cardCVVCVC",
-      "encryptedNotes",
-      "cardTypeEncryptionIv",
-      "cardTypeEncryptionSalt",
+      "encryptedCardCvvCvc",
+      "cardCvvCvcEncryptionIv",
+      "cardCvvCvcEncryptionSalt",
+      "cardType",
     ];
 
     const result = this.validateValidFields(validFields);
@@ -67,18 +71,22 @@ exports.BankEntity = class BankEntity {
       "bankName",
       "accountHolderFirstName",
       "accountHolderLastName",
-      "iban",
+      "encryptedIban",
+      "ibanEncryptionIv",
+      "ibanEncryptionSalt",
       "swiftBic",
       "accountType",
       "branchCode",
       "cardHolderFirstName",
       "cardHolderLastName",
-      "cardNumber",
+      "encryptedCardNumber",
+      "cardNumberEncryptionIv",
+      "cardNumberEncryptionSalt",
       "expiryDate",
-      "cardCVVCVC",
-      "encryptedNotes",
-      "cardTypeEncryptionIv",
-      "cardTypeEncryptionSalt",
+      "encryptedCardCvvCvc",
+      "cardCvvCvcEncryptionIv",
+      "cardCvvCvcEncryptionSalt",
+      "cardType",
     ];
     const fieldsToUpdate = validFields.filter(
       (field) => this[field] !== undefined
@@ -113,40 +121,61 @@ exports.BankEntity = class BankEntity {
     return null;
   }
 
-  validateCompanyName(isRequired) {
+  validateBankName(isRequired) {
     return null;
   }
-  validateFirstName(isRequired) {
+  validateAccountHolderFirstName(isRequired) {
     return null;
   }
-  validateLastName(isRequired) {
+  validateAccountHolderLastName(isRequired) {
     return null;
   }
-  validateStreetAddress(isRequired) {
+  validateEncryptedIban(isRequired) {
     return null;
   }
-  validateAdditionalAddressInfo(isRequired) {
+  validateIbanEncryptionIv(isRequired) {
     return null;
   }
-  validateCity(isRequired) {
+  validateIbanEncryptionSalt(isRequired) {
     return null;
   }
-  validateStateProvinceRegion(isRequired) {
+  validateSwiftBic(isRequired) {
     return null;
   }
-  validatePostalCode(isRequired) {
+  validateAccountType(isRequired) {
     return null;
   }
-  validateCountry(isRequired) {
+  validateBranchCode(isRequired) {
     return null;
   }
-  validatePhoneNumber(isRequired) {
+  validateCardHolderFirstName(isRequired) {
     return null;
   }
-  validateEmail(isRequired) {
+  validateCardHolderLastName(isRequired) {
     return null;
   }
-  validateBirthDate(isRequired) {
+  validateEncryptedCardNumber(isRequired) {
+    return null;
+  }
+  validateCardNumberEncryptionIv(isRequired) {
+    return null;
+  }
+  validateCardNumberEncryptionSalt(isRequired) {
+    return null;
+  }
+  validateExpiryDate(isRequired) {
+    return null;
+  }
+  validateEncryptedCardCvvCvc(isRequired) {
+    return null;
+  }
+  validateCardCvvCvcEncryptionIv(isRequired) {
+    return null;
+  }
+  validateCardCvvCvcEncryptionSalt(isRequired) {
+    return null;
+  }
+  validateCardType(isRequired) {
     return null;
   }
 

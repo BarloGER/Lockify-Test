@@ -16,7 +16,7 @@ module.exports = (sequelize, Model, DataTypes) => {
           key: "userId",
         },
       },
-      BankName: {
+      bankName: {
         type: DataTypes.STRING,
       },
       accountHolderFirstName: {
@@ -61,13 +61,13 @@ module.exports = (sequelize, Model, DataTypes) => {
       expiryDate: {
         type: DataTypes.STRING,
       },
-      encryptedCardCVVCVC: {
+      encryptedCardCvvCvc: {
         type: DataTypes.TEXT,
       },
-      cardCVVCVCEncryptionIv: {
+      cardCvvCvcEncryptionIv: {
         type: DataTypes.STRING,
       },
-      cardCVVCVCEncryptionSalt: {
+      cardCvvCvcEncryptionSalt: {
         type: DataTypes.STRING,
       },
       cardType: {

@@ -34,7 +34,7 @@ export class BankEntity {
       "cardHolderLastName",
       "cardNumber",
       "expiryDate",
-      "cardCVVCVC",
+      "cardCvvCvc",
       "cardType",
     ];
 
@@ -42,9 +42,9 @@ export class BankEntity {
     if (result) return result;
 
     return (
-      this.validateCompanyName(false) ||
-      this.validateFirstName(false) ||
-      this.validateLastName(false) ||
+      this.validateBankName(false) ||
+      this.validateAccountHolderFirstName(false) ||
+      this.validateAccountHolderLastName(false) ||
       this.validateStreetAddress(false) ||
       this.validateAdditionalAddressInfo(false) ||
       this.validateCity(false) ||
@@ -63,18 +63,22 @@ export class BankEntity {
       "bankName",
       "accountHolderFirstName",
       "accountHolderLastName",
-      "iban",
+      "encryptedIban",
+      "ibanEncryptionIv",
+      "ibanEncryptionSalt",
       "swiftBic",
       "accountType",
       "branchCode",
       "cardHolderFirstName",
       "cardHolderLastName",
-      "cardNumber",
+      "encryptedCardNumber",
+      "cardNumberEncryptionIv",
+      "cardNumberEncryptionSalt",
       "expiryDate",
-      "cardCVVCVC",
-      "encryptedNotes",
-      "cardTypeEncryptionIv",
-      "cardTypeEncryptionSalt",
+      "encryptedCardCvvCvc",
+      "cardCvvCvcEncryptionIv",
+      "cardCvvCvcEncryptionSalt",
+      "cardType",
     ];
 
     const result = this.validateValidFields(validFields);
@@ -112,7 +116,7 @@ export class BankEntity {
       "cardHolderLastName",
       "cardNumber",
       "expiryDate",
-      "cardCVVCVC",
+      "cardCvvCvc",
       "cardType",
     ];
     const fieldsToUpdate = validFields.filter((field) => this[field] !== "");
@@ -139,7 +143,7 @@ export class BankEntity {
       "accountHolderLastName",
       "encryptedIban",
       "ibanEncryptionIv",
-      "ibanTypeEncryptionSalt",
+      "ibanEncryptionSalt",
       "swiftBic",
       "accountType",
       "branchCode",
@@ -149,9 +153,9 @@ export class BankEntity {
       "cardNumberEncryptionIv",
       "cardNumberEncryptionSalt",
       "expiryDate",
-      "encryptedCardCVVCVC",
-      "cardCVVCVCEncryptionIv",
-      "cardCVVCVCEncryptionSalt",
+      "encryptedCardCvvCvc",
+      "cardCvvCvcEncryptionIv",
+      "cardCvvCvcEncryptionSalt",
       "cardType",
     ];
     const fieldsToUpdate = validFields.filter((field) => this[field] !== "");
@@ -171,40 +175,70 @@ export class BankEntity {
     return null;
   }
 
-  validateCompanyName(isRequired) {
+  validateBankName(isRequired) {
     return null;
   }
-  validateFirstName(isRequired) {
+  validateAccountHolderFirstName(isRequired) {
     return null;
   }
-  validateLastName(isRequired) {
+  validateAccountHolderLastName(isRequired) {
     return null;
   }
-  validateStreetAddress(isRequired) {
+  validateIban(isRequired) {
     return null;
   }
-  validateAdditionalAddressInfo(isRequired) {
+  validateEncryptedIban(isRequired) {
     return null;
   }
-  validateCity(isRequired) {
+  validateIbanEncryptionIv(isRequired) {
     return null;
   }
-  validateStateProvinceRegion(isRequired) {
+  validateIbanEncryptionSalt(isRequired) {
     return null;
   }
-  validatePostalCode(isRequired) {
+  validateSwiftBic(isRequired) {
     return null;
   }
-  validateCountry(isRequired) {
+  validateAccountType(isRequired) {
     return null;
   }
-  validatePhoneNumber(isRequired) {
+  validateBranchCode(isRequired) {
     return null;
   }
-  validateEmail(isRequired) {
+  validateCardHolderFirstName(isRequired) {
     return null;
   }
-  validateBirthDate(isRequired) {
+  validateCardHolderLastName(isRequired) {
+    return null;
+  }
+  validateCardNumber(isRequired) {
+    return null;
+  }
+  validateEncryptedCardNumber(isRequired) {
+    return null;
+  }
+  validateCardNumberEncryptionIv(isRequired) {
+    return null;
+  }
+  validateCardNumberEncryptionSalt(isRequired) {
+    return null;
+  }
+  validateExpiryDate(isRequired) {
+    return null;
+  }
+  validateCardCvvCvc(isRequired) {
+    return null;
+  }
+  validateEncryptedCardCvvCvc(isRequired) {
+    return null;
+  }
+  validateCardCvvCvcEncryptionIv(isRequired) {
+    return null;
+  }
+  validateCardCvvCvcEncryptionSalt(isRequired) {
+    return null;
+  }
+  validateCardType(isRequired) {
     return null;
   }
 

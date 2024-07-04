@@ -34,7 +34,7 @@ exports.createBank = asyncHandler(async (req, res, next) => {
     accountHolderLastName: req.body.accountHolderLastName,
     encryptedIban: req.body.encryptedIban,
     ibanEncryptionIv: req.body.ibanEncryptionIv,
-    ibanTypeEncryptionSalt: req.body.ibanTypeEncryptionSalt,
+    ibanEncryptionSalt: req.body.ibanEncryptionSalt,
     swiftBic: req.body.swiftBic,
     accountType: req.body.accountType,
     branchCode: req.body.branchCode,
@@ -44,9 +44,9 @@ exports.createBank = asyncHandler(async (req, res, next) => {
     cardNumberEncryptionIv: req.body.cardNumberEncryptionIv,
     cardNumberEncryptionSalt: req.body.cardNumberEncryptionSalt,
     expiryDate: req.body.expiryDate,
-    encryptedCardCVVCVC: req.body.encryptedCardCVVCVC,
-    cardCVVCVCEncryptionIv: req.body.cardCVVCVCEncryptionIv,
-    cardCVVCVCEncryptionSalt: req.body.cardCVVCVCEncryptionSalt,
+    encryptedCardCvvCvc: req.body.encryptedCardCvvCvc,
+    cardCvvCvcEncryptionIv: req.body.cardCvvCvcEncryptionIv,
+    cardCvvCvcEncryptionSalt: req.body.cardCvvCvcEncryptionSalt,
     cardType: req.body.cardType,
   };
 
@@ -72,7 +72,7 @@ exports.updateBank = asyncHandler(async (req, res, next) => {
     accountHolderLastName: req.body.accountHolderLastName,
     encryptedIban: req.body.encryptedIban,
     ibanEncryptionIv: req.body.ibanEncryptionIv,
-    ibanTypeEncryptionSalt: req.body.ibanTypeEncryptionSalt,
+    ibanEncryptionSalt: req.body.ibanEncryptionSalt,
     swiftBic: req.body.swiftBic,
     accountType: req.body.accountType,
     branchCode: req.body.branchCode,
@@ -82,9 +82,9 @@ exports.updateBank = asyncHandler(async (req, res, next) => {
     cardNumberEncryptionIv: req.body.cardNumberEncryptionIv,
     cardNumberEncryptionSalt: req.body.cardNumberEncryptionSalt,
     expiryDate: req.body.expiryDate,
-    encryptedCardCVVCVC: req.body.encryptedCardCVVCVC,
-    cardCVVCVCEncryptionIv: req.body.cardCVVCVCEncryptionIv,
-    cardCVVCVCEncryptionSalt: req.body.cardCVVCVCEncryptionSalt,
+    encryptedCardCvvCvc: req.body.encryptedCardCvvCvc,
+    cardCvvCvcEncryptionIv: req.body.cardCvvCvcEncryptionIv,
+    cardCvvCvcEncryptionSalt: req.body.cardCvvCvcEncryptionSalt,
     cardType: req.body.cardType,
   };
 
