@@ -8,6 +8,7 @@ const {
 const { userRouter } = require("./routes/userRouter");
 const { accountRouter } = require("./routes/accountRouter");
 const { noteRouter } = require("./routes/noteRouter");
+const { contactRouter } = require("./routes/contactRouter");
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use(sessionConfig);
 app.use("/user", userRouter);
 app.use("/accounts", accountRouter);
 app.use("/notes", noteRouter);
+app.use("/contacts", contactRouter);
 app.use("*", (req, res) => res.sendStatus(404));
 
 app.use(errorHandler);
