@@ -27,8 +27,8 @@ export class UserEntity {
       "email",
       "password",
       "encryptedSecret",
-      "encryptionIv",
-      "encryptionSalt",
+      "secretEncryptionIv",
+      "secretEncryptionSalt",
       "isNewsletterAllowed",
     ];
     const result = this.validateValidFields(validFields);
@@ -39,8 +39,8 @@ export class UserEntity {
       this.validateEmail(true) ||
       this.validatePassword(true) ||
       this.validateEncryptedSecret(true) ||
-      this.validateEncryptionIv(true) ||
-      this.validateEncryptionSalt(true) ||
+      this.validateSecretEncryptionIv(true) ||
+      this.validateSecretEncryptionSalt(true) ||
       this.validateIsNewsletterAllowed(true)
     );
   }
@@ -150,17 +150,21 @@ export class UserEntity {
     return null;
   }
 
-  validateEncryptionIv(isRequired) {
-    if (isRequired && !this.encryptionIv) return "ACCOUNT_VALIDATION_024";
-    if (this.encryptionIv && typeof this.encryptionIv !== "string")
+  validateSecretEncryptionIv(isRequired) {
+    if (isRequired && !this.secretEncryptionIv) return "ACCOUNT_VALIDATION_024";
+    if (this.secretEncryptionIv && typeof this.secretEncryptionIv !== "string")
       return "ACCOUNT_VALIDATION_025";
 
     return null;
   }
 
-  validateEncryptionSalt(isRequired) {
-    if (isRequired && !this.encryptionSalt) return "ACCOUNT_VALIDATION_026";
-    if (this.encryptionSalt && typeof this.encryptionSalt !== "string")
+  validateSecretEncryptionSalt(isRequired) {
+    if (isRequired && !this.secretEncryptionSalt)
+      return "ACCOUNT_VALIDATION_026";
+    if (
+      this.secretEncryptionSalt &&
+      typeof this.secretEncryptionSalt !== "string"
+    )
       return "ACCOUNT_VALIDATION_027";
 
     return null;

@@ -47,8 +47,8 @@ export const RegisterPage = () => {
       email,
       password,
       encryptedSecret: encryptedDataObj.data.encryptedData,
-      encryptionIv: encryptedDataObj.data.iv,
-      encryptionSalt: encryptedDataObj.data.salt,
+      secretEncryptionIv: encryptedDataObj.data.iv,
+      secretEncryptionSalt: encryptedDataObj.data.salt,
       isNewsletterAllowed,
     });
 

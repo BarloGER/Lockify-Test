@@ -4,8 +4,12 @@ const { sessionConfig } = require("../configs/sessionConfig");
 const {
   errorHandler,
 } = require("../../interface-adapters/middlewares/errorHandler");
+
 const { userRouter } = require("./routes/userRouter");
 const { accountRouter } = require("./routes/accountRouter");
+const { noteRouter } = require("./routes/noteRouter");
+const { contactRouter } = require("./routes/contactRouter");
+const { bankRouter } = require("./routes/bankRouter");
 
 const app = express();
 
@@ -24,6 +28,9 @@ app.use(sessionConfig);
 
 app.use("/user", userRouter);
 app.use("/accounts", accountRouter);
+app.use("/notes", noteRouter);
+app.use("/contacts", contactRouter);
+app.use("/banks", bankRouter);
 app.use("*", (req, res) => res.sendStatus(404));
 
 app.use(errorHandler);

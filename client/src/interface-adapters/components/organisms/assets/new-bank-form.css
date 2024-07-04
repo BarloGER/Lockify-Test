@@ -1,0 +1,68 @@
+.new-bank__form {
+  perspective: 1000px;
+  width: 300px;
+  margin: 20px;
+  font-size: 10rem;
+}
+
+.new-bank__form_inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.new-bank__form.creating .new-bank__form_inner {
+  transform: rotateY(180deg);
+}
+
+.new-bank__form_front,
+.new-bank__form_back {
+  position: absolute;
+  width: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.new-bank__form_back {
+  transform: rotateY(180deg);
+}
+
+.plus-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  cursor: pointer;
+  border: 3px solid var(--component-background-color);
+  padding: 20rem 10rem;
+}
+
+.plus {
+  font-size: 3em;
+  color: #007bff;
+}
+
+.bank__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.bank__form input {
+  margin-bottom: 10px;
+}
+
+.bank__form button {
+  align-self: flex-end;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.bank__form button:hover {
+  background-color: #0056b3;
+}

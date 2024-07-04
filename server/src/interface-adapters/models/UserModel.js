@@ -30,11 +30,11 @@ module.exports = (sequelize, Model, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      encryptionIv: {
+      secretEncryptionIv: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      encryptionSalt: {
+      secretEncryptionSalt: {
         type: DataTypes.STRING,
         allowNull: false,
       },

@@ -21,11 +21,11 @@ export const NavBar = () => {
             <NavLink to="/auth/data-vault/accounts">
               {t("navBar.accounts")}
             </NavLink>
-            <NavLink to="/auth/data-vault/addresses">
-              {t("navBar.addresses")}
+            <NavLink to="/auth/data-vault/contacts">
+              {t("navBar.contacts")}
             </NavLink>
             <NavLink to="/auth/data-vault/notes">{t("navBar.notes")}</NavLink>
-            <NavLink to="/auth/data-vault/bank-info">
+            <NavLink to="/auth/data-vault/banks">
               {t("navBar.bankInfo")}
             </NavLink>
             <li>

@@ -1,10 +1,16 @@
+export { BanksOverview } from "./BanksOverview";
 export { NewAccountForm } from "./NewAccountForm";
+export { NewBankForm } from "./NewBankForm";
+export { NewNoteForm } from "./NewNoteForm";
+export { NewContactForm } from "./NewContactForm";
 export { AccountsOverview } from "./AccountsOverview";
 export { DataVaultForm } from "./DataVaultForm";
 export { ForgotPasswordForm } from "./ForgotPasswordForm";
 export { LoadingOrganism } from "./LoadingOrganism";
 export { LoginForm } from "./LoginForm";
 export { NavBar } from "./NavBar";
+export { NotesOverview } from "./NotesOverview";
+export { ContactsOverview } from "./ContactsOverview";
 export { RegisterForm } from "./RegisterForm";
 export { SupportForm } from "./SupportForm";
 export { UserProfileForm } from "./UserProfileForm";
