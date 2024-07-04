@@ -14,6 +14,7 @@ import { GlobalLayout, ProtectedLayout } from "./layouts/index.js";
 import {
   AccountsPage,
   BlockedPage,
+  ContactsPage,
   DashboardPage,
   DataVaultPage,
   ForgotPasswordPage,
@@ -45,6 +46,7 @@ export const App = () => {
           <Route path="data-vault" element={<DataVaultPage />}>
             <Route path="accounts" element={<AccountsPage />} />
             <Route path="notes" element={<NotesPage />} />
+            <Route path="contacts" element={<ContactsPage />} />
           </Route>
         </Route>
       </Route>

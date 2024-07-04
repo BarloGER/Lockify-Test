@@ -1,5 +1,6 @@
 export { AccountsPage } from "./AccountsPage";
 export { BlockedPage } from "./BlockedPage";
+export { ContactsPage } from "./ContactsPage";
 export { DashboardPage } from "./DashboardPage";
 export { ForgotPasswordPage } from "./ForgotPasswordPage";
 export { DataVaultPage } from "./DataVaultPage";
