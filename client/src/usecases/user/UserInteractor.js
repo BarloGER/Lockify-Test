@@ -26,7 +26,6 @@ export class UserInteractor {
   }
 
   async registerUser(userInput) {
-    console.log(userInput);
     const user = this.userInputPort.validateRegistrationInput(userInput);
     if (user.validationError) {
       return { validationError: user.validationError };

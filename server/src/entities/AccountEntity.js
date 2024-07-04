@@ -84,27 +84,6 @@ exports.AccountEntity = class AccountEntity {
     return null;
   }
 
-  validateForUpdate() {
-    const validFields = [
-      "accountName",
-      "accountUrl",
-      "username",
-      "email",
-      "ivPassword",
-      "encryptedPassword",
-      "ivNotes",
-      "encryptedNotes",
-    ];
-    const fieldsToUpdate = validFields.filter(
-      (field) => this[field] !== undefined
-    );
-    if (fieldsToUpdate.length === 0) {
-      return "ACCOUNT_VALIDATION_003";
-    }
-
-    return null;
-  }
-
   validateForDelete() {
     const validFields = [];
     const extraFields = validFields.filter(
