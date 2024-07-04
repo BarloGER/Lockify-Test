@@ -18,6 +18,7 @@ import {
   DataVaultPage,
   ForgotPasswordPage,
   LoginPage,
+  NotesPage,
   RegisterPage,
   UserProfile,
   VerificationPage,
@@ -43,6 +44,7 @@ export const App = () => {
         <Route path="/auth" element={<ProtectedLayout />}>
           <Route path="data-vault" element={<DataVaultPage />}>
             <Route path="accounts" element={<AccountsPage />} />
+            <Route path="notes" element={<NotesPage />} />
           </Route>
         </Route>
       </Route>
