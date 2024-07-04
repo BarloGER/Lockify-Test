@@ -33,13 +33,13 @@ export const DataVaultPage = () => {
     e.preventDefault();
     setIsDataVaultLoading(true);
 
-    const { encryptedSecret, encryptionIv, encryptionSalt } = user;
+    const { encryptedSecret, secretEncryptionIv, secretEncryptionSalt } = user;
 
     try {
       const decryptionResult = await cryptographyInteractor.decryptData({
         encryptedData: encryptedSecret,
-        iv: encryptionIv,
-        salt: encryptionSalt,
+        iv: secretEncryptionIv,
+        salt: secretEncryptionSalt,
         masterPassword: masterPassword,
       });
 

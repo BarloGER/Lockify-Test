@@ -26,8 +26,8 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
     email: req.body.email,
     password: req.body.password,
     encryptedSecret: req.body.encryptedSecret,
-    encryptionIv: req.body.encryptionIv,
-    encryptionSalt: req.body.encryptionSalt,
+    secretEncryptionIv: req.body.secretEncryptionIv,
+    secretEncryptionSalt: req.body.secretEncryptionSalt,
     isNewsletterAllowed: req.body.isNewsletterAllowed,
   };
 

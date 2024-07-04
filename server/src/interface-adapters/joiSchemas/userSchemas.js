@@ -29,8 +29,8 @@ exports.registerUserSchema = (language = "EN") => {
         .required()
         .messages(passwordMessages[language]),
       encryptedSecret: Joi.string(),
-      encryptionIv: Joi.string(),
-      encryptionSalt: Joi.string(),
+      secretEncryptionIv: Joi.string(),
+      secretEncryptionSalt: Joi.string(),
       isNewsletterAllowed: Joi.boolean()
         .required()
         .messages(newsletterMessages[language]),
