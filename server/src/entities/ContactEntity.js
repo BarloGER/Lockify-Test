@@ -1,7 +1,7 @@
-exports.AccountEntity = class AccountEntity {
-  constructor(accountInput) {
+exports.ContactEntity = class ContactEntity {
+  constructor(contactInput) {
     // Assign all transferred values
-    Object.entries(accountInput).forEach(([key, value]) => {
+    Object.entries(contactInput).forEach(([key, value]) => {
       this[key] = value;
     });
   }
@@ -31,7 +31,7 @@ exports.AccountEntity = class AccountEntity {
       "city",
       "stateProvinceRegion",
       "postalCode",
-      "Country",
+      "country",
       "phoneNumber",
       "email",
       "birthDate",
@@ -45,11 +45,11 @@ exports.AccountEntity = class AccountEntity {
 
     return (
       this.validateCompanyName(false) ||
-      this.validatefirstName(false) ||
+      this.validateFirstName(false) ||
       this.validateLastName(false) ||
       this.validateStreetAddress(false) ||
       this.validateAdditionalAddressInfo(false) ||
-      this.validateCity(true) ||
+      this.validateCity(false) ||
       this.validateStateProvinceRegion(false) ||
       this.validatePostalCode(false) ||
       this.validateCountry(false) ||
@@ -72,7 +72,7 @@ exports.AccountEntity = class AccountEntity {
       "city",
       "stateProvinceRegion",
       "postalCode",
-      "Country",
+      "country",
       "phoneNumber",
       "email",
       "birthDate",
@@ -93,6 +93,7 @@ exports.AccountEntity = class AccountEntity {
         field.charAt(0).toUpperCase() + field.slice(1)
       }`;
       const error = this[validateMethod](true);
+      console.log(error);
       if (error) return error;
     }
 
@@ -112,28 +113,65 @@ exports.AccountEntity = class AccountEntity {
     return null;
   }
 
-  validateAccountName(isRequired) {
-    if (isRequired && !this.accountName) return "CONTACT_VALIDATION_003";
-    if (this.accountName && typeof this.accountName !== "string")
+  validateCompanyName(isRequired) {
+    return null;
+  }
+  validateFirstName(isRequired) {
+    return null;
+  }
+  validateLastName(isRequired) {
+    return null;
+  }
+  validateStreetAddress(isRequired) {
+    return null;
+  }
+  validateAdditionalAddressInfo(isRequired) {
+    return null;
+  }
+  validateCity(isRequired) {
+    return null;
+  }
+  validateStateProvinceRegion(isRequired) {
+    return null;
+  }
+  validatePostalCode(isRequired) {
+    return null;
+  }
+  validateCountry(isRequired) {
+    return null;
+  }
+  validatePhoneNumber(isRequired) {
+    return null;
+  }
+  validateEmail(isRequired) {
+    return null;
+  }
+  validateBirthDate(isRequired) {
+    return null;
+  }
+
+  validateContactName(isRequired) {
+    if (isRequired && !this.contactName) return "CONTACT_VALIDATION_003";
+    if (this.contactName && typeof this.contactName !== "string")
       return "CONTACT_VALIDATION_004";
     if (
-      this.accountName &&
-      !/^[a-zA-ZäöüÄÖÜß0-9.,#_\-\s]*$/.test(this.accountName)
+      this.contactName &&
+      !/^[a-zA-ZäöüÄÖÜß0-9.,#_\-\s]*$/.test(this.contactName)
     ) {
       return "CONTACT_VALIDATION_005";
     }
     if (
-      this.accountName &&
-      (this.accountName.length < 3 || this.accountName.length > 20)
+      this.contactName &&
+      (this.contactName.length < 3 || this.contactName.length > 20)
     )
       return "CONTACT_VALIDATION_006";
 
     return null;
   }
 
-  validateAccountUrl(isRequired) {
-    if (isRequired && !this.accountUrl) return "CONTACT_VALIDATION_007";
-    if (this.accountUrl && typeof this.accountUrl !== "string")
+  validateContactUrl(isRequired) {
+    if (isRequired && !this.contactUrl) return "CONTACT_VALIDATION_007";
+    if (this.contactUrl && typeof this.contactUrl !== "string")
       return "CONTACT_VALIDATION_008";
 
     const urlPattern = new RegExp(
@@ -146,7 +184,7 @@ exports.AccountEntity = class AccountEntity {
       "i"
     );
 
-    if (this.accountUrl && !urlPattern.test(this.accountUrl)) {
+    if (this.contactUrl && !urlPattern.test(this.contactUrl)) {
       return "CONTACT_VALIDATION_009";
     }
 
@@ -168,15 +206,15 @@ exports.AccountEntity = class AccountEntity {
     return null;
   }
 
-  validateEmail(isRequired) {
-    if (isRequired && !this.email) return "CONTACT_VALIDATION_014";
-    if (this.email && typeof this.email !== "string")
-      return "CONTACT_VALIDATION_015";
-    if (this.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email))
-      return "CONTACT_VALIDATION_016";
+  // validateEmail(isRequired) {
+  //   if (isRequired && !this.email) return "CONTACT_VALIDATION_014";
+  //   if (this.email && typeof this.email !== "string")
+  //     return "CONTACT_VALIDATION_015";
+  //   if (this.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email))
+  //     return "CONTACT_VALIDATION_016";
 
-    return null;
-  }
+  //   return null;
+  // }
 
   validateEncryptedPassword(isRequired) {
     if (isRequired && !this.encryptedPassword) return "CONTACT_VALIDATION_017";

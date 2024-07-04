@@ -6,7 +6,6 @@ exports.NoteInputPort = class NoteInputPort {
     const note = new NoteEntity(userInput, { isNewNote: true });
 
     const validationError = note.validateForCreation();
-    console.log(validationError);
     if (validationError) {
       throw new ErrorResponse({ errorCode: `${validationError}` });
     }

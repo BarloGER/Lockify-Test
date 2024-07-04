@@ -1,7 +1,7 @@
-export class AccountEntity {
-  constructor(accountInput) {
+export class ContactEntity {
+  constructor(contactInput) {
     // Assign all transferred values
-    Object.entries(accountInput).forEach(([key, value]) => {
+    Object.entries(contactInput).forEach(([key, value]) => {
       this[key] = value;
     });
   }
@@ -31,7 +31,7 @@ export class AccountEntity {
       "city",
       "stateProvinceRegion",
       "postalCode",
-      "Country",
+      "country",
       "phoneNumber",
       "email",
       "birthDate",
@@ -43,11 +43,11 @@ export class AccountEntity {
 
     return (
       this.validateCompanyName(false) ||
-      this.validatefirstName(false) ||
+      this.validateFirstName(false) ||
       this.validateLastName(false) ||
       this.validateStreetAddress(false) ||
       this.validateAdditionalAddressInfo(false) ||
-      this.validateCity(true) ||
+      this.validateCity(false) ||
       this.validateStateProvinceRegion(false) ||
       this.validatePostalCode(false) ||
       this.validateCountry(false) ||
@@ -68,7 +68,7 @@ export class AccountEntity {
       "city",
       "stateProvinceRegion",
       "postalCode",
-      "Country",
+      "country",
       "phoneNumber",
       "email",
       "birthDate",
@@ -82,11 +82,11 @@ export class AccountEntity {
 
     return (
       this.validateCompanyName(false) ||
-      this.validatefirstName(false) ||
+      this.validateFirstName(false) ||
       this.validateLastName(false) ||
       this.validateStreetAddress(false) ||
       this.validateAdditionalAddressInfo(false) ||
-      this.validateCity(true) ||
+      this.validateCity(false) ||
       this.validateStateProvinceRegion(false) ||
       this.validatePostalCode(false) ||
       this.validateCountry(false) ||
@@ -109,7 +109,7 @@ export class AccountEntity {
       "city",
       "stateProvinceRegion",
       "postalCode",
-      "Country",
+      "country",
       "phoneNumber",
       "email",
       "birthDate",
@@ -142,7 +142,7 @@ export class AccountEntity {
       "city",
       "stateProvinceRegion",
       "postalCode",
-      "Country",
+      "country",
       "phoneNumber",
       "email",
       "birthDate",
@@ -167,43 +167,58 @@ export class AccountEntity {
     return null;
   }
 
+  validateCompanyName(isRequired) {
+    return null;
+  }
+  validateFirstName(isRequired) {
+    return null;
+  }
+  validateLastName(isRequired) {
+    return null;
+  }
+  validateStreetAddress(isRequired) {
+    return null;
+  }
+  validateAdditionalAddressInfo(isRequired) {
+    return null;
+  }
+  validateCity(isRequired) {
+    return null;
+  }
+  validateStateProvinceRegion(isRequired) {
+    return null;
+  }
+  validatePostalCode(isRequired) {
+    return null;
+  }
+  validateCountry(isRequired) {
+    return null;
+  }
+  validatePhoneNumber(isRequired) {
+    return null;
+  }
+  validateEmail(isRequired) {
+    return null;
+  }
+  validateBirthDate(isRequired) {
+    return null;
+  }
+
   validateAccountName(isRequired) {
-    if (isRequired && !this.accountName) return "CONTACT_VALIDATION_003";
-    if (this.accountName && typeof this.accountName !== "string")
+    if (isRequired && !this.contactName) return "CONTACT_VALIDATION_003";
+    if (this.contactName && typeof this.contactName !== "string")
       return "CONTACT_VALIDATION_004";
     if (
-      this.accountName &&
-      !/^[a-zA-ZäöüÄÖÜß0-9.,#_\-\s]*$/.test(this.accountName)
+      this.contactName &&
+      !/^[a-zA-ZäöüÄÖÜß0-9.,#_\-\s]*$/.test(this.contactName)
     ) {
       return "CONTACT_VALIDATION_005";
     }
     if (
-      this.accountName &&
-      (this.accountName.length < 3 || this.accountName.length > 20)
+      this.contactName &&
+      (this.contactName.length < 3 || this.contactName.length > 20)
     )
       return "CONTACT_VALIDATION_006";
-
-    return null;
-  }
-
-  validateAccountUrl(isRequired) {
-    if (isRequired && !this.accountUrl) return "CONTACT_VALIDATION_007";
-    if (this.accountUrl && typeof this.accountUrl !== "string")
-      return "CONTACT_VALIDATION_008";
-
-    const urlPattern = new RegExp(
-      "^(https?:\\/\\/)?" + // protocol
-        "((([a-zA-Z\\d]([a-zA-Z\\d-]*[a-zA-Z\\d])*)\\.?)+[a-zA-Z]{2,}|" + // domain name
-        "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
-        "(\\:\\d+)?(\\/[-a-zA-Z\\d%_.~+]*)*" + // port and path
-        "(\\?[;&a-zA-Z\\d%_.~+=-]*)?" + // query string
-        "(\\#[-a-zA-Z\\d_]*)?$", // fragment locator
-      "i"
-    );
-
-    if (this.accountUrl && !urlPattern.test(this.accountUrl)) {
-      return "CONTACT_VALIDATION_009";
-    }
 
     return null;
   }
