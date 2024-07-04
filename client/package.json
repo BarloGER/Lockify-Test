@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --config src/frameworks/web/vite.config.js",
-    "build": "vite build --config src/frameworks/web/vite.config.js",
-    "preview": "vite preview --config src/frameworks/web/vite.config.js"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
     "i18next": "^23.11.5",
