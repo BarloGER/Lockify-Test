@@ -6,11 +6,14 @@ import {
   Route,
 } from "react-router-dom";
 
-import { UserInteractor } from "../../usecases/user/UserInteractor.js";
-import { UserRepository } from "../../interface-adapters/repositories/UserRepository.js";
+import { UserInteractor } from "./usecases/user/UserInteractor.js";
+import { UserRepository } from "./interface-adapters/repositories/UserRepository.js";
 
-import { AuthProvider } from "../../interface-adapters/context/AuthContext.jsx";
-import { GlobalLayout, ProtectedLayout } from "./layouts";
+import { AuthProvider } from "./interface-adapters/context/AuthContext.jsx";
+import {
+  GlobalLayout,
+  ProtectedLayout,
+} from "./frameworks/web/layouts/index.js";
 import {
   AccountsPage,
   BlockedPage,
@@ -21,7 +24,7 @@ import {
   RegisterPage,
   UserProfile,
   VerificationPage,
-} from "../../interface-adapters/components/Pages";
+} from "./interface-adapters/components/Pages/index.js";
 
 export const App = () => {
   const userRepository = useMemo(() => new UserRepository(), []);
