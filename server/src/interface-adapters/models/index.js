@@ -11,6 +11,7 @@ const User = require("./UserModel")(sequelize, Model, DataTypes);
 const Account = require("./AccountModel")(sequelize, Model, DataTypes);
 const Note = require("./NoteModel")(sequelize, Model, DataTypes);
 const Contact = require("./ContactModel")(sequelize, Model, DataTypes);
+const Bank = require("./BankModel")(sequelize, Model, DataTypes);
 
 User.hasMany(Account, {
   foreignKey: "userId",
@@ -36,6 +37,14 @@ Contact.belongsTo(User, {
   foreignKey: "userId",
 });
 
+User.hasMany(Bank, {
+  foreignKey: "userId",
+  onDelete: "CASCADE",
+});
+Bank.belongsTo(User, {
+  foreignKey: "userId",
+});
+
 module.exports = {
   sequelize,
   Model,
@@ -43,4 +52,5 @@ module.exports = {
   Account,
   Note,
   Contact,
+  Bank,
 };
