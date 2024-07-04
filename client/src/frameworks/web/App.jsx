@@ -13,6 +13,7 @@ import { AuthProvider } from "../../interface-adapters/context/AuthContext.jsx";
 import { GlobalLayout, ProtectedLayout } from "./layouts/index.js";
 import {
   AccountsPage,
+  BanksPage,
   BlockedPage,
   ContactsPage,
   DashboardPage,
@@ -47,6 +48,7 @@ export const App = () => {
             <Route path="accounts" element={<AccountsPage />} />
             <Route path="notes" element={<NotesPage />} />
             <Route path="contacts" element={<ContactsPage />} />
+            <Route path="banks" element={<BanksPage />} />
           </Route>
         </Route>
       </Route>

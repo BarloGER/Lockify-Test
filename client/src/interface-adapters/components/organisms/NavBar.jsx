@@ -25,7 +25,7 @@ export const NavBar = () => {
               {t("navBar.contacts")}
             </NavLink>
             <NavLink to="/auth/data-vault/notes">{t("navBar.notes")}</NavLink>
-            <NavLink to="/auth/data-vault/bank-info">
+            <NavLink to="/auth/data-vault/banks">
               {t("navBar.bankInfo")}
             </NavLink>
             <li>

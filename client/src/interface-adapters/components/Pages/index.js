@@ -1,4 +1,5 @@
 export { AccountsPage } from "./AccountsPage";
+export { BanksPage } from "./BanksPage";
 export { BlockedPage } from "./BlockedPage";
 export { ContactsPage } from "./ContactsPage";
 export { DashboardPage } from "./DashboardPage";
