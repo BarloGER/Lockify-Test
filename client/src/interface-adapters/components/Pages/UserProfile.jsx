@@ -1,17 +1,12 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { AuthContext } from "../../context/AuthContext";
+
 import { UserProfileForm } from "../organisms";
 
-import { UserInteractor } from "../../../usecases/user/UserInteractor.js";
-import { UserRepository } from "../../repositories/UserRepository.js";
-
-// Initialisierung des UserRepository und des UserInteractor
-const userRepository = new UserRepository();
-const userInteractor = new UserInteractor(userRepository);
-
 export const UserProfile = () => {
-  const { user, setUser, isAuthenticated, setIsAuthenticated } =
+  const { user, setUser, userInteractor, isAuthenticated, setIsAuthenticated } =
     useContext(AuthContext);
   const navigate = useNavigate();
 

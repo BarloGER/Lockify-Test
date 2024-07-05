@@ -1,9 +1,23 @@
 import PropTypes from "prop-types";
-import { createContext, useState, useEffect, useCallback } from "react";
+import {
+  createContext,
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+} from "react";
+import { UserInteractor } from "../../usecases/user/UserInteractor.js";
+import { UserRepository } from "../../interface-adapters/repositories/UserRepository.js";
 
 export const AuthContext = createContext(null);
 
-export const AuthProvider = ({ children, userInteractor }) => {
+export const AuthProvider = ({ children }) => {
+  const userRepository = useMemo(() => new UserRepository(), []);
+  const userInteractor = useMemo(
+    () => new UserInteractor(userRepository),
+    [userRepository]
+  );
+
   const [user, setUser] = useState(null);
   const [masterPassword, setMasterPassword] = useState("");
   const [loadingAuthRequest, setLoadingAuthRequest] = useState(true);
@@ -47,6 +61,7 @@ export const AuthProvider = ({ children, userInteractor }) => {
       value={{
         user,
         setUser,
+        userInteractor,
         masterPassword,
         setMasterPassword,
         isAuthenticated,
@@ -65,5 +80,4 @@ export const AuthProvider = ({ children, userInteractor }) => {
 
 AuthProvider.propTypes = {
   children: PropTypes.node.isRequired,
-  userInteractor: PropTypes.object.isRequired,
 };

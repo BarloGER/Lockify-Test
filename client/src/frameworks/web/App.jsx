@@ -1,13 +1,9 @@
-import { useMemo } from "react";
 import {
   RouterProvider,
   createBrowserRouter,
   createRoutesFromElements,
   Route,
 } from "react-router-dom";
-
-import { UserInteractor } from "../../usecases/user/UserInteractor.js";
-import { UserRepository } from "../../interface-adapters/repositories/UserRepository.js";
 
 import { AuthProvider } from "../../interface-adapters/context/AuthContext.jsx";
 import { GlobalLayout, ProtectedLayout } from "./layouts/index.js";
@@ -27,12 +23,6 @@ import {
 } from "../../interface-adapters/components/Pages/index.js";
 
 export const App = () => {
-  const userRepository = useMemo(() => new UserRepository(), []);
-  const userInteractor = useMemo(
-    () => new UserInteractor(userRepository),
-    [userRepository]
-  );
-
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<GlobalLayout />}>
@@ -56,7 +46,7 @@ export const App = () => {
   );
 
   return (
-    <AuthProvider userInteractor={userInteractor}>
+    <AuthProvider>
       <RouterProvider router={router} />
     </AuthProvider>
   );

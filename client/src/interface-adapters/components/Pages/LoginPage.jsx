@@ -2,18 +2,14 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../../context/AuthContext.jsx";
-import { UserInteractor } from "../../../usecases/user/UserInteractor.js";
-import { UserRepository } from "../../repositories/UserRepository.js";
 
 import { AuthTemplate } from "../templates";
 import { LoginForm } from "../organisms";
 
-const userRepository = new UserRepository();
-const userInteractor = new UserInteractor(userRepository);
-
 export const LoginPage = () => {
   const navigate = useNavigate();
-  const { setUser, setIsAuthenticated } = useContext(AuthContext);
+  const { setUser, setIsAuthenticated, userInteractor } =
+    useContext(AuthContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

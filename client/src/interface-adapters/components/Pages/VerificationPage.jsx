@@ -1,21 +1,17 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { UserInteractor } from "../../../usecases/user/UserInteractor.js";
-import { UserRepository } from "../../repositories/UserRepository.js";
-
 import { AuthContext } from "../../context/AuthContext.jsx";
+
 import { AuthTemplate } from "../templates";
 import { VerificationForm } from "../organisms";
 
 // ? Add alternativ email
 
-const userRepository = new UserRepository();
-const userInteractor = new UserInteractor(userRepository);
-
 export const VerificationPage = () => {
   const navigate = useNavigate();
-  const { user, setUser, isAuthenticated } = useContext(AuthContext);
+  const { user, setUser, userInteractor, isAuthenticated } =
+    useContext(AuthContext);
 
   const [verificationCode, setVerificationCode] = useState("");
   const [isVerificationLoading, setIsVerificationLoading] = useState(false);

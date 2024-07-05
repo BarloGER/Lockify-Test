@@ -1,21 +1,17 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { UserInteractor } from "../../../usecases/user/UserInteractor.js";
-import { UserRepository } from "../../repositories/UserRepository.js";
 import { CryptographyInteractor } from "../../../usecases/cryptography/CryptographyInteractor.js";
-
 import { AuthContext } from "../../context/AuthContext.jsx";
+
 import { AuthTemplate } from "../templates";
 import { RegisterForm } from "../organisms";
 
-const userRepository = new UserRepository();
-const userInteractor = new UserInteractor(userRepository);
 const cryptographyInteractor = new CryptographyInteractor();
 
 export const RegisterPage = () => {
   const navigate = useNavigate();
-  const { setUser, isAuthenticated, setIsAuthenticated } =
+  const { setUser, userInteractor, isAuthenticated, setIsAuthenticated } =
     useContext(AuthContext);
 
   const [username, setUsername] = useState("");
