@@ -1,6 +1,4 @@
 const { filterSensitiveData } = require("../../utils/filterSensitiveData");
-//! Will only output if success is true for now
-//! Check safeUserData currently not working
 exports.AccountPresenter = class AccountPresenter {
   presentAccounts(language, output) {
     if (!output.success) {

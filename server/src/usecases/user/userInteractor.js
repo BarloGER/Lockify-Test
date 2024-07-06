@@ -69,11 +69,6 @@ exports.UserInteractor = class UserInteractor {
       });
     }
 
-    const isBlocked = foundUser.isBlocked;
-    if (isBlocked) {
-      throw new ErrorResponse({ errorCode: "USER_AUTHORIZATION_001" });
-    }
-
     const isValidPassword =
       await this.passwordHashingService.comparePasswordHash(
         credentials.password,
@@ -107,7 +102,18 @@ exports.UserInteractor = class UserInteractor {
 
     const isBlocked = foundUser.isBlocked;
     if (isBlocked) {
-      throw new ErrorResponse({ errorCode: "USER_AUTHORIZATION_001" });
+      const userOuputData = {
+        success: false,
+        message: {
+          EN: "Your account has been blocked, please contact support.",
+          DE: "Dein Account wurde gesperrt, wende dich an den Support.",
+        },
+        user: {
+          isBlocked: true,
+        },
+      };
+
+      return userOuputData;
     }
 
     const userOutputData = {
@@ -181,7 +187,7 @@ exports.UserInteractor = class UserInteractor {
         EN: "User updated successfully.",
         DE: "Benutzer erfolgreich aktualisiert",
       },
-      user: updatedUser.dataValues,
+      user: updatedUser,
     };
 
     return this.userOutputPort.userOutput(userOutputData);

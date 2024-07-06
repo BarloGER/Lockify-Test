@@ -12,17 +12,13 @@ export class UserInteractor {
     const authenticationResult =
       await this.userRepository.checkAuthAndGetUser();
 
-    const authOutputData = {
+    const userOutputData = {
       success: authenticationResult.success,
       message: authenticationResult.message,
       user: authenticationResult.user,
-      statusCode: authenticationResult.statusCode,
-      statusMessage: authenticationResult.statusMessage,
-      errorType: authenticationResult.errorType,
-      errorCode: authenticationResult.errorCode,
     };
 
-    return this.userOutputPort.prepareAuthOutput(authOutputData);
+    return this.userOutputPort.prepareUserOutput(userOutputData);
   }
 
   async registerUser(userInput) {

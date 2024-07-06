@@ -19,8 +19,6 @@ const userInteractor = new UserInteractor(
 exports.registerUser = asyncHandler(async (req, res, next) => {
   const language = req.headers["accept-language"].includes("de") ? "DE" : "EN";
 
-  console.log("req.body", req.body);
-
   const userInput = {
     username: req.body.username,
     email: req.body.email,
@@ -79,7 +77,7 @@ exports.getUser = asyncHandler(async (req, res, next) => {
   }
 
   const result = await userInteractor.getUser(userId);
-  const response = userPresenter.presentUser(language, result);
+  const response = userPresenter.presentBlockedUser(language, result);
 
   res.status(200).json(response);
 });
