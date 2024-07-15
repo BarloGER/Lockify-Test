@@ -32,7 +32,12 @@ const logErrorToDatabase = async ({
 };
 
 exports.errorHandler = async (err, req, res, next) => {
-  const language = req.headers["accept-language"].includes("de") ? "DE" : "EN";
+  const language =
+    req.headers["accept-language"] &&
+    req.headers["accept-language"].includes("de")
+      ? "DE"
+      : "EN";
+
   const errorCode = err.errorCode || "UNHANDLED_ERROR";
   const errorCodeInfo = errorCodes[errorCode] || {
     statusCode: 500,
@@ -49,6 +54,7 @@ exports.errorHandler = async (err, req, res, next) => {
   const message = err.validationMessages || errorCodeInfo.message[language];
 
   const clientResponse = {
+    success: false,
     message,
     statusCode,
     statusMessage,

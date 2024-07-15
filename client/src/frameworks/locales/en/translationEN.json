@@ -17,6 +17,9 @@
     "username": "Username",
     "email": "E-mail",
     "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "masterPassword": "Master Password",
+    "confirmMasterPassword": "Confirm Master Password",
     "newsletter": "Newsletter",
     "registerButton": "Register",
     "linkButton": "Login",
@@ -47,9 +50,10 @@
     "text": "Enter your master password here to open the data safe."
   },
   "navBar": {
-    "home": "Dashboard",
+    "home": "Home",
     "userProfile": "Profile",
     "dataVault": "Data Vault",
+    "dashboard": "Dashboard",
     "accounts": "Accounts",
     "contacts": "Contacts",
     "notes": "Notes",

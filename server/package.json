@@ -19,7 +19,6 @@
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "express-session": "^1.18.0",
-    "joi": "^17.13.1",
     "mongoose": "^8.3.4",
     "pg": "^8.11.5",
     "sequelize": "^6.37.3"
