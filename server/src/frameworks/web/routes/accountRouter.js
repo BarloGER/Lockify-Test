@@ -2,17 +2,9 @@ const { Router } = require("express");
 const {
   validateSession,
 } = require("../../../interface-adapters/middlewares/validateSession");
-// const {
-//   validateJoi,
-// } = require("../../../interface-adapters/middlewares/validateJoi");
-// const {
-//   registerUserSchema,
-//   loginUserSchema,
-//   updateUserSchema,
-//   deleteUserSchema,
-//   confirmEmailSchema,
-//   sendMailSchema,
-// } = require("../../../interface-adapters/joiSchemas/userSchemas");
+const {
+  validateRequestMetadata,
+} = require("../../../interface-adapters/middlewares/validateRequestMetadata");
 const {
   getAccounts,
   createAccount,
@@ -22,9 +14,29 @@ const {
 
 const accountRouter = Router();
 
-accountRouter.get("/get-accounts", validateSession, getAccounts);
-accountRouter.post("/create-account", validateSession, createAccount);
-accountRouter.put("/update-account/:id", validateSession, updateAccount);
-accountRouter.delete("/delete-account/:id", validateSession, deleteAccount);
+accountRouter.get(
+  "/get-accounts",
+  validateRequestMetadata(),
+  validateSession,
+  getAccounts
+);
+accountRouter.post(
+  "/create-account",
+  validateRequestMetadata(),
+  validateSession,
+  createAccount
+);
+accountRouter.put(
+  "/update-account/:id",
+  validateRequestMetadata(),
+  validateSession,
+  updateAccount
+);
+accountRouter.delete(
+  "/delete-account/:id",
+  validateRequestMetadata(),
+  validateSession,
+  deleteAccount
+);
 
 exports.accountRouter = accountRouter;

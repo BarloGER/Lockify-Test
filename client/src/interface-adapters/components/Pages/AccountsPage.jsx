@@ -1,22 +1,21 @@
-import { useState, useEffect, useContext } from "react";
-import { AccountInteractor } from "../../../usecases/account/AccountInteractor.js";
-import { AccountRepository } from "../../repositories/AccountRepository.js";
-import { CryptographyInteractor } from "../../../usecases/cryptography/CryptographyInteractor.js";
-import { AuthContext } from "../../context/AuthContext.jsx";
+import { useState, useContext } from "react";
+import { DataVaultContext } from "../../context/DataVaultContext.jsx";
 import { AccountTemplate } from "../templates";
+import { SearchInput } from "../atoms";
 import { FlashMessage } from "../molecules/FlashMessage.jsx";
 import { NewAccountForm, AccountsOverview } from "../organisms";
 
-// Initialisierung des AccountRepository und des AccountInteractor
-const accountRepository = new AccountRepository();
-const accountInteractor = new AccountInteractor(accountRepository);
-const cryptographyInteractor = new CryptographyInteractor();
-
 export const AccountsPage = () => {
-  const { masterPassword } = useContext(AuthContext);
+  const {
+    masterPassword,
+    accounts,
+    setAccounts,
+    accountInteractor,
+    cryptographyInteractor,
+    isDataVaultUnlocked,
+  } = useContext(DataVaultContext);
 
-  const [accounts, setAccounts] = useState([]);
-  const [newAccountFormValues, setNewAccountFormValues] = useState({
+  const [newAccountFormData, setNewAccountFormData] = useState({
     accountName: "",
     accountUrl: "",
     username: "",
@@ -24,160 +23,115 @@ export const AccountsPage = () => {
     password: "",
     notes: "",
   });
-
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedOption, setSelectedOption] = useState("accountName");
   const [isAccountLoading, setIsAccountLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
 
+  if (!isDataVaultUnlocked) {
+    return;
+  }
+
+  const searchOptions = [
+    { value: "accountName" },
+    { value: "username" },
+    { value: "email" },
+    { value: "accountUrl" },
+  ];
+  const filteredAccounts = accounts.filter((account) =>
+    account[selectedOption].toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setNewAccountFormValues({ ...newAccountFormValues, [name]: value });
+    setNewAccountFormData({ ...newAccountFormData, [name]: value });
   };
 
-  const decryptAccountData = async (accountData, masterPassword) => {
-    // Check whether the input is an array or needs to be converted into an array
-    const accounts = Array.isArray(accountData) ? accountData : [accountData];
-
-    const decryptedAccounts = await Promise.all(
-      accounts.map(async (account) => {
-        const decryptionResultPassword =
-          await cryptographyInteractor.decryptData({
-            encryptedData: account.encryptedPassword,
-            iv: account.passwordEncryptionIv,
-            salt: account.passwordEncryptionSalt,
-            masterPassword: masterPassword,
-          });
-
-        const decryptedPassword = decryptionResultPassword.success
-          ? decryptionResultPassword.data
-          : "";
-
-        const decryptionResultNotes = account.encryptedNotes
-          ? await cryptographyInteractor.decryptData({
-              encryptedData: account.encryptedNotes,
-              iv: account.notesEncryptionIv,
-              salt: account.notesEncryptionSalt,
-              masterPassword: masterPassword,
-            })
-          : { success: true, data: "" };
-
-        const decryptedNotes = decryptionResultNotes.success
-          ? decryptionResultNotes.data
-          : "";
-
-        return {
-          ...account,
-          decryptedPassword,
-          decryptedNotes,
-        };
-      })
-    );
-
-    return Array.isArray(accountData)
-      ? decryptedAccounts
-      : decryptedAccounts[0];
-  };
-
-  const getAccounts = async (masterPassword) => {
-    setIsAccountLoading(true);
-
-    const accountRequestResponse = await accountInteractor.getAccounts();
-    if (!accountRequestResponse.success) {
-      setMessage(
-        accountRequestResponse.message || "Fehler beim Abrufen der Konten"
-      );
-      setMessageType("error");
-      setAccounts([]);
-      setIsAccountLoading(false);
-      return;
-    }
-
-    const decryptedAccounts = await decryptAccountData(
-      accountRequestResponse.accounts,
-      masterPassword
-    );
-    if (!decryptedAccounts) {
-      setMessage("Fehler beim Entschlüsseln der Konten");
-      setMessageType("error");
-      setAccounts([]);
-      return;
-    }
-
-    setIsAccountLoading(false);
-    setAccounts(decryptedAccounts);
-    setMessage(accountRequestResponse.message);
-    setMessageType("success");
-  };
-
-  useEffect(() => {
-    getAccounts(masterPassword);
-  }, []);
-
-  const handleCreateAccount = async (e, masterPassword) => {
+  const processCreateAccount = async (e, masterPassword) => {
     e.preventDefault();
     setIsAccountLoading(true);
 
-    const validateAccount = await accountInteractor.validateCreateAccount({
-      accountName: newAccountFormValues.accountName,
-      accountUrl: newAccountFormValues.accountUrl,
-      username: newAccountFormValues.username,
-      email: newAccountFormValues.email,
-      password: newAccountFormValues.password,
-      notes: newAccountFormValues.notes,
-    });
-    if (validateAccount && validateAccount.validationError) {
+    const unvalidatedUserInput = newAccountFormData;
+    const validateUserInput =
+      await accountInteractor.validateUserInputForCreateAccount(
+        unvalidatedUserInput
+      );
+    if (!validateUserInput.success) {
       setIsAccountLoading(false);
-      setMessage(`validationError.${validateAccount.validationError}`);
+      setMessage(`validationError.${validateUserInput.message}`);
       setMessageType("error");
       return;
     }
+    const validAccountEntity = validateUserInput.validAccountEntity;
 
-    const encryptedPasswordObj = await cryptographyInteractor.encryptData({
-      text: newAccountFormValues.password,
-      masterPassword: masterPassword,
-    });
-
-    let encryptedNotesObj = { data: { encryptedData: "", iv: "", salt: "" } };
-    if (newAccountFormValues.notes) {
-      encryptedNotesObj = await cryptographyInteractor.encryptData({
-        text: newAccountFormValues.notes,
+    let encryptedPassword = {
+      success: true,
+      encryptedData: "",
+      iv: "",
+      salt: "",
+    };
+    if (validAccountEntity.password) {
+      encryptedPassword = await cryptographyInteractor.encryptData({
+        text: validAccountEntity.password,
         masterPassword: masterPassword,
       });
     }
 
-    const creationResponse = await accountInteractor.createAccount({
-      accountName: newAccountFormValues.accountName,
-      accountUrl: newAccountFormValues.accountUrl,
-      username: newAccountFormValues.username,
-      email: newAccountFormValues.email,
-      encryptedPassword: encryptedPasswordObj.data.encryptedData,
-      passwordEncryptionIv: encryptedPasswordObj.data.iv,
-      passwordEncryptionSalt: encryptedPasswordObj.data.salt,
-      encryptedNotes: encryptedNotesObj.data.encryptedData,
-      notesEncryptionIv: encryptedNotesObj.data.iv,
-      notesEncryptionSalt: encryptedNotesObj.data.salt,
-    });
+    let encryptedNotes = {
+      success: true,
+      encryptedData: "",
+      iv: "",
+      salt: "",
+    };
+    if (validAccountEntity.notes) {
+      encryptedNotes = await cryptographyInteractor.encryptData({
+        text: validAccountEntity.notes,
+        masterPassword: masterPassword,
+      });
+    }
 
-    if (creationResponse.validationError) {
+    const encryptedAccountData = {
+      accountName: validAccountEntity.accountName,
+      accountUrl: validAccountEntity.accountUrl,
+      username: validAccountEntity.username,
+      email: validAccountEntity.email,
+      encryptedPassword: encryptedPassword.encryptedData,
+      passwordEncryptionIv: encryptedPassword.iv,
+      passwordEncryptionSalt: encryptedPassword.salt,
+      encryptedNotes: encryptedNotes.encryptedData,
+      notesEncryptionIv: encryptedNotes.iv,
+      notesEncryptionSalt: encryptedNotes.salt,
+    };
+
+    const createAccountResponse = await accountInteractor.createAccount(
+      encryptedAccountData
+    );
+    if (
+      !createAccountResponse.success &&
+      createAccountResponse.message === "Failed to fetch"
+    ) {
       setIsAccountLoading(false);
-      setMessage(`validationError.${creationResponse.validationError}`);
+      setMessage("externalService.serverError");
       setMessageType("error");
       return;
-    } else if (!creationResponse.success) {
+    } else if (!createAccountResponse.success) {
       setIsAccountLoading(false);
-      setMessage(creationResponse.message);
+      setMessage(createAccountResponse.message);
       setMessageType("error");
       return;
     }
 
-    const decryptedAccount = await decryptAccountData(
-      creationResponse.account,
-      masterPassword
-    );
-
-    setAccounts((prevAccounts) => [...prevAccounts, decryptedAccount]);
+    setAccounts((prevAccounts) => [
+      ...prevAccounts,
+      {
+        ...createAccountResponse.account,
+        decryptedPassword: validAccountEntity.password,
+        decryptedNotes: validAccountEntity.notes,
+      },
+    ]);
     setIsAccountLoading(false);
-    setNewAccountFormValues({
+    setNewAccountFormData({
       accountName: "",
       accountUrl: "",
       username: "",
@@ -185,14 +139,14 @@ export const AccountsPage = () => {
       password: "",
       notes: "",
     });
-    setMessage(creationResponse.message);
+    setMessage(createAccountResponse.message);
     setMessageType("success");
   };
 
   const handleSelectAccountForEdit = (accountId) => {
     const account = accounts.find((acc) => acc.accountId === accountId);
     if (account) {
-      setNewAccountFormValues({
+      setNewAccountFormData({
         accountName: account.accountName,
         accountUrl: account.accountUrl,
         username: account.username,
@@ -203,7 +157,12 @@ export const AccountsPage = () => {
     }
   };
 
-  const handleEditAccount = async (e, accountId, formValues) => {
+  const processUpdateAccount = async (
+    e,
+    accountId,
+    updateAccountFormData,
+    setIsEditing
+  ) => {
     e.preventDefault();
     setIsAccountLoading(true);
 
@@ -214,63 +173,78 @@ export const AccountsPage = () => {
       return;
     }
 
-    const validateAccount = await accountInteractor.validateEditAccount({
-      accountName: formValues.accountName,
-      accountUrl: formValues.accountUrl,
-      username: formValues.username,
-      email: formValues.email,
-      password: formValues.password,
-      notes: formValues.notes,
-    });
-
-    if (validateAccount && validateAccount.validationError) {
+    const unvalidatedUserInput = updateAccountFormData;
+    const validateUserInput =
+      await accountInteractor.validateUserInputForUpdateAccount(
+        unvalidatedUserInput
+      );
+    if (!validateUserInput.success) {
       setIsAccountLoading(false);
-      setMessage(`validationError.${validateAccount.validationError}`);
+      setMessage(`validationError.${validateUserInput.message}`);
       setMessageType("error");
       return;
     }
+    const validAccountEntity = validateUserInput.validAccountEntity;
+    console.log(validAccountEntity);
 
-    const encryptedPasswordObj = await cryptographyInteractor.encryptData({
-      text: formValues.password,
-      masterPassword: masterPassword,
-    });
-
-    let encryptedNotesObj = { data: { encryptedData: "", iv: "", salt: "" } };
-    if (formValues.notes) {
-      encryptedNotesObj = await cryptographyInteractor.encryptData({
-        text: formValues.notes,
+    let encryptedPassword = {
+      success: true,
+      encryptedData: "",
+      iv: "",
+      salt: "",
+    };
+    if (validAccountEntity.password) {
+      encryptedPassword = await cryptographyInteractor.encryptData({
+        text: validAccountEntity.password,
         masterPassword: masterPassword,
       });
     }
 
-    const editResponse = await accountInteractor.editAccount(accountId, {
-      accountName: formValues.accountName,
-      accountUrl: formValues.accountUrl,
-      username: formValues.username,
-      email: formValues.email,
-      encryptedPassword: encryptedPasswordObj.data.encryptedData,
-      passwordEncryptionIv: encryptedPasswordObj.data.iv,
-      passwordEncryptionSalt: encryptedPasswordObj.data.salt,
-      encryptedNotes: encryptedNotesObj.data.encryptedData,
-      notesEncryptionIv: encryptedNotesObj.data.iv,
-      notesEncryptionSalt: encryptedNotesObj.data.salt,
-    });
+    let encryptedNotes = {
+      success: true,
+      encryptedData: "",
+      iv: "",
+      salt: "",
+    };
+    if (validAccountEntity.notes) {
+      encryptedNotes = await cryptographyInteractor.encryptData({
+        text: validAccountEntity.notes,
+        masterPassword: masterPassword,
+      });
+    }
 
-    if (!editResponse.success) {
+    const encryptedAccountData = {
+      accountName: validAccountEntity.accountName,
+      accountUrl: validAccountEntity.accountUrl,
+      username: validAccountEntity.username,
+      email: validAccountEntity.email,
+      encryptedPassword: encryptedPassword.encryptedData,
+      passwordEncryptionIv: encryptedPassword.iv,
+      passwordEncryptionSalt: encryptedPassword.salt,
+      encryptedNotes: encryptedNotes.encryptedData,
+      notesEncryptionIv: encryptedNotes.iv,
+      notesEncryptionSalt: encryptedNotes.salt,
+    };
+
+    const updateAccountResponse = await accountInteractor.updateAccount(
+      accountId,
+      encryptedAccountData
+    );
+    if (!updateAccountResponse.success) {
       setIsAccountLoading(false);
-      setMessage(editResponse.message);
+      setMessage(updateAccountResponse.message);
       setMessageType("error");
       return;
     }
 
-    // Update local state
+    // Update local state to avoid decryption
     const updatedAccount = accounts.map((account) => {
       if (account.accountId === accountId) {
         return {
           ...account,
-          ...formValues,
-          decryptedPassword: formValues.password,
-          decryptedNotes: formValues.notes,
+          ...validAccountEntity,
+          decryptedPassword: validAccountEntity.password,
+          decryptedNotes: validAccountEntity.notes,
         };
       }
       return account;
@@ -278,11 +252,12 @@ export const AccountsPage = () => {
 
     setAccounts(updatedAccount);
     setIsAccountLoading(false);
-    setMessage(editResponse.message);
+    setIsEditing(false);
+    setMessage(updateAccountResponse.message);
     setMessageType("success");
   };
 
-  const handleDeleteAccount = async (accountId) => {
+  const processDeleteAccount = async (accountId) => {
     setIsAccountLoading(true);
 
     const accountToDelete = accounts.find((acc) => acc.accountId === accountId);
@@ -293,7 +268,6 @@ export const AccountsPage = () => {
     }
 
     const deletionResponse = await accountInteractor.deleteAccount(accountId);
-
     if (!deletionResponse.success) {
       setIsAccountLoading(false);
       setMessage(deletionResponse.message);
@@ -314,6 +288,14 @@ export const AccountsPage = () => {
 
   return (
     <AccountTemplate>
+      <SearchInput
+        placeholder={selectedOption}
+        onSearchChange={setSearchTerm}
+        searchOptions={searchOptions}
+        onOptionChange={(e) => setSelectedOption(e.target.value)}
+        selectedOption={selectedOption}
+        pageName="accountsPage"
+      />
       <FlashMessage
         message={message}
         setMessage={setMessage}
@@ -321,20 +303,20 @@ export const AccountsPage = () => {
         className="account-page__flash-message"
       />
       <NewAccountForm
-        formValues={newAccountFormValues}
-        setFormValues={setNewAccountFormValues}
+        newAccountFormData={newAccountFormData}
+        setNewAccountFormData={setNewAccountFormData}
         handleChange={handleChange}
-        handleSubmit={(e) => handleCreateAccount(e, masterPassword)}
+        processCreateAccount={(e) => processCreateAccount(e, masterPassword)}
         isAccountLoading={isAccountLoading}
         message={message}
         setMessage={setMessage}
         messageType={messageType}
       />
       <AccountsOverview
-        accounts={accounts}
-        onSelectAccount={handleSelectAccountForEdit}
-        onEditAccount={handleEditAccount}
-        onDeleteAccount={handleDeleteAccount}
+        accounts={filteredAccounts}
+        handleSelectAccountForEdit={handleSelectAccountForEdit}
+        processUpdateAccount={processUpdateAccount}
+        processDeleteAccount={processDeleteAccount}
         isAccountLoading={isAccountLoading}
         message={message}
         messageType={messageType}

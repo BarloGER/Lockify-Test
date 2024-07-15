@@ -3,25 +3,23 @@ import PropTypes from "prop-types";
 import { Input, Button } from "../atoms";
 import { SubmitButton } from "../molecules";
 import { FlashMessage } from "../molecules";
-import { useTranslation } from "react-i18next";
 import "./assets/new-account-form.css";
 
 export const NewAccountForm = ({
-  formValues,
-  setFormValues,
+  newAccountFormData,
+  setNewAccountFormData,
   handleChange,
-  handleSubmit,
+  processCreateAccount,
   isAccountLoading,
   message,
   setMessage,
   messageType,
 }) => {
-  const { t } = useTranslation();
   const [isCreating, setIsCreating] = useState(false);
 
   const handlePlusClick = () => {
     setIsCreating(!isCreating);
-    setFormValues({
+    setNewAccountFormData({
       accountName: "",
       accountUrl: "",
       username: "",
@@ -40,49 +38,49 @@ export const NewAccountForm = ({
           </div>
         </div>
         <div className="new-account__form_back">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={processCreateAccount}>
             <Input
               id="accountName"
               name="accountName"
-              label={t("account.accountName")}
-              value={formValues.accountName}
+              label={"accountsPage.accountName"}
+              value={newAccountFormData.accountName}
               onChange={handleChange}
             />
             <Input
               id="accountUrl"
               name="accountUrl"
-              label={t("account.accountUrl")}
-              value={formValues.accountUrl}
+              label={"accountsPage.accountUrl"}
+              value={newAccountFormData.accountUrl}
               onChange={handleChange}
             />
             <Input
               id="username"
               name="username"
-              label={t("account.username")}
-              value={formValues.username}
+              label={"accountsPage.username"}
+              value={newAccountFormData.username}
               onChange={handleChange}
             />
             <Input
               id="email"
               name="email"
-              label={t("account.email")}
+              label={"accountsPage.email"}
               type="email"
-              value={formValues.email}
+              value={newAccountFormData.email}
               onChange={handleChange}
             />
             <Input
               id="password"
               name="password"
-              label={t("account.password")}
+              label={"accountsPage.password"}
               type="password"
-              value={formValues.password}
+              value={newAccountFormData.password}
               onChange={handleChange}
             />
             <Input
               id="notes"
               name="notes"
-              label={t("account.notes")}
-              value={formValues.notes}
+              label={"accountsPage.notes"}
+              value={newAccountFormData.notes}
               onChange={handleChange}
             />
 
@@ -91,11 +89,11 @@ export const NewAccountForm = ({
               modifier="hover"
               isLoading={isAccountLoading}
             >
-              {t("account.submitNewAccount")}
+              {"accountsPage.submitNewAccount"}
             </SubmitButton>
 
             <Button onClick={handlePlusClick} modifier="hover">
-              {t("account.cancel")}
+              {"accountsPage.cancel"}
             </Button>
 
             <FlashMessage
@@ -112,7 +110,7 @@ export const NewAccountForm = ({
 };
 
 NewAccountForm.propTypes = {
-  formValues: PropTypes.shape({
+  newAccountFormData: PropTypes.shape({
     accountName: PropTypes.string,
     accountUrl: PropTypes.string,
     username: PropTypes.string,
@@ -120,9 +118,9 @@ NewAccountForm.propTypes = {
     password: PropTypes.string,
     notes: PropTypes.string,
   }).isRequired,
-  setFormValues: PropTypes.func.isRequired,
+  setNewAccountFormData: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  processCreateAccount: PropTypes.func.isRequired,
   isAccountLoading: PropTypes.bool.isRequired,
   message: PropTypes.string,
   setMessage: PropTypes.func.isRequired,

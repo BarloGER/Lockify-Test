@@ -19,45 +19,44 @@ exports.AccountInteractor = class AccountInteractor {
       });
     }
 
-    const accountOutputData = {
-      success: true,
-      message: {
-        EN: "Accounts successfully queried.",
-        DE: "Accounts erfolgreich abgefragt.",
-      },
-      accounts: foundAccounts,
-    };
-
-    return this.accountOutputPort.prepareAccountsOutput(accountOutputData);
+    return this.accountOutputPort.formatFoundAccounts(foundAccounts);
   }
 
-  async createAccount(userId, userInput) {
-    const account = this.accountInputPort.createAccount(userInput);
-    account.userId = userId;
+  async createAccount(userId, unvalidatedUserInput) {
+    const validAccountEntity =
+      this.accountInputPort.createAccount(unvalidatedUserInput);
+    if (validAccountEntity.validationError) {
+      const validationError = validAccountEntity.validationError;
+      throw new ErrorResponse({
+        errorCode: `${validationError}`,
+      });
+    }
 
-    const savedAccount = await this.accountRepository.createAccount(account);
-    if (!savedAccount) {
+    validAccountEntity.userId = userId;
+
+    const createdAccount = await this.accountRepository.createAccount(
+      validAccountEntity
+    );
+    if (!createdAccount) {
       throw new ErrorResponse({ errorCode: "DB_SERVICE_002" });
     }
 
-    const accountOutputData = {
-      success: true,
-      message: {
-        EN: "Account successfuly created.",
-        DE: "Account erfolgreich erstellt.",
-      },
-      account: savedAccount,
-    };
-
-    return this.accountOutputPort.prepareSingleAccountOutput(accountOutputData);
+    return this.accountOutputPort.formatCreatedAccount(createdAccount);
   }
 
-  async updateAccount(accountId, userInput) {
-    const updateData = this.accountInputPort.editAccount(userInput);
+  async updateAccount(accountId, unvalidatedUserInput) {
+    const validAccountEntity =
+      this.accountInputPort.editAccount(unvalidatedUserInput);
+    if (validAccountEntity.validationError) {
+      const validationError = validAccountEntity.validationError;
+      throw new ErrorResponse({
+        errorCode: `${validationError}`,
+      });
+    }
 
     const updatedAccount = await this.accountRepository.updateAccount(
       accountId,
-      updateData
+      validAccountEntity
     );
     if (!updatedAccount) {
       throw new ErrorResponse({
@@ -65,20 +64,18 @@ exports.AccountInteractor = class AccountInteractor {
       });
     }
 
-    const accountOutputData = {
-      success: true,
-      message: {
-        EN: "Account updated successfully.",
-        DE: "Account erfolgreich aktualisiert",
-      },
-      account: updateData,
-    };
-
-    return this.accountOutputPort.prepareSingleAccountOutput(accountOutputData);
+    return this.accountOutputPort.formatUpdatedAccount(updatedAccount);
   }
 
-  async deleteAccount(accountId, userInput) {
-    const data = this.accountInputPort.deleteAccount(userInput);
+  async deleteAccount(accountId, unvalidatedUserInput) {
+    const validAccountEntity =
+      this.accountInputPort.deleteAccount(unvalidatedUserInput);
+    if (validAccountEntity.validationError) {
+      const validationError = validAccountEntity.validationError;
+      throw new ErrorResponse({
+        errorCode: `${validationError}`,
+      });
+    }
 
     const foundAccount = await this.accountRepository.findAccountById(
       accountId
@@ -99,14 +96,6 @@ exports.AccountInteractor = class AccountInteractor {
       });
     }
 
-    const accountOutputData = {
-      success: true,
-      message: {
-        EN: "Account deleted successfully.",
-        DE: "Account erfolgreich gelöscht.",
-      },
-    };
-
-    return this.accountOutputPort.output(accountOutputData);
+    return this.accountOutputPort.formatDeletedAccount();
   }
 };

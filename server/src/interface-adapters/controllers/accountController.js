@@ -11,7 +11,11 @@ const accountPresenter = new AccountPresenter();
 const accountInteractor = new AccountInteractor(accountRepository);
 
 exports.getAccounts = asyncHandler(async (req, res, next) => {
-  const language = req.headers["accept-language"].includes("de") ? "DE" : "EN";
+  const language =
+    req.headers["accept-language"] &&
+    req.headers["accept-language"].includes("de")
+      ? "DE"
+      : "EN";
   const { userId } = req;
 
   const isAuthenticated = req.session.userId === userId;
@@ -26,7 +30,11 @@ exports.getAccounts = asyncHandler(async (req, res, next) => {
 });
 
 exports.createAccount = asyncHandler(async (req, res, next) => {
-  const language = req.headers["accept-language"].includes("de") ? "DE" : "EN";
+  const language =
+    req.headers["accept-language"] &&
+    req.headers["accept-language"].includes("de")
+      ? "DE"
+      : "EN";
 
   const { userId } = req;
 
@@ -50,7 +58,11 @@ exports.createAccount = asyncHandler(async (req, res, next) => {
 });
 
 exports.updateAccount = asyncHandler(async (req, res, next) => {
-  const language = req.headers["accept-language"].includes("de") ? "DE" : "EN";
+  const language =
+    req.headers["accept-language"] &&
+    req.headers["accept-language"].includes("de")
+      ? "DE"
+      : "EN";
   const { userId } = req;
   const accountId = req.params.id;
 
@@ -79,7 +91,11 @@ exports.updateAccount = asyncHandler(async (req, res, next) => {
 });
 
 exports.deleteAccount = asyncHandler(async (req, res, next) => {
-  const language = req.headers["accept-language"].includes("de") ? "DE" : "EN";
+  const language =
+    req.headers["accept-language"] &&
+    req.headers["accept-language"].includes("de")
+      ? "DE"
+      : "EN";
   const { userId } = req;
   const accountId = req.params.id;
 

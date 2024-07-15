@@ -1,35 +1,34 @@
 const { AccountEntity } = require("../../entities/AccountEntity");
-const { ErrorResponse } = require("../../utils");
 
 exports.AccountInputPort = class AccountInputPort {
-  createAccount(userInput) {
-    const account = new AccountEntity(userInput, { isNewAccount: true });
+  createAccount(unvalidatedUserInput) {
+    const validAccountEntity = new AccountEntity(unvalidatedUserInput);
 
-    const validationError = account.validateForCreation();
+    const validationError = validAccountEntity.validateForCreation();
     if (validationError) {
-      throw new ErrorResponse({ errorCode: `${validationError}` });
+      return { validationError };
     }
 
-    return account;
+    return validAccountEntity;
   }
 
-  editAccount(userInput) {
-    const updateData = new AccountEntity(userInput);
+  editAccount(unvalidatedUserInput) {
+    const validAccountEntity = new AccountEntity(unvalidatedUserInput);
 
-    const validationError = updateData.validateForUpdate();
+    const validationError = validAccountEntity.validateForUpdate();
     if (validationError) {
-      throw new ErrorResponse({ errorCode: `${validationError}` });
+      return { validationError };
     }
 
-    return updateData;
+    return validAccountEntity;
   }
 
-  deleteAccount(userInput) {
-    const data = new AccountEntity(userInput);
+  deleteAccount(unvalidatedUserInput) {
+    const validAccountEntity = new AccountEntity(unvalidatedUserInput);
 
-    const validationError = data.validateForDelete();
+    const validationError = validAccountEntity.validateForDelete();
     if (validationError) {
-      throw new ErrorResponse({ errorCode: `${validationError}` });
+      return { validationError };
     }
   }
 };

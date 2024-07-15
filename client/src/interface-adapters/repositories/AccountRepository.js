@@ -3,7 +3,7 @@ const language = localStorage.getItem("language");
 const URL = import.meta.env.VITE_API_KEY;
 
 export const AccountRepository = class AccountRepository {
-  async getAccounts() {
+  async getAccountsRequest() {
     try {
       const response = await fetch(`${URL}/accounts/get-accounts`, {
         method: "GET",
@@ -20,7 +20,7 @@ export const AccountRepository = class AccountRepository {
     }
   }
 
-  async createAccount(userData) {
+  async createAccountRequest(validEncryptedAccountEntity) {
     try {
       const response = await fetch(`${URL}/accounts/create-account`, {
         method: "POST",
@@ -28,18 +28,7 @@ export const AccountRepository = class AccountRepository {
           "Content-Type": "application/json",
           "Accept-Language": language,
         },
-        body: JSON.stringify({
-          accountName: userData.accountName,
-          accountUrl: userData.accountUrl,
-          username: userData.username,
-          email: userData.email,
-          encryptedPassword: userData.encryptedPassword,
-          passwordEncryptionIv: userData.passwordEncryptionIv,
-          passwordEncryptionSalt: userData.passwordEncryptionSalt,
-          encryptedNotes: userData.encryptedNotes,
-          notesEncryptionIv: userData.notesEncryptionIv,
-          notesEncryptionSalt: userData.notesEncryptionSalt,
-        }),
+        body: JSON.stringify(validEncryptedAccountEntity),
         credentials: "include",
       });
       return response.json();
@@ -48,7 +37,7 @@ export const AccountRepository = class AccountRepository {
     }
   }
 
-  async updateAccount(accountId, updatedData) {
+  async updateAccountRequest(accountId, validEncryptedAccountEntity) {
     try {
       const response = await fetch(
         `${URL}/accounts/update-account/${accountId}`,
@@ -58,18 +47,7 @@ export const AccountRepository = class AccountRepository {
             "Content-Type": "application/json",
             "Accept-Language": language,
           },
-          body: JSON.stringify({
-            accountName: updatedData.accountName,
-            accountUrl: updatedData.accountUrl,
-            username: updatedData.username,
-            email: updatedData.email,
-            encryptedPassword: updatedData.encryptedPassword,
-            passwordEncryptionIv: updatedData.passwordEncryptionIv,
-            passwordEncryptionSalt: updatedData.passwordEncryptionSalt,
-            encryptedNotes: updatedData.encryptedNotes,
-            notesEncryptionIv: updatedData.notesEncryptionIv,
-            notesEncryptionSalt: updatedData.notesEncryptionSalt,
-          }),
+          body: JSON.stringify(validEncryptedAccountEntity),
           credentials: "include",
         }
       );
@@ -80,7 +58,7 @@ export const AccountRepository = class AccountRepository {
     }
   }
 
-  async deleteAccount(accountId) {
+  async deleteAccountRequest(accountId) {
     try {
       const response = await fetch(
         `${URL}/accounts/delete-account/${accountId}`,

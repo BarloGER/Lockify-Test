@@ -4,9 +4,9 @@ import "./assets/accounts-overview.css";
 
 export const AccountsOverview = ({
   accounts,
-  onSelectAccount,
-  onEditAccount,
-  onDeleteAccount,
+  handleSelectAccountForEdit,
+  processUpdateAccount,
+  processDeleteAccount,
   isAccountLoading,
 }) => {
   return (
@@ -15,9 +15,11 @@ export const AccountsOverview = ({
         <AccountCard
           key={account.accountId || index}
           account={account}
-          onSelect={() => onSelectAccount(account.accountId)}
-          onEdit={onEditAccount}
-          onDelete={onDeleteAccount}
+          handleSelectAccountForEdit={() =>
+            handleSelectAccountForEdit(account.accountId)
+          }
+          processUpdateAccount={processUpdateAccount}
+          processDeleteAccount={processDeleteAccount}
           isLoading={isAccountLoading}
         />
       ))}
@@ -37,8 +39,8 @@ AccountsOverview.propTypes = {
       decryptedNotes: PropTypes.string,
     })
   ).isRequired,
-  onSelectAccount: PropTypes.func.isRequired,
-  onEditAccount: PropTypes.func.isRequired,
-  onDeleteAccount: PropTypes.func.isRequired,
+  handleSelectAccountForEdit: PropTypes.func.isRequired,
+  processUpdateAccount: PropTypes.func.isRequired,
+  processDeleteAccount: PropTypes.func.isRequired,
   isAccountLoading: PropTypes.bool,
 };

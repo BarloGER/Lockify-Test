@@ -5,34 +5,46 @@ exports.AccountOutputPort = class AccountOutputPort {
     this.account = {};
   }
 
-  prepareSingleAccountOutput(data) {
-    this.success = data.success;
-    this.message = data.message;
-    this.account = data.account;
+  formatFoundAccounts(foundAccounts) {
     return {
-      success: this.success,
-      message: this.message,
-      account: this.account,
+      success: true,
+      message: {
+        EN: "Accounts successfully queried.",
+        DE: "Accounts erfolgreich abgefragt.",
+      },
+      accounts: foundAccounts.dataValues,
     };
   }
 
-  prepareAccountsOutput(data) {
-    this.success = data.success;
-    this.message = data.message;
-    this.accounts = data.accounts;
+  formatCreatedAccount(createdAccount) {
     return {
-      success: this.success,
-      message: this.message,
-      accounts: this.accounts,
+      success: true,
+      message: {
+        EN: "Account successfuly created.",
+        DE: "Account erfolgreich erstellt.",
+      },
+      account: createdAccount.dataValues,
     };
   }
 
-  output(data) {
-    this.success = data.success;
-    this.message = data.message;
+  formatUpdatedAccount(updatedAccount) {
     return {
-      success: this.success,
-      message: this.message,
+      success: true,
+      message: {
+        EN: "Account updated successfully.",
+        DE: "Account erfolgreich aktualisiert",
+      },
+      account: updatedAccount.dataValues,
+    };
+  }
+
+  formatDeletedAccount() {
+    return {
+      success: true,
+      message: {
+        EN: "Account deleted successfully.",
+        DE: "Account erfolgreich gelöscht.",
+      },
     };
   }
 };
