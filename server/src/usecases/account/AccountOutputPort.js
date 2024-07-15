@@ -6,13 +6,15 @@ exports.AccountOutputPort = class AccountOutputPort {
   }
 
   formatFoundAccounts(foundAccounts) {
+    const accounts = foundAccounts.map((account) => account.dataValues);
+
     return {
       success: true,
       message: {
         EN: "Accounts successfully queried.",
         DE: "Accounts erfolgreich abgefragt.",
       },
-      accounts: foundAccounts.dataValues,
+      accounts: accounts,
     };
   }
 

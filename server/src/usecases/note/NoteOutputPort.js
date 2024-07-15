@@ -6,13 +6,15 @@ exports.NoteOutputPort = class NoteOutputPort {
   }
 
   formatFoundNotes(foundNotes) {
+    const notes = foundNotes.map((note) => note.dataValues);
+
     return {
       success: true,
       message: {
         EN: "Notes successfully queried.",
         DE: "Notizen erfolgreich abgefragt.",
       },
-      notes: foundNotes.dataValues,
+      notes: notes,
     };
   }
 
