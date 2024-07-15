@@ -1,23 +1,21 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { UserInteractor } from "../../../usecases/user/UserInteractor.js";
-import { UserRepository } from "../../repositories/UserRepository.js";
-
 import { AuthContext } from "../../context/AuthContext.jsx";
+
 import { AuthTemplate } from "../templates";
 import { VerificationForm } from "../organisms";
 
 // ? Add alternativ email
 
-const userRepository = new UserRepository();
-const userInteractor = new UserInteractor(userRepository);
-
 export const VerificationPage = () => {
   const navigate = useNavigate();
-  const { user, setUser, isAuthenticated } = useContext(AuthContext);
+  const { user, setUser, userInteractor, isAuthenticated } =
+    useContext(AuthContext);
 
-  const [verificationCode, setVerificationCode] = useState("");
+  const [verificationFormData, setVerificationFormData] = useState({
+    verificationCode: "",
+  });
   const [isVerificationLoading, setIsVerificationLoading] = useState(false);
   const [isCodeRequestLoading, setIsCodeRequestLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -29,19 +27,22 @@ export const VerificationPage = () => {
     }
   }, [isAuthenticated, user, navigate]);
 
-  const handleVerification = async (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setVerificationFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const processVerification = async (e) => {
     e.preventDefault();
     setIsVerificationLoading(true);
 
-    const verificationResponse = await userInteractor.confirmEmailAddress({
-      verificationCode,
-    });
-    if (verificationResponse.validationError) {
-      setIsVerificationLoading(false);
-      setMessage(`validationError.${verificationResponse.validationError}`);
-      setMessageType("error");
-      return;
-    } else if (
+    const verificationResponse = await userInteractor.confirmEmailAddress(
+      verificationFormData
+    );
+    if (
       !verificationResponse.success &&
       verificationResponse.message === "Failed to fetch"
     ) {
@@ -56,13 +57,13 @@ export const VerificationPage = () => {
       return;
     }
 
+    setUser((prevUser) => ({ ...prevUser, isVerified: true }));
     setIsVerificationLoading(false);
     setMessage(verificationResponse.message);
     setMessageType("success");
-    setUser((prevUser) => ({ ...prevUser, isVerified: true }));
   };
 
-  const handleNewVerificationCodeRequest = async (e) => {
+  const processNewVerificationCodeRequest = async (e) => {
     e.preventDefault();
     setIsCodeRequestLoading(true);
 
@@ -70,13 +71,7 @@ export const VerificationPage = () => {
     const codeRequestResponse = await userInteractor.requestNewVerificationCode(
       { email }
     );
-
-    if (codeRequestResponse.validationError) {
-      setIsCodeRequestLoading(false);
-      setMessage(`validationError.${codeRequestResponse.validationError}`);
-      setMessageType("error");
-      return;
-    } else if (
+    if (
       !codeRequestResponse.success &&
       codeRequestResponse.message === "Failed to fetch"
     ) {
@@ -99,10 +94,10 @@ export const VerificationPage = () => {
   return (
     <AuthTemplate>
       <VerificationForm
-        verificationCode={verificationCode}
-        setVerificationCode={setVerificationCode}
-        handleVerification={handleVerification}
-        handleNewVerificationCodeRequest={handleNewVerificationCodeRequest}
+        verificationFormData={verificationFormData}
+        handleChange={handleChange}
+        processVerification={processVerification}
+        processNewVerificationCodeRequest={processNewVerificationCodeRequest}
         isVerificationLoading={isVerificationLoading}
         isCodeRequestLoading={isCodeRequestLoading}
         message={message}

@@ -16,87 +16,6 @@ exports.UserInteractor = class UserInteractor {
     this.mailInteractor = new MailInteractor(mailRepository);
   }
 
-  async createUser(userInput) {
-    const user = this.userInputPort.createUser(userInput);
-
-    if (await this.userRepository.existsByUsername(user.username)) {
-      throw new ErrorResponse({
-        errorCode: "USER_CONFLICT_001",
-      });
-    }
-    if (await this.userRepository.existsByEmail(user.email)) {
-      throw new ErrorResponse({
-        errorCode: "USER_CONFLICT_002",
-      });
-    }
-
-    user.password = await this.passwordHashingService.hashPassword(
-      user.password
-    );
-    user.verificationCode = crypto.randomBytes(4).toString("hex").toUpperCase();
-
-    const savedUser = await this.userRepository.createUser(user);
-    if (!savedUser) {
-      throw new ErrorResponse({ errorCode: "DB_SERVICE_002" });
-    }
-
-    await this.mailInteractor.sendVerificationMail({
-      email: user.email,
-      verificationCode: user.verificationCode,
-    });
-
-    const userOutputData = {
-      success: true,
-      message: {
-        EN: "Your registration was successful! Please confirm your e-mail address by entering the verification code we sent you. Don't forget to check your spam folder too.",
-        DE: "Deine Registrierung war erfolgreich! Bitte bestätige deine E-Mail-Adresse durch Eingabe des Verifizierungscodes, den wir dir zugesendet haben. Vergiss nicht, auch deinen Spam-Ordner zu überprüfen.",
-      },
-      user: savedUser,
-    };
-
-    return this.userOutputPort.userOutput(userOutputData);
-  }
-
-  async authenticateUser(userInput) {
-    const credentials = this.userInputPort.authenticateUser(userInput);
-
-    const foundUser = await this.userRepository.findUserByEmail(
-      credentials.email
-    );
-    if (!foundUser) {
-      throw new ErrorResponse({
-        errorCode: "USER_NOT_FOUND_001",
-      });
-    }
-
-    const isBlocked = foundUser.isBlocked;
-    if (isBlocked) {
-      throw new ErrorResponse({ errorCode: "USER_AUTHORIZATION_001" });
-    }
-
-    const isValidPassword =
-      await this.passwordHashingService.comparePasswordHash(
-        credentials.password,
-        foundUser.password
-      );
-    if (!isValidPassword) {
-      throw new ErrorResponse({
-        errorCode: "USER_CONFLICT_003",
-      });
-    }
-
-    const userOutputData = {
-      success: true,
-      message: {
-        EN: "Login successful.",
-        DE: "Anmeldung erfolgreich.",
-      },
-      user: foundUser,
-    };
-
-    return this.userOutputPort.userOutput(userOutputData);
-  }
-
   async getUser(userId) {
     const foundUser = await this.userRepository.findUserById(userId);
     if (!foundUser) {
@@ -107,23 +26,98 @@ exports.UserInteractor = class UserInteractor {
 
     const isBlocked = foundUser.isBlocked;
     if (isBlocked) {
-      throw new ErrorResponse({ errorCode: "USER_AUTHORIZATION_001" });
+      return this.userOutputPort.formatBlockedUser(foundUser);
     }
 
-    const userOutputData = {
-      success: true,
-      message: {
-        EN: "Login successful.",
-        DE: "Anmeldung erfolgreich.",
-      },
-      user: foundUser,
-    };
-
-    return this.userOutputPort.userOutput(userOutputData);
+    return this.userOutputPort.formatFoundUser(foundUser);
   }
 
-  async editUser(userId, userInput) {
-    const updateData = this.userInputPort.editUser(userInput);
+  async createUser(unvalidatedUserInput) {
+    const validUserEntity =
+      this.userInputPort.validateInputForCreateUser(unvalidatedUserInput);
+    if (validUserEntity.validationError) {
+      const validationError = validUserEntity.validationError;
+      throw new ErrorResponse({
+        errorCode: `${validationError}`,
+      });
+    }
+
+    if (await this.userRepository.existsByUsername(validUserEntity.username)) {
+      throw new ErrorResponse({
+        errorCode: "USER_CONFLICT_001",
+      });
+    }
+    if (await this.userRepository.existsByEmail(validUserEntity.email)) {
+      throw new ErrorResponse({
+        errorCode: "USER_CONFLICT_002",
+      });
+    }
+
+    validUserEntity.password = await this.passwordHashingService.hashPassword(
+      validUserEntity.password
+    );
+    validUserEntity.verificationCode = crypto
+      .randomBytes(4)
+      .toString("hex")
+      .toUpperCase();
+
+    const createdUserResponse = await this.userRepository.saveUserToDB(
+      validUserEntity
+    );
+    if (!createdUserResponse) {
+      throw new ErrorResponse({ errorCode: "DB_SERVICE_002" });
+    }
+
+    await this.mailInteractor.sendVerificationMail({
+      email: validUserEntity.email,
+      verificationCode: validUserEntity.verificationCode,
+    });
+
+    return this.userOutputPort.formatCreatedUser(createdUserResponse);
+  }
+
+  async authenticateUser(unvalidatedUserInput) {
+    const validUserEntity =
+      this.userInputPort.validateInputForAuthenticateUser(unvalidatedUserInput);
+    if (validUserEntity.validationError) {
+      const validationError = validUserEntity.validationError;
+      throw new ErrorResponse({
+        errorCode: `${validationError}`,
+      });
+    }
+
+    const foundUser = await this.userRepository.findUserByEmail(
+      validUserEntity.email
+    );
+    if (!foundUser) {
+      throw new ErrorResponse({
+        errorCode: "USER_NOT_FOUND_001",
+      });
+    }
+
+    const isValidPassword =
+      await this.passwordHashingService.comparePasswordHash(
+        validUserEntity.password,
+        foundUser.password
+      );
+    if (!isValidPassword) {
+      throw new ErrorResponse({
+        errorCode: "USER_CONFLICT_003",
+      });
+    }
+
+    return this.userOutputPort.formatFoundUser(foundUser);
+  }
+
+  async updateUser(userId, unvalidatedUserInput) {
+    const validUserEntity =
+      this.userInputPort.validateInputForUpdateUser(unvalidatedUserInput);
+    if (validUserEntity.validationError) {
+      const validationError = validUserEntity.validationError;
+      throw new ErrorResponse({
+        errorCode: `${validationError}`,
+      });
+    }
 
     const foundUser = await this.userRepository.findUserById(userId);
     if (!foundUser) {
@@ -137,58 +131,46 @@ exports.UserInteractor = class UserInteractor {
       throw new ErrorResponse({ errorCode: "USER_AUTHORIZATION_001" });
     }
 
-    if (userInput.username) {
-      if (await this.userRepository.existsByUsername(userInput.username)) {
+    if (validUserEntity.username) {
+      if (
+        await this.userRepository.existsByUsername(validUserEntity.username)
+      ) {
         throw new ErrorResponse({
           errorCode: "USER_CONFLICT_001",
         });
       }
-      updateData.username = userInput.username;
     }
 
-    if (userInput.email) {
-      if (await this.userRepository.existsByEmail(userInput.email)) {
+    if (validUserEntity.email) {
+      if (await this.userRepository.existsByEmail(validUserEntity.email)) {
         throw new ErrorResponse({
           errorCode: "USER_CONFLICT_002",
         });
       }
-      updateData.email = userInput.email;
     }
 
-    if (userInput.password) {
-      updateData.password = await this.passwordHashingService.hashPassword(
-        userInput.password
+    if (validUserEntity.password) {
+      validUserEntity.password = await this.passwordHashingService.hashPassword(
+        validUserEntity.password
       );
     }
 
-    if (userInput.isNewsletterAllowed) {
-      updateData.isNewsletterAllowed = userInput.isNewsletterAllowed;
-    }
-
-    const updatedUser = await this.userRepository.updateUser(
+    const updatedUserResponse = await this.userRepository.updateUserInDB(
       userId,
-      updateData
+      validUserEntity
     );
-    if (!updatedUser) {
+    if (!updatedUserResponse) {
       throw new ErrorResponse({
         errorCode: "DB_SERVICE_002",
       });
     }
 
-    const userOutputData = {
-      success: true,
-      message: {
-        EN: "User updated successfully.",
-        DE: "Benutzer erfolgreich aktualisiert",
-      },
-      user: updatedUser.dataValues,
-    };
-
-    return this.userOutputPort.userOutput(userOutputData);
+    return this.userOutputPort.formatUpdatedUser(updatedUserResponse);
   }
 
-  async deleteUser(userId, userInput) {
-    const data = this.userInputPort.deleteUser(userInput);
+  async deleteUser(userId, emptyUserInput) {
+    const emptyUserEntity =
+      this.userInputPort.validateInputForDeleteUser(emptyUserInput);
 
     const foundUser = await this.userRepository.findUserById(userId);
     if (!foundUser) {
@@ -202,27 +184,30 @@ exports.UserInteractor = class UserInteractor {
       throw new ErrorResponse({ errorCode: "USER_AUTHORIZATION_001" });
     }
 
-    const deletedUser = await this.userRepository.deleteUser(userId);
-    if (!deletedUser) {
+    const deletedUserResponse = await this.userRepository.deleteUser(
+      userId,
+      emptyUserEntity
+    );
+    if (!deletedUserResponse) {
       throw new ErrorResponse({
         errorCode: "DB_SERVICE_002",
       });
     }
 
-    const userOutputData = {
-      success: true,
-      message: {
-        EN: "User deleted successfully.",
-        DE: "Benutzer erfolgreich gelöscht.",
-      },
-    };
-
-    return this.userOutputPort.output(userOutputData);
+    return this.userOutputPort.formatDeletedUser(deletedUserResponse);
   }
 
-  async verifyCode(userId, userInput) {
-    const verificationData = this.userInputPort.verifyCode(userInput);
-    const verificationCode = verificationData.verificationCode.toUpperCase();
+  async verifyCode(userId, unvalidatedUserInput) {
+    const validUserEntity =
+      this.userInputPort.validateInputForVerification(unvalidatedUserInput);
+    if (validUserEntity.validationError) {
+      const validationError = validUserEntity.validationError;
+      throw new ErrorResponse({
+        errorCode: `${validationError}`,
+      });
+    }
+
+    const verificationCode = validUserEntity.verificationCode.toUpperCase();
 
     const foundUser = await this.userRepository.findUserById(userId);
     if (!foundUser) {
@@ -248,7 +233,7 @@ exports.UserInteractor = class UserInteractor {
       const updateData = {
         isBlocked: true,
       };
-      await this.userRepository.updateUser(userId, updateData);
+      await this.userRepository.updateUserInDB(userId, updateData);
 
       throw new ErrorResponse({
         errorCode: "USER_AUTHORIZATION_002",
@@ -261,7 +246,7 @@ exports.UserInteractor = class UserInteractor {
         verificationAttempts: (foundUser.verificationAttempts += 1),
         lastVerificationAttempt: new Date(),
       };
-      await this.userRepository.updateUser(userId, updateData);
+      await this.userRepository.updateUserInDB(userId, updateData);
       throw new ErrorResponse({
         errorCode: "USER_CONFLICT_004",
       });
@@ -273,21 +258,31 @@ exports.UserInteractor = class UserInteractor {
       verificationAttempts: 0,
     };
 
-    await this.userRepository.updateUser(userId, updateData);
+    const updatedUserResponse = await this.userRepository.updateUserInDB(
+      userId,
+      updateData
+    );
+    if (!updatedUserResponse) {
+      throw new ErrorResponse({
+        errorCode: "DB_SERVICE_002",
+      });
+    }
 
-    const userOutputData = {
-      success: true,
-      message: {
-        EN: "You have successfully confirmed your email address.",
-        DE: "Du hast deine Email-Adresse erfolgreich bestätigt.",
-      },
-    };
-
-    return this.userOutputPort.output(userOutputData);
+    return this.userOutputPort.formatSuccessfulVerification(
+      updatedUserResponse
+    );
   }
 
-  async updateVerificationCode(userId, userInput) {
-    const userData = this.userInputPort.updateVerificationCode(userInput);
+  async updateVerificationCode(userId, unvalidatedUserInput) {
+    const validUserEntity =
+      this.userInputPort.validateInputForUpdateData(unvalidatedUserInput);
+    if (validUserEntity.validationError) {
+      const validationError = validUserEntity.validationError;
+      throw new ErrorResponse({
+        errorCode: `${validationError}`,
+      });
+    }
+
     const verificationCode = crypto
       .randomBytes(4)
       .toString("hex")
@@ -327,7 +322,7 @@ exports.UserInteractor = class UserInteractor {
     }
 
     await this.mailInteractor.sendVerificationMail({
-      email: userData.email,
+      email: validUserEntity.email,
       verificationCode: verificationCode,
     });
 
@@ -336,26 +331,37 @@ exports.UserInteractor = class UserInteractor {
       verificationCode: verificationCode,
     };
 
-    await this.userRepository.updateUser(userId, updateData);
+    const updatedUserResponse = await this.userRepository.updateUserInDB(
+      userId,
+      updateData
+    );
+    if (!updatedUserResponse) {
+      throw new ErrorResponse({
+        errorCode: "DB_SERVICE_002",
+      });
+    }
 
-    const userOutputData = {
-      success: true,
-      message: {
-        EN: "A new verification code has been sent to your email address. Don't forget to check your spam folder as well.",
-        DE: "Dir wurde ein neuer Verifizierungscode an deine Email Adresse gesendet. Vergiss nicht auch deinen Spam Ordner zu überprüfen.",
-      },
-    };
-
-    return this.userOutputPort.output(userOutputData);
+    return this.userOutputPort.formatUpdatedVerificationCode(
+      updatedUserResponse
+    );
   }
 
-  async updatePassword(userInput) {
-    const userData = this.userInputPort.updatePassword(userInput);
+  async updatePassword(unvalidatedUserInput) {
+    const validUserEntity =
+      this.userInputPort.validateInputForUpdateData(unvalidatedUserInput);
+    if (validUserEntity.validationError) {
+      const validationError = validUserEntity.validationError;
+      throw new ErrorResponse({
+        errorCode: `${validationError}`,
+      });
+    }
 
-    const foundUser = await this.userRepository.findUserByEmail(userData.email);
+    const foundUser = await this.userRepository.findUserByEmail(
+      validUserEntity.email
+    );
     if (!foundUser) {
       throw new ErrorResponse({
-        errorCode: "USER_NOT_FOUND_002",
+        errorCode: "USER_NOT_FOUND_001",
       });
     }
 
@@ -390,7 +396,7 @@ exports.UserInteractor = class UserInteractor {
     }
 
     await this.mailInteractor.sendNewPasswordMail({
-      email: userData.email,
+      email: validUserEntity.email,
       newPassword,
     });
 
@@ -400,16 +406,16 @@ exports.UserInteractor = class UserInteractor {
     };
 
     const userId = foundUser.userId;
-    await this.userRepository.updateUser(userId, updateData);
+    const updatedUserResponse = await this.userRepository.updateUserInDB(
+      userId,
+      updateData
+    );
+    if (!updatedUserResponse) {
+      throw new ErrorResponse({
+        errorCode: "DB_SERVICE_002",
+      });
+    }
 
-    const userOutputData = {
-      success: true,
-      message: {
-        EN: "A new password has been sent to your email address. Don't forget to check your spam folder as well.",
-        DE: "Dir wurde ein neues Passwort an deine Email Adresse gesendet. Vergiss nicht auch deinen Spam Ordner zu überprüfen.",
-      },
-    };
-
-    return this.userOutputPort.output(userOutputData);
+    return this.userOutputPort.formatUpdatedPassword(updatedUserResponse);
   }
 };

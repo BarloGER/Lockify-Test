@@ -1,22 +1,21 @@
-import { useState, useEffect, useContext } from "react";
-import { BankInteractor } from "../../../usecases/bank/BankInteractor.js";
-import { BankRepository } from "../../repositories/BankRepository.js";
-import { CryptographyInteractor } from "../../../usecases/cryptography/CryptographyInteractor.js";
-import { AuthContext } from "../../context/AuthContext.jsx";
+import { useState, useContext } from "react";
+import { DataVaultContext } from "../../context/DataVaultContext.jsx";
 import { BankTemplate } from "../templates";
+import { SearchInput } from "../atoms";
 import { FlashMessage } from "../molecules/FlashMessage.jsx";
 import { NewBankForm, BanksOverview } from "../organisms";
 
-// Initialisierung des BankRepository und des BankInteractor
-const bankRepository = new BankRepository();
-const bankInteractor = new BankInteractor(bankRepository);
-const cryptographyInteractor = new CryptographyInteractor();
-
 export const BanksPage = () => {
-  const { masterPassword } = useContext(AuthContext);
+  const {
+    masterPassword,
+    banks,
+    setBanks,
+    bankInteractor,
+    cryptographyInteractor,
+    isDataVaultUnlocked,
+  } = useContext(DataVaultContext);
 
-  const [banks, setBanks] = useState([]);
-  const [newBankFormValues, setNewBankFormValues] = useState({
+  const [newBankFormData, setNewBankFormData] = useState({
     bankName: "",
     accountHolderFirstName: "",
     accountHolderLastName: "",
@@ -32,203 +31,141 @@ export const BanksPage = () => {
     cardType: "",
   });
 
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedOption, setSelectedOption] = useState("bankName");
   const [isBankLoading, setIsBankLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
 
+  if (!isDataVaultUnlocked) {
+    return;
+  }
+
+  const searchOptions = [
+    { value: "bankName" },
+    { value: "accountHolderFirstName" },
+    { value: "accountHolderLastName" },
+    { value: "swiftBic" },
+    { value: "accountType" },
+    { value: "branchCode" },
+    { value: "cardHolderFirstName" },
+    { value: "cardHolderLastName" },
+    { value: "cardType" },
+  ];
+  const filteredBanks = banks.filter((bank) =>
+    bank[selectedOption].toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setNewBankFormValues({ ...newBankFormValues, [name]: value });
+    setNewBankFormData({ ...newBankFormData, [name]: value });
   };
 
-  const decryptBankData = async (bankData, masterPassword) => {
-    // Check whether the input is an array or needs to be converted into an array
-    const banks = Array.isArray(bankData) ? bankData : [bankData];
-
-    const decryptedBanks = await Promise.all(
-      banks.map(async (bank) => {
-        const decryptionResultIban = bank.encryptedIban
-          ? await cryptographyInteractor.decryptData({
-              encryptedData: bank.encryptedIban,
-              iv: bank.ibanEncryptionIv,
-              salt: bank.ibanEncryptionSalt,
-              masterPassword: masterPassword,
-            })
-          : { success: true, data: "" };
-
-        const decryptedIban = decryptionResultIban.success
-          ? decryptionResultIban.data
-          : "";
-
-        const decryptionResultCardNumber = bank.encryptedCardNumber
-          ? await cryptographyInteractor.decryptData({
-              encryptedData: bank.encryptedCardNumber,
-              iv: bank.cardNumberEncryptionIv,
-              salt: bank.cardNumberEncryptionSalt,
-              masterPassword: masterPassword,
-            })
-          : { success: true, data: "" };
-
-        const decryptedCardNumber = decryptionResultCardNumber.success
-          ? decryptionResultCardNumber.data
-          : "";
-
-        const decryptionResultCardCvvCvc = bank.encryptedCardCvvCvc
-          ? await cryptographyInteractor.decryptData({
-              encryptedData: bank.encryptedCardCvvCvc,
-              iv: bank.cardCvvCvcEncryptionIv,
-              salt: bank.cardCvvCvcEncryptionSalt,
-              masterPassword: masterPassword,
-            })
-          : { success: true, data: "" };
-
-        const decryptedCardCvvCvc = decryptionResultCardCvvCvc.success
-          ? decryptionResultCardCvvCvc.data
-          : "";
-
-        return {
-          ...bank,
-          decryptedIban,
-          decryptedCardNumber,
-          decryptedCardCvvCvc,
-        };
-      })
-    );
-
-    return Array.isArray(bankData) ? decryptedBanks : decryptedBanks[0];
-  };
-
-  const getBanks = async (masterPassword) => {
-    setIsBankLoading(true);
-
-    const bankRequestResponse = await bankInteractor.getBanks();
-    if (!bankRequestResponse.success) {
-      setMessage(
-        bankRequestResponse.message || "Fehler beim Abrufen der Konten"
-      );
-      setMessageType("error");
-      setBanks([]);
-      setIsBankLoading(false);
-      return;
-    }
-
-    const decryptedBanks = await decryptBankData(
-      bankRequestResponse.banks,
-      masterPassword
-    );
-    if (!decryptedBanks) {
-      setMessage("Fehler beim Entschlüsseln der Konten");
-      setMessageType("error");
-      setBanks([]);
-      return;
-    }
-
-    setIsBankLoading(false);
-    setBanks(decryptedBanks);
-    setMessage(bankRequestResponse.message);
-    setMessageType("success");
-  };
-
-  useEffect(() => {
-    getBanks(masterPassword);
-  }, []);
-
-  const handleCreateBank = async (e, masterPassword) => {
+  const processCreateBank = async (e, masterPassword) => {
     e.preventDefault();
     setIsBankLoading(true);
 
-    const validateBank = await bankInteractor.validateCreateBank({
-      bankName: newBankFormValues.bankName,
-      accountHolderFirstName: newBankFormValues.accountHolderFirstName,
-      accountHolderLastName: newBankFormValues.accountHolderLastName,
-      iban: newBankFormValues.iban,
-      swiftBic: newBankFormValues.swiftBic,
-      accountType: newBankFormValues.accountType,
-      branchCode: newBankFormValues.branchCode,
-      cardHolderFirstName: newBankFormValues.cardHolderFirstName,
-      cardHolderLastName: newBankFormValues.cardHolderLastName,
-      cardNumber: newBankFormValues.cardNumber,
-      expiryDate: newBankFormValues.expiryDate,
-      cardCvvCvc: newBankFormValues.cardCvvCvc,
-      cardType: newBankFormValues.cardType,
-    });
-    if (validateBank && validateBank.validationError) {
+    const unvalidatedUserInput = newBankFormData;
+    const validateUserInput =
+      await bankInteractor.validateUserInputForCreateBank(unvalidatedUserInput);
+    if (!validateUserInput.success) {
       setIsBankLoading(false);
-      setMessage(`validationError.${validateBank.validationError}`);
+      setMessage(`validationError.${validateUserInput.message}`);
       setMessageType("error");
       return;
     }
+    const validBankEntity = validateUserInput.validBankEntity;
 
-    let encryptedIbanObj = { data: { encryptedData: "", iv: "", salt: "" } };
-    if (newBankFormValues.iban) {
-      encryptedIbanObj = await cryptographyInteractor.encryptData({
-        text: newBankFormValues.iban,
-        masterPassword: masterPassword,
-      });
-    }
-
-    let encryptedCardNumberObj = {
-      data: { encryptedData: "", iv: "", salt: "" },
+    let encryptedIban = {
+      success: true,
+      encryptedData: "",
+      iv: "",
+      salt: "",
     };
-    if (newBankFormValues.cardNumber) {
-      encryptedCardNumberObj = await cryptographyInteractor.encryptData({
-        text: newBankFormValues.cardNumber,
+    if (validBankEntity.iban) {
+      encryptedIban = await cryptographyInteractor.encryptData({
+        text: validBankEntity.iban,
         masterPassword: masterPassword,
       });
     }
 
-    let encryptedCardCvvCvcObj = {
-      data: { encryptedData: "", iv: "", salt: "" },
+    let encryptedCardNumber = {
+      success: true,
+      encryptedData: "",
+      iv: "",
+      salt: "",
     };
-    if (newBankFormValues.cardCvvCvc) {
-      encryptedCardCvvCvcObj = await cryptographyInteractor.encryptData({
-        text: newBankFormValues.cardCvvCvc,
+    if (validBankEntity.cardNumber) {
+      encryptedCardNumber = await cryptographyInteractor.encryptData({
+        text: validBankEntity.cardNumber,
         masterPassword: masterPassword,
       });
     }
 
-    const creationResponse = await bankInteractor.createBank({
-      bankName: newBankFormValues.bankName,
-      accountHolderFirstName: newBankFormValues.accountHolderFirstName,
-      accountHolderLastName: newBankFormValues.accountHolderLastName,
-      encryptedIban: encryptedIbanObj.data.encryptedData,
-      ibanEncryptionIv: encryptedIbanObj.data.iv,
-      ibanEncryptionSalt: encryptedIbanObj.data.salt,
-      swiftBic: newBankFormValues.swiftBic,
-      accountType: newBankFormValues.accountType,
-      branchCode: newBankFormValues.branchCode,
-      cardHolderFirstName: newBankFormValues.cardHolderFirstName,
-      cardHolderLastName: newBankFormValues.cardHolderLastName,
-      encryptedCardNumber: encryptedCardNumberObj.data.encryptedData,
-      cardNumberEncryptionIv: encryptedCardNumberObj.data.iv,
-      cardNumberEncryptionSalt: encryptedCardNumberObj.data.salt,
-      expiryDate: newBankFormValues.expiryDate,
-      encryptedCardCvvCvc: encryptedCardCvvCvcObj.data.encryptedData,
-      cardCvvCvcEncryptionIv: encryptedCardCvvCvcObj.data.iv,
-      cardCvvCvcEncryptionSalt: encryptedCardCvvCvcObj.data.salt,
-      cardType: newBankFormValues.cardType,
-    });
-
-    if (creationResponse.validationError) {
-      setIsBankLoading(false);
-      setMessage(`validationError.${creationResponse.validationError}`);
-      setMessageType("error");
-      return;
-    } else if (!creationResponse.success) {
-      setIsBankLoading(false);
-      setMessage(creationResponse.message);
-      setMessageType("error");
-      return;
+    let encryptedCardCvvCvc = {
+      success: true,
+      encryptedData: "",
+      iv: "",
+      salt: "",
+    };
+    if (validBankEntity.cardCvvCvc) {
+      encryptedCardCvvCvc = await cryptographyInteractor.encryptData({
+        text: validBankEntity.cardCvvCvc,
+        masterPassword: masterPassword,
+      });
     }
 
-    const decryptedBank = await decryptBankData(
-      creationResponse.bank,
-      masterPassword
+    const encryptedBankData = {
+      bankName: validBankEntity.bankName,
+      accountHolderFirstName: validBankEntity.accountHolderFirstName,
+      accountHolderLastName: validBankEntity.accountHolderLastName,
+      encryptedIban: encryptedIban.encryptedData,
+      ibanEncryptionIv: encryptedIban.iv,
+      ibanEncryptionSalt: encryptedIban.salt,
+      swiftBic: validBankEntity.swiftBic,
+      accountType: validBankEntity.accountType,
+      branchCode: validBankEntity.branchCode,
+      cardHolderFirstName: validBankEntity.cardHolderFirstName,
+      cardHolderLastName: validBankEntity.cardHolderLastName,
+      encryptedCardNumber: encryptedCardNumber.encryptedData,
+      cardNumberEncryptionIv: encryptedCardNumber.iv,
+      cardNumberEncryptionSalt: encryptedCardNumber.salt,
+      expiryDate: validBankEntity.expiryDate,
+      encryptedCardCvvCvc: encryptedCardCvvCvc.encryptedData,
+      cardCvvCvcEncryptionIv: encryptedCardCvvCvc.iv,
+      cardCvvCvcEncryptionSalt: encryptedCardCvvCvc.salt,
+      cardType: validBankEntity.cardType,
+    };
+
+    const createBankResponse = await bankInteractor.createBank(
+      encryptedBankData
     );
+    if (
+      !createBankResponse.success &&
+      createBankResponse.message === "Failed to fetch"
+    ) {
+      setIsBankLoading(false);
+      setMessage("externalService.serverError");
+      setMessageType("error");
+      return;
+    } else if (!createBankResponse.success) {
+      setIsBankLoading(false);
+      setMessage(createBankResponse.message);
+      setMessageType("error");
+      return;
+    }
 
-    setBanks((prevBanks) => [...prevBanks, decryptedBank]);
+    setBanks((prevBanks) => [
+      ...prevBanks,
+      {
+        ...createBankResponse.bank,
+        decryptedIban: validBankEntity.iban,
+        decryptedCardNumber: validBankEntity.cardNumber,
+        decryptedCardCvvCvc: validBankEntity.cardCvvCvc,
+      },
+    ]);
     setIsBankLoading(false);
-    setNewBankFormValues({
+    setNewBankFormData({
       bankName: "",
       accountHolderFirstName: "",
       accountHolderLastName: "",
@@ -243,14 +180,14 @@ export const BanksPage = () => {
       cardCvvCvc: "",
       cardType: "",
     });
-    setMessage(creationResponse.message);
+    setMessage(createBankResponse.message);
     setMessageType("success");
   };
 
   const handleSelectBankForEdit = (bankId) => {
     const bank = banks.find((acc) => acc.bankId === bankId);
     if (bank) {
-      setNewBankFormValues({
+      setNewBankFormData({
         bankName: bank.bankName,
         accountHolderFirstName: bank.accountHolderFirstName,
         accountHolderLastName: bank.accountHolderLastName,
@@ -268,8 +205,12 @@ export const BanksPage = () => {
     }
   };
 
-  const handleEditBank = async (e, bankId, formValues) => {
-    console.log("editvalues", formValues);
+  const processUpdateBank = async (
+    e,
+    bankId,
+    updateBankFormData,
+    setIsEditing
+  ) => {
     e.preventDefault();
     setIsBankLoading(true);
 
@@ -280,95 +221,98 @@ export const BanksPage = () => {
       return;
     }
 
-    const validateBank = await bankInteractor.validateEditBank({
-      bankName: formValues.bankName,
-      accountHolderFirstName: formValues.accountHolderFirstName,
-      accountHolderLastName: formValues.accountHolderLastName,
-      iban: formValues.iban,
-      swiftBic: formValues.swiftBic,
-      accountType: formValues.accountType,
-      branchCode: formValues.branchCode,
-      cardHolderFirstName: formValues.cardHolderFirstName,
-      cardHolderLastName: formValues.cardHolderLastName,
-      cardNumber: formValues.cardNumber,
-      expiryDate: formValues.expiryDate,
-      cardCvvCvc: formValues.cardCvvCvc,
-      cardType: formValues.cardType,
-    });
-
-    if (validateBank && validateBank.validationError) {
+    const unvalidatedUserInput = newBankFormData;
+    const validateUserInput =
+      await bankInteractor.validateUserInputForCreateBank(unvalidatedUserInput);
+    if (!validateUserInput.success) {
       setIsBankLoading(false);
-      setMessage(`validationError.${validateBank.validationError}`);
+      setMessage(`validationError.${validateUserInput.message}`);
+      setMessageType("error");
+      return;
+    }
+    const validBankEntity = validateUserInput.validBankEntity;
+
+    let encryptedIban = {
+      success: true,
+      encryptedData: "",
+      iv: "",
+      salt: "",
+    };
+    if (validBankEntity.iban) {
+      encryptedIban = await cryptographyInteractor.encryptData({
+        text: validBankEntity.iban,
+        masterPassword: masterPassword,
+      });
+    }
+
+    let encryptedCardNumber = {
+      success: true,
+      encryptedData: "",
+      iv: "",
+      salt: "",
+    };
+    if (validBankEntity.cardNumber) {
+      encryptedCardNumber = await cryptographyInteractor.encryptData({
+        text: validBankEntity.cardNumber,
+        masterPassword: masterPassword,
+      });
+    }
+
+    let encryptedCardCvvCvc = {
+      success: true,
+      encryptedData: "",
+      iv: "",
+      salt: "",
+    };
+    if (validBankEntity.cardCvvCvc) {
+      encryptedCardCvvCvc = await cryptographyInteractor.encryptData({
+        text: validBankEntity.cardCvvCvc,
+        masterPassword: masterPassword,
+      });
+    }
+
+    const encryptedBankData = {
+      bankName: validBankEntity.bankName,
+      accountHolderFirstName: validBankEntity.accountHolderFirstName,
+      accountHolderLastName: validBankEntity.accountHolderLastName,
+      encryptedIban: encryptedIban.encryptedData,
+      ibanEncryptionIv: encryptedIban.iv,
+      ibanEncryptionSalt: encryptedIban.salt,
+      swiftBic: validBankEntity.swiftBic,
+      accountType: validBankEntity.accountType,
+      branchCode: validBankEntity.branchCode,
+      cardHolderFirstName: validBankEntity.cardHolderFirstName,
+      cardHolderLastName: validBankEntity.cardHolderLastName,
+      encryptedCardNumber: encryptedCardNumber.encryptedData,
+      cardNumberEncryptionIv: encryptedCardNumber.iv,
+      cardNumberEncryptionSalt: encryptedCardNumber.salt,
+      expiryDate: validBankEntity.expiryDate,
+      encryptedCardCvvCvc: encryptedCardCvvCvc.encryptedData,
+      cardCvvCvcEncryptionIv: encryptedCardCvvCvc.iv,
+      cardCvvCvcEncryptionSalt: encryptedCardCvvCvc.salt,
+      cardType: validBankEntity.cardType,
+    };
+
+    const updateBankResponse = await bankInteractor.updateBank(
+      bankId,
+      encryptedBankData
+    );
+    if (!updateBankResponse.success) {
+      setIsBankLoading(false);
+      setMessage(updateBankResponse.message);
       setMessageType("error");
       return;
     }
 
-    let encryptedIbanObj = { data: { encryptedData: "", iv: "", salt: "" } };
-    if (formValues.iban) {
-      encryptedIbanObj = await cryptographyInteractor.encryptData({
-        text: formValues.iban,
-        masterPassword: masterPassword,
-      });
-    }
-
-    let encryptedCardNumberObj = {
-      data: { encryptedData: "", iv: "", salt: "" },
-    };
-    if (formValues.cardNumber) {
-      encryptedCardNumberObj = await cryptographyInteractor.encryptData({
-        text: formValues.cardNumber,
-        masterPassword: masterPassword,
-      });
-    }
-
-    let encryptedCardCvvCvcObj = {
-      data: { encryptedData: "", iv: "", salt: "" },
-    };
-    if (formValues.cardCvvCvc) {
-      encryptedCardCvvCvcObj = await cryptographyInteractor.encryptData({
-        text: formValues.cardCvvCvc,
-        masterPassword: masterPassword,
-      });
-    }
-
-    const editResponse = await bankInteractor.editBank(bankId, {
-      bankName: formValues.bankName,
-      accountHolderFirstName: formValues.accountHolderFirstName,
-      accountHolderLastName: formValues.accountHolderLastName,
-      encryptedIban: encryptedIbanObj.data.encryptedData,
-      ibanEncryptionIv: encryptedIbanObj.data.iv,
-      ibanEncryptionSalt: encryptedIbanObj.data.salt,
-      swiftBic: formValues.swiftBic,
-      accountType: formValues.accountType,
-      branchCode: formValues.branchCode,
-      cardHolderFirstName: formValues.cardHolderFirstName,
-      cardHolderLastName: formValues.cardHolderLastName,
-      encryptedCardNumber: encryptedCardNumberObj.data.encryptedData,
-      cardNumberEncryptionIv: encryptedCardNumberObj.data.iv,
-      cardNumberEncryptionSalt: encryptedCardNumberObj.data.salt,
-      expiryDate: formValues.expiryDate,
-      encryptedCardCvvCvc: encryptedCardCvvCvcObj.data.encryptedData,
-      cardCvvCvcEncryptionIv: encryptedCardCvvCvcObj.data.iv,
-      cardCvvCvcEncryptionSalt: encryptedCardCvvCvcObj.data.salt,
-      cardType: formValues.cardType,
-    });
-
-    if (!editResponse.success) {
-      setIsBankLoading(false);
-      setMessage(editResponse.message);
-      setMessageType("error");
-      return;
-    }
-
-    // Update local state
+    // Update local state to avoid decryption
     const updatedBank = banks.map((bank) => {
       if (bank.bankId === bankId) {
         return {
           ...bank,
-          ...formValues,
-          decryptedIban: formValues.iban,
-          decryptedCardNumber: formValues.cardNumber,
-          decryptedCardCvvCvc: formValues.cardCvvCvc,
+          ...validBankEntity,
+          decryptedIban: validBankEntity.iban,
+          decryptedCardNumber: validBankEntity.cardNumber,
+          decryptedCardCvvCvc: validBankEntity.cardCvvCvc,
         };
       }
       return bank;
@@ -376,11 +320,12 @@ export const BanksPage = () => {
 
     setBanks(updatedBank);
     setIsBankLoading(false);
-    setMessage(editResponse.message);
+    setIsEditing(false);
+    setMessage(updateBankResponse.message);
     setMessageType("success");
   };
 
-  const handleDeleteBank = async (bankId) => {
+  const processDeleteBank = async (bankId) => {
     setIsBankLoading(true);
 
     const bankToDelete = banks.find((acc) => acc.bankId === bankId);
@@ -391,7 +336,6 @@ export const BanksPage = () => {
     }
 
     const deletionResponse = await bankInteractor.deleteBank(bankId);
-
     if (!deletionResponse.success) {
       setIsBankLoading(false);
       setMessage(deletionResponse.message);
@@ -410,6 +354,14 @@ export const BanksPage = () => {
 
   return (
     <BankTemplate>
+      <SearchInput
+        placeholder={selectedOption}
+        onSearchChange={setSearchTerm}
+        searchOptions={searchOptions}
+        onOptionChange={(e) => setSelectedOption(e.target.value)}
+        selectedOption={selectedOption}
+        pageName="banksPage"
+      />
       <FlashMessage
         message={message}
         setMessage={setMessage}
@@ -417,20 +369,20 @@ export const BanksPage = () => {
         className="bank-page__flash-message"
       />
       <NewBankForm
-        formValues={newBankFormValues}
-        setFormValues={setNewBankFormValues}
+        newBankFormData={newBankFormData}
+        setNewBankFormData={setNewBankFormData}
         handleChange={handleChange}
-        handleSubmit={(e) => handleCreateBank(e, masterPassword)}
+        processCreateBank={(e) => processCreateBank(e, masterPassword)}
         isBankLoading={isBankLoading}
         message={message}
         setMessage={setMessage}
         messageType={messageType}
       />
       <BanksOverview
-        banks={banks}
-        onSelectBank={handleSelectBankForEdit}
-        onEditBank={handleEditBank}
-        onDeleteBank={handleDeleteBank}
+        banks={filteredBanks}
+        handleSelectBankForEdit={handleSelectBankForEdit}
+        processUpdateBank={processUpdateBank}
+        processDeleteBank={processDeleteBank}
         isBankLoading={isBankLoading}
         message={message}
         messageType={messageType}

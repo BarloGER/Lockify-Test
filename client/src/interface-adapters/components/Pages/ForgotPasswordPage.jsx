@@ -1,19 +1,14 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { UserInteractor } from "../../../usecases/user/UserInteractor";
-import { UserRepository } from "../../repositories/UserRepository";
-
 import { AuthContext } from "../../context/AuthContext";
+
 import { AuthTemplate } from "../templates";
 import { ForgotPasswordForm } from "../organisms";
 
-const userRepository = new UserRepository();
-const userInteractor = new UserInteractor(userRepository);
-
 export const ForgotPasswordPage = () => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useContext(AuthContext);
+  const { userInteractor, isAuthenticated } = useContext(AuthContext);
 
   const [email, setEmail] = useState("");
   const [isPasswordRequestLoading, setIsPasswordRequestLoading] =
@@ -34,12 +29,7 @@ export const ForgotPasswordPage = () => {
     const passwordRequestResponse = await userInteractor.requestNewPassword({
       email,
     });
-    if (passwordRequestResponse.validationError) {
-      setIsPasswordRequestLoading(false);
-      setMessage(`validationError.${passwordRequestResponse.validationError}`);
-      setMessageType("error");
-      return;
-    } else if (
+    if (
       !passwordRequestResponse.success &&
       passwordRequestResponse.message === "Failed to fetch"
     ) {

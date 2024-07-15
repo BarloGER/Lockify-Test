@@ -21,12 +21,12 @@ exports.UserRepository = class UserRepository {
     return user;
   }
 
-  async createUser(userData) {
-    const newUser = await User.create(userData);
-    return newUser;
+  async saveUserToDB(validUserEntity) {
+    const createdUser = await User.create(validUserEntity);
+    return createdUser;
   }
 
-  async updateUser(userId, updateData) {
+  async updateUserInDB(userId, updateData) {
     const user = await User.findByPk(userId);
     if (!user) {
       return null;

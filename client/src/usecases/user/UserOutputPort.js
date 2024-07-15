@@ -5,42 +5,57 @@ export class UserOutputPort {
     this.user = {};
   }
 
-  prepareOutput(data) {
-    this.success = data.success;
-    this.message = data.message;
+  formatValidationError(validationError) {
     return {
-      success: this.success,
-      message: this.message,
+      success: false,
+      message: validationError,
     };
   }
 
-  prepareAuthOutput(data) {
-    this.success = data.success;
-    this.message = data.message;
-    this.user = data.user;
-    this.statusCode = data.statusCode;
-    this.statusMessage = data.statusMessage;
-    this.errorType = data.errorType;
-    this.errorCode = data.errorCode;
+  formatBlockedUser(successfulResponse) {
     return {
-      success: this.success,
-      message: this.message,
-      user: this.user,
-      statusCode: this.statusCode,
-      statusMessage: this.statusMessage,
-      errorType: this.errorType,
-      errorCode: this.errorCode,
+      success: false,
+      message: successfulResponse.message,
+      user: successfulResponse.user,
     };
   }
 
-  prepareUserOutput(data) {
-    this.success = data.success;
-    this.message = data.message;
-    this.user = data.user;
+  formatFailedRequest(requestError) {
     return {
-      success: this.success,
-      message: this.message,
-      user: this.user,
+      success: requestError.success,
+      message: requestError.message,
+      statusCode: requestError.statusCode,
+      statusMessage: requestError.statusMessage,
+      errorCode: requestError.errorCode,
+      errorType: requestError.errorType,
+    };
+  }
+
+  formatValidUserInput(validatedUserInput) {
+    return {
+      success: true,
+      validUserEntity: {
+        username: validatedUserInput.username,
+        email: validatedUserInput.email,
+        password: validatedUserInput.password,
+        masterPassword: validatedUserInput.masterPassword,
+        isNewsletterAllowed: validatedUserInput.isNewsletterAllowed,
+      },
+    };
+  }
+
+  formatUser(successfulResponse) {
+    return {
+      success: true,
+      message: successfulResponse.message,
+      user: successfulResponse.user,
+    };
+  }
+
+  formatSuccessfulResponse(successfulResponse) {
+    return {
+      success: true,
+      message: successfulResponse.message,
     };
   }
 }

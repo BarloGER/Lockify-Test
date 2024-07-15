@@ -3,7 +3,7 @@ const language = localStorage.getItem("language");
 const URL = import.meta.env.VITE_API_KEY;
 
 export const ContactRepository = class ContactRepository {
-  async getContacts() {
+  async getContactsRequest() {
     try {
       const response = await fetch(`${URL}/contacts/get-contacts`, {
         method: "GET",
@@ -20,7 +20,7 @@ export const ContactRepository = class ContactRepository {
     }
   }
 
-  async createContact(userData) {
+  async createContactRequest(validEncryptedContactEntity) {
     try {
       const response = await fetch(`${URL}/contacts/create-contact`, {
         method: "POST",
@@ -28,23 +28,7 @@ export const ContactRepository = class ContactRepository {
           "Content-Type": "application/json",
           "Accept-Language": language,
         },
-        body: JSON.stringify({
-          companyName: userData.companyName,
-          firstName: userData.firstName,
-          lastName: userData.lastName,
-          streetAddress: userData.streetAddress,
-          additionalAddressInfo: userData.additionalAddressInfo,
-          city: userData.city,
-          stateProvinceRegion: userData.stateProvinceRegion,
-          postalCode: userData.postalCode,
-          country: userData.country,
-          phoneNumber: userData.phoneNumber,
-          email: userData.email,
-          birthDate: userData.birthDate,
-          encryptedNotes: userData.encryptedNotes,
-          notesEncryptionIv: userData.notesEncryptionIv,
-          notesEncryptionSalt: userData.notesEncryptionSalt,
-        }),
+        body: JSON.stringify(validEncryptedContactEntity),
         credentials: "include",
       });
       return response.json();
@@ -53,7 +37,7 @@ export const ContactRepository = class ContactRepository {
     }
   }
 
-  async updateContact(contactId, updatedData) {
+  async updateContactRequest(contactId, validEncryptedContactEntity) {
     try {
       const response = await fetch(
         `${URL}/contacts/update-contact/${contactId}`,
@@ -63,23 +47,7 @@ export const ContactRepository = class ContactRepository {
             "Content-Type": "application/json",
             "Accept-Language": language,
           },
-          body: JSON.stringify({
-            companyName: updatedData.companyName,
-            firstName: updatedData.firstName,
-            lastName: updatedData.lastName,
-            streetAddress: updatedData.streetAddress,
-            additionalAddressInfo: updatedData.additionalAddressInfo,
-            city: updatedData.city,
-            stateProvinceRegion: updatedData.stateProvinceRegion,
-            postalCode: updatedData.postalCode,
-            country: updatedData.country,
-            phoneNumber: updatedData.phoneNumber,
-            email: updatedData.email,
-            birthDate: updatedData.birthDate,
-            encryptedNotes: updatedData.encryptedNotes,
-            notesEncryptionIv: updatedData.notesEncryptionIv,
-            notesEncryptionSalt: updatedData.notesEncryptionSalt,
-          }),
+          body: JSON.stringify(validEncryptedContactEntity),
           credentials: "include",
         }
       );
@@ -90,7 +58,7 @@ export const ContactRepository = class ContactRepository {
     }
   }
 
-  async deleteContact(contactId) {
+  async deleteContactRequest(contactId) {
     try {
       const response = await fetch(
         `${URL}/contacts/delete-contact/${contactId}`,

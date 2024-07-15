@@ -10,17 +10,18 @@ i18next
   .use(LanguageDetector)
   .init({
     resources: {
-      en: {
-        translation: translationEN,
-      },
-      de: {
-        translation: translationDE,
-      },
-      fallbackLng: "en",
-      debug: true,
-      interpolation: {
-        escapeValue: false,
-      },
+      en: { translation: translationEN },
+      de: { translation: translationDE },
+    },
+    fallbackLng: "en",
+    debug: false,
+    interpolation: {
+      escapeValue: false,
+    },
+    detection: {
+      order: ["localStorage", "navigator"],
+      caches: ["localStorage"],
+      lookupLocalStorage: "language",
     },
   });
 

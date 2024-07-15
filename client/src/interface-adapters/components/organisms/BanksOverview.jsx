@@ -4,9 +4,9 @@ import "./assets/banks-overview.css";
 
 export const BanksOverview = ({
   banks,
-  onSelectBank,
-  onEditBank,
-  onDeleteBank,
+  handleSelectBankForEdit,
+  processUpdateBank,
+  processDeleteBank,
   isBankLoading,
 }) => {
   return (
@@ -15,9 +15,9 @@ export const BanksOverview = ({
         <BankCard
           key={bank.bankId || index}
           bank={bank}
-          onSelect={() => onSelectBank(bank.bankId)}
-          onEdit={onEditBank}
-          onDelete={onDeleteBank}
+          handleSelectBankForEdit={() => handleSelectBankForEdit(bank.bankId)}
+          processUpdateBank={processUpdateBank}
+          processDeleteBank={processDeleteBank}
           isLoading={isBankLoading}
         />
       ))}
@@ -44,8 +44,8 @@ BanksOverview.propTypes = {
       cardType: PropTypes.string,
     })
   ).isRequired,
-  onSelectBank: PropTypes.func.isRequired,
-  onEditBank: PropTypes.func.isRequired,
-  onDeleteBank: PropTypes.func.isRequired,
+  handleSelectBankForEdit: PropTypes.func.isRequired,
+  processUpdateBank: PropTypes.func.isRequired,
+  processDeleteBank: PropTypes.func.isRequired,
   isBankLoading: PropTypes.bool,
 };

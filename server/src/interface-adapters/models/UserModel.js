@@ -27,7 +27,7 @@ module.exports = (sequelize, Model, DataTypes) => {
         defaultValue: DataTypes.NOW,
       },
       encryptedSecret: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false,
       },
       secretEncryptionIv: {
@@ -52,6 +52,7 @@ module.exports = (sequelize, Model, DataTypes) => {
       },
       verificationCode: {
         type: DataTypes.STRING,
+        allowNull: false,
       },
       verificationAttempts: {
         type: DataTypes.INTEGER,

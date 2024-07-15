@@ -15,49 +15,48 @@ exports.ContactInteractor = class ContactInteractor {
     );
     if (!foundContacts) {
       throw new ErrorResponse({
-        errorCode: "CONTACT_NOT_FOUND_002",
+        errorCode: "USER_NOT_FOUND_002",
       });
     }
 
-    const contactOutputData = {
-      success: true,
-      message: {
-        EN: "Contacts successfully queried.",
-        DE: "Kontakte erfolgreich abgefragt.",
-      },
-      contacts: foundContacts,
-    };
-
-    return this.contactOutputPort.prepareContactsOutput(contactOutputData);
+    return this.contactOutputPort.formatFoundContacts(foundContacts);
   }
 
-  async createContact(userId, userInput) {
-    const contact = this.contactInputPort.createContact(userInput);
-    contact.userId = userId;
+  async createContact(userId, unvalidatedUserInput) {
+    const validContactEntity =
+      this.contactInputPort.createContact(unvalidatedUserInput);
+    if (validContactEntity.validationError) {
+      const validationError = validContactEntity.validationError;
+      throw new ErrorResponse({
+        errorCode: `${validationError}`,
+      });
+    }
 
-    const savedContact = await this.contactRepository.createContact(contact);
-    if (!savedContact) {
+    validContactEntity.userId = userId;
+
+    const createdContact = await this.contactRepository.createContact(
+      validContactEntity
+    );
+    if (!createdContact) {
       throw new ErrorResponse({ errorCode: "DB_SERVICE_002" });
     }
 
-    const contactOutputData = {
-      success: true,
-      message: {
-        EN: "Contact successfuly created.",
-        DE: "Kontakte erfolgreich erstellt.",
-      },
-      contact: savedContact,
-    };
-
-    return this.contactOutputPort.prepareSingleContactOutput(contactOutputData);
+    return this.contactOutputPort.formatCreatedContact(createdContact);
   }
 
-  async updateContact(contactId, userInput) {
-    const updateData = this.contactInputPort.editContact(userInput);
+  async updateContact(contactId, unvalidatedUserInput) {
+    const validContactEntity =
+      this.contactInputPort.editContact(unvalidatedUserInput);
+    if (validContactEntity.validationError) {
+      const validationError = validContactEntity.validationError;
+      throw new ErrorResponse({
+        errorCode: `${validationError}`,
+      });
+    }
 
     const updatedContact = await this.contactRepository.updateContact(
       contactId,
-      updateData
+      validContactEntity
     );
     if (!updatedContact) {
       throw new ErrorResponse({
@@ -65,27 +64,25 @@ exports.ContactInteractor = class ContactInteractor {
       });
     }
 
-    const contactOutputData = {
-      success: true,
-      message: {
-        EN: "Contact updated successfully.",
-        DE: "Kontakte erfolgreich aktualisiert",
-      },
-      contact: updateData,
-    };
-
-    return this.contactOutputPort.prepareSingleContactOutput(contactOutputData);
+    return this.contactOutputPort.formatUpdatedContact(updatedContact);
   }
 
-  async deleteContact(contactId, userInput) {
-    const data = this.contactInputPort.deleteContact(userInput);
+  async deleteContact(contactId, unvalidatedUserInput) {
+    const validContactEntity =
+      this.contactInputPort.deleteContact(unvalidatedUserInput);
+    if (validContactEntity.validationError) {
+      const validationError = validContactEntity.validationError;
+      throw new ErrorResponse({
+        errorCode: `${validationError}`,
+      });
+    }
 
     const foundContact = await this.contactRepository.findContactById(
       contactId
     );
     if (!foundContact) {
       throw new ErrorResponse({
-        errorCode: "CONTACT_NOT_FOUND_002",
+        errorCode: "ACCOUNT_NOT_FOUND_002",
       });
     }
 
@@ -99,14 +96,6 @@ exports.ContactInteractor = class ContactInteractor {
       });
     }
 
-    const contactOutputData = {
-      success: true,
-      message: {
-        EN: "Contact deleted successfully.",
-        DE: "Kontakte erfolgreich gelöscht.",
-      },
-    };
-
-    return this.contactOutputPort.output(contactOutputData);
+    return this.contactOutputPort.formatDeletedContact();
   }
 };

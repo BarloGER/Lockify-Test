@@ -3,7 +3,7 @@ const language = localStorage.getItem("language");
 const URL = import.meta.env.VITE_API_KEY;
 
 export const NoteRepository = class NoteRepository {
-  async getNotes() {
+  async getNotesRequest() {
     try {
       const response = await fetch(`${URL}/notes/get-notes`, {
         method: "GET",
@@ -20,7 +20,7 @@ export const NoteRepository = class NoteRepository {
     }
   }
 
-  async createNote(userData) {
+  async createNoteRequest(validEncryptedNoteEntity) {
     try {
       const response = await fetch(`${URL}/notes/create-note`, {
         method: "POST",
@@ -28,14 +28,7 @@ export const NoteRepository = class NoteRepository {
           "Content-Type": "application/json",
           "Accept-Language": language,
         },
-        body: JSON.stringify({
-          encryptedNoteTitle: userData.encryptedNoteTitle,
-          noteTitleEncryptionIv: userData.noteTitleEncryptionIv,
-          noteTitleEncryptionSalt: userData.noteTitleEncryptionSalt,
-          encryptedNoteContent: userData.encryptedNoteContent,
-          noteContentEncryptionIv: userData.noteContentEncryptionIv,
-          noteContentEncryptionSalt: userData.noteContentEncryptionSalt,
-        }),
+        body: JSON.stringify(validEncryptedNoteEntity),
         credentials: "include",
       });
       return response.json();
@@ -44,7 +37,7 @@ export const NoteRepository = class NoteRepository {
     }
   }
 
-  async updateNote(noteId, updatedData) {
+  async updateNoteRequest(noteId, validEncryptedNoteEntity) {
     try {
       const response = await fetch(`${URL}/notes/update-note/${noteId}`, {
         method: "PUT",
@@ -52,14 +45,7 @@ export const NoteRepository = class NoteRepository {
           "Content-Type": "application/json",
           "Accept-Language": language,
         },
-        body: JSON.stringify({
-          encryptedNoteTitle: updatedData.encryptedNoteTitle,
-          noteTitleEncryptionIv: updatedData.noteTitleEncryptionIv,
-          noteTitleEncryptionSalt: updatedData.noteTitleEncryptionSalt,
-          encryptedNoteContent: updatedData.encryptedNoteContent,
-          noteContentEncryptionIv: updatedData.noteContentEncryptionIv,
-          noteContentEncryptionSalt: updatedData.noteContentEncryptionSalt,
-        }),
+        body: JSON.stringify(validEncryptedNoteEntity),
         credentials: "include",
       });
 
@@ -69,7 +55,7 @@ export const NoteRepository = class NoteRepository {
     }
   }
 
-  async deleteNote(noteId) {
+  async deleteNoteRequest(noteId) {
     try {
       const response = await fetch(`${URL}/notes/delete-note/${noteId}`, {
         method: "DELETE",

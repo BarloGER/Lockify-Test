@@ -17,27 +17,28 @@ module.exports = (sequelize, Model, DataTypes) => {
         },
       },
       encryptedNoteTitle: {
-        type: DataTypes.STRING,
-        allowNull: false,
+        type: DataTypes.TEXT,
+        allowNull: true,
       },
       noteTitleEncryptionIv: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       noteTitleEncryptionSalt: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       encryptedNoteContent: {
         type: DataTypes.TEXT,
+        allowNull: true,
       },
       noteContentEncryptionIv: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       noteContentEncryptionSalt: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       createdAt: {
         type: DataTypes.DATE,

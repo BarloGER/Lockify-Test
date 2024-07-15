@@ -9,90 +9,88 @@ export class AccountInteractor {
   }
 
   async getAccounts() {
-    const accountRequestResult = await this.accountRepository.getAccounts();
-
-    const accountOutputData = {
-      success: accountRequestResult.success,
-      message: accountRequestResult.message,
-      accounts: accountRequestResult.accounts,
-      statusCode: accountRequestResult.statusCode,
-      statusMessage: accountRequestResult.statusMessage,
-      errorType: accountRequestResult.errorType,
-      errorCode: accountRequestResult.errorCode,
-    };
-
-    return this.accountOutputPort.prepareAccountsOutput(accountOutputData);
-  }
-
-  async validateCreateAccount(userInput) {
-    const account =
-      this.accountInputPort.validateCreationInputBeforeEncryption(userInput);
-    if (account.validationError) {
-      return { validationError: account.validationError };
-    }
-  }
-
-  async validateEditAccount(userInput) {
-    const account =
-      this.accountInputPort.validateUpdatedInputBeforeEncryption(userInput);
-    if (account.validationError) {
-      return { validationError: account.validationError };
-    }
-  }
-
-  async createAccount(userInput) {
-    const account =
-      this.accountInputPort.validateCreationInputAfterEncryption(userInput);
-    if (account.validationError) {
-      return { validationError: account.validationError };
+    const getAccountsResponse =
+      await this.accountRepository.getAccountsRequest();
+    if (!getAccountsResponse.success) {
+      return this.accountOutputPort.formatFailedRequest(getAccountsResponse);
     }
 
-    const registrationResult = await this.accountRepository.createAccount(
-      account
+    return this.accountOutputPort.formatMultipleAccounts(getAccountsResponse);
+  }
+
+  async validateUserInputForCreateAccount(unvalidatedUserInput) {
+    const validatedUserInput =
+      this.accountInputPort.validatePreEncryptionInputForCreateAccount(
+        unvalidatedUserInput
+      );
+    if (validatedUserInput.validationError) {
+      const validationError = validatedUserInput.validationError;
+      return this.accountOutputPort.formatValidationError(validationError);
+    }
+
+    return this.accountOutputPort.formatValidAccountInput(validatedUserInput);
+  }
+
+  async createAccount(encryptedAccountData) {
+    const validAccountEntity =
+      this.accountInputPort.validateEncryptedDataForCreateAccount(
+        encryptedAccountData
+      );
+    console.log(validAccountEntity);
+    if (validAccountEntity.validationError) {
+      return { validationError: validAccountEntity.validationError };
+    }
+
+    const creationResponse = await this.accountRepository.createAccountRequest(
+      validAccountEntity
     );
-
-    const outputData = {
-      success: registrationResult.success,
-      message: registrationResult.message,
-      account: registrationResult.account,
-    };
-
-    return this.accountOutputPort.prepareSingleAccountOutput(outputData);
-  }
-
-  async editAccount(accountId, userInput) {
-    const account =
-      this.accountInputPort.validateUpdatedInputAfterEncryption(userInput);
-    if (account.validationError) {
-      return { validationError: account.validationError };
+    if (!creationResponse.success) {
+      return this.accountOutputPort.formatFailedRequest(creationResponse);
     }
 
-    const registrationResult = await this.accountRepository.updateAccount(
+    return this.accountOutputPort.formatSingleAccount(creationResponse);
+  }
+
+  async validateUserInputForUpdateAccount(unvalidatedUserInput) {
+    const validatedUserInput =
+      this.accountInputPort.validatePreEncryptionInputForUpdateAccount(
+        unvalidatedUserInput
+      );
+    if (validatedUserInput.validationError) {
+      return { validationError: validatedUserInput.validationError };
+    }
+
+    return this.accountOutputPort.formatValidAccountInput(validatedUserInput);
+  }
+
+  async updateAccount(accountId, encryptedAccountData) {
+    const validAccountEntity =
+      this.accountInputPort.validateEncryptedDataForUpdateAccount(
+        encryptedAccountData
+      );
+    if (validAccountEntity.validationError) {
+      return { validationError: validAccountEntity.validationError };
+    }
+
+    const updateResponse = await this.accountRepository.updateAccountRequest(
       accountId,
-      account
+      validAccountEntity
     );
+    if (!updateResponse.success) {
+      return this.accountOutputPort.formatFailedRequest(updateResponse);
+    }
 
-    console.log(registrationResult);
-
-    const outputData = {
-      success: registrationResult.success,
-      message: registrationResult.message,
-      account: registrationResult.account,
-    };
-
-    return this.accountOutputPort.prepareSingleAccountOutput(outputData);
+    return this.accountOutputPort.formatSingleAccount(updateResponse);
   }
 
   async deleteAccount(accountId) {
-    const deletionResult = await this.accountRepository.deleteAccount(
+    const deletionResponse = await this.accountRepository.deleteAccountRequest(
       accountId
     );
+    if (!deletionResponse.success) {
+      return this.accountOutputPort.formatFailedRequest(deletionResponse);
+    }
 
-    const outputData = {
-      success: deletionResult.success,
-      message: deletionResult.message,
-    };
-
-    return this.accountOutputPort.prepareOutput(outputData);
+    return this.accountOutputPort.formatSuccessfulResponse(deletionResponse);
   }
 }

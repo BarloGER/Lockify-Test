@@ -2,37 +2,49 @@ exports.ContactOutputPort = class ContactOutputPort {
   constructor() {
     this.success = false;
     this.message = {};
-    this.contact = {};
+    this.account = {};
   }
 
-  prepareSingleContactOutput(data) {
-    this.success = data.success;
-    this.message = data.message;
-    this.contact = data.contact;
+  formatFoundContacts(foundContacts) {
     return {
-      success: this.success,
-      message: this.message,
-      contact: this.contact,
+      success: true,
+      message: {
+        EN: "Contacts successfully queried.",
+        DE: "Kontakte erfolgreich abgefragt.",
+      },
+      accounts: foundContacts.dataValues,
     };
   }
 
-  prepareContactsOutput(data) {
-    this.success = data.success;
-    this.message = data.message;
-    this.contacts = data.contacts;
+  formatCreatedContact(createdContact) {
     return {
-      success: this.success,
-      message: this.message,
-      contacts: this.contacts,
+      success: true,
+      message: {
+        EN: "Contact successfuly created.",
+        DE: "Kontakt erfolgreich erstellt.",
+      },
+      account: createdContact.dataValues,
     };
   }
 
-  output(data) {
-    this.success = data.success;
-    this.message = data.message;
+  formatUpdatedContact(updatedContact) {
     return {
-      success: this.success,
-      message: this.message,
+      success: true,
+      message: {
+        EN: "Contact updated successfully.",
+        DE: "Kontakt erfolgreich aktualisiert",
+      },
+      account: updatedContact.dataValues,
+    };
+  }
+
+  formatDeletedContact() {
+    return {
+      success: true,
+      message: {
+        EN: "Contact deleted successfully.",
+        DE: "Kontakt erfolgreich gelöscht.",
+      },
     };
   }
 };

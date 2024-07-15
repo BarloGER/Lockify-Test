@@ -9,88 +9,87 @@ export class ContactInteractor {
   }
 
   async getContacts() {
-    const contactRequestResult = await this.contactRepository.getContacts();
-
-    const contactOutputData = {
-      success: contactRequestResult.success,
-      message: contactRequestResult.message,
-      contacts: contactRequestResult.contacts,
-      statusCode: contactRequestResult.statusCode,
-      statusMessage: contactRequestResult.statusMessage,
-      errorType: contactRequestResult.errorType,
-      errorCode: contactRequestResult.errorCode,
-    };
-
-    return this.contactOutputPort.prepareContactsOutput(contactOutputData);
-  }
-
-  async validateCreateContact(userInput) {
-    const contact =
-      this.contactInputPort.validateCreationInputBeforeEncryption(userInput);
-    if (contact.validationError) {
-      return { validationError: contact.validationError };
-    }
-  }
-
-  async validateEditContact(userInput) {
-    const contact =
-      this.contactInputPort.validateUpdatedInputBeforeEncryption(userInput);
-    if (contact.validationError) {
-      return { validationError: contact.validationError };
-    }
-  }
-
-  async createContact(userInput) {
-    const contact =
-      this.contactInputPort.validateCreationInputAfterEncryption(userInput);
-    if (contact.validationError) {
-      return { validationError: contact.validationError };
+    const getContactsResponse =
+      await this.contactRepository.getContactsRequest();
+    if (!getContactsResponse.success) {
+      return this.contactOutputPort.formatFailedRequest(getContactsResponse);
     }
 
-    const registrationResult = await this.contactRepository.createContact(
-      contact
+    return this.contactOutputPort.formatMultipleContacts(getContactsResponse);
+  }
+
+  async validateUserInputForCreateContact(unvalidatedUserInput) {
+    const validatedUserInput =
+      this.contactInputPort.validatePreEncryptionInputForCreateContact(
+        unvalidatedUserInput
+      );
+    if (validatedUserInput.validationError) {
+      const validationError = validatedUserInput.validationError;
+      return this.contactOutputPort.formatValidationError(validationError);
+    }
+
+    return this.contactOutputPort.formatValidContactInput(validatedUserInput);
+  }
+
+  async createContact(encryptedContactData) {
+    const validContactEntity =
+      this.contactInputPort.validateEncryptedDataForCreateContact(
+        encryptedContactData
+      );
+    if (validContactEntity.validationError) {
+      return { validationError: validContactEntity.validationError };
+    }
+
+    const creationResponse = await this.contactRepository.createContactRequest(
+      validContactEntity
     );
-
-    const outputData = {
-      success: registrationResult.success,
-      message: registrationResult.message,
-      contact: registrationResult.contact,
-    };
-
-    return this.contactOutputPort.prepareSingleContactOutput(outputData);
-  }
-
-  async editContact(contactId, userInput) {
-    const contact =
-      this.contactInputPort.validateUpdatedInputAfterEncryption(userInput);
-    if (contact.validationError) {
-      return { validationError: contact.validationError };
+    if (!creationResponse.success) {
+      return this.contactOutputPort.formatFailedRequest(creationResponse);
     }
 
-    const registrationResult = await this.contactRepository.updateContact(
+    return this.contactOutputPort.formatSingleContact(creationResponse);
+  }
+
+  async validateUserInputForUpdateContact(unvalidatedUserInput) {
+    const validatedUserInput =
+      this.contactInputPort.validatePreEncryptionInputForUpdateContact(
+        unvalidatedUserInput
+      );
+    if (validatedUserInput.validationError) {
+      return { validationError: validatedUserInput.validationError };
+    }
+
+    return this.contactOutputPort.formatValidContactInput(validatedUserInput);
+  }
+
+  async updateContact(contactId, encryptedContactData) {
+    const validContactEntity =
+      this.contactInputPort.validateEncryptedDataForUpdateContact(
+        encryptedContactData
+      );
+    if (validContactEntity.validationError) {
+      return { validationError: validContactEntity.validationError };
+    }
+
+    const updateResponse = await this.contactRepository.updateContactRequest(
       contactId,
-      contact
+      validContactEntity
     );
+    if (!updateResponse.success) {
+      return this.contactOutputPort.formatFailedRequest(updateResponse);
+    }
 
-    const outputData = {
-      success: registrationResult.success,
-      message: registrationResult.message,
-      contact: registrationResult.contact,
-    };
-
-    return this.contactOutputPort.prepareSingleContactOutput(outputData);
+    return this.contactOutputPort.formatSingleContact(updateResponse);
   }
 
   async deleteContact(contactId) {
-    const deletionResult = await this.contactRepository.deleteContact(
+    const deletionResponse = await this.contactRepository.deleteContactRequest(
       contactId
     );
+    if (!deletionResponse.success) {
+      return this.contactOutputPort.formatFailedRequest(deletionResponse);
+    }
 
-    const outputData = {
-      success: deletionResult.success,
-      message: deletionResult.message,
-    };
-
-    return this.contactOutputPort.prepareOutput(outputData);
+    return this.contactOutputPort.formatSuccessfulResponse(deletionResponse);
   }
 }

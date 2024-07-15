@@ -8,18 +8,18 @@ export class MailInteractor {
     this.mailOutputPort = new MailOutputPort();
   }
 
-  async sendSupportMail(userInput) {
-    const mail = this.mailInputPort.validateSupportMailInput(userInput);
-    if (mail.validationError) {
-      return { validationError: mail.validationError };
+  async sendSupportMail(unvalidatedMailInput) {
+    const validMailEntity =
+      this.mailInputPort.validateSupportMailInput(unvalidatedMailInput);
+    if (validMailEntity.validationError) {
+      return { validationError: validMailEntity.validationError };
     }
 
-    const sendMailResult = await this.mailRepository.sendSupportMail(mail);
+    const sendMailResponse = await this.mailRepository.sendSupportMail(
+      validMailEntity
+    );
+    console.log(sendMailResponse);
 
-    const mailOutputData = {
-      message: sendMailResult.message,
-    };
-
-    return this.mailOutputPort.prepareMailOutput(mailOutputData);
+    return this.mailOutputPort.formatSuccessfulResponse(sendMailResponse);
   }
 }

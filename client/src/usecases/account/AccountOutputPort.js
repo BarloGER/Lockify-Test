@@ -5,34 +5,58 @@ export class AccountOutputPort {
     this.accounts = [];
   }
 
-  prepareSingleAccountOutput(data) {
-    this.success = data.success;
-    this.message = data.message;
-    this.account = data.account;
+  formatValidationError(validationError) {
     return {
-      success: this.success,
-      message: this.message,
-      account: this.account,
+      success: false,
+      message: validationError,
     };
   }
 
-  prepareAccountsOutput(data) {
-    this.success = data.success;
-    this.message = data.message;
-    this.accounts = data.accounts;
+  formatFailedRequest(requestError) {
     return {
-      success: this.success,
-      message: this.message,
-      accounts: this.accounts,
+      success: requestError.success,
+      message: requestError.message,
+      statusCode: requestError.statusCode,
+      statusMessage: requestError.statusMessage,
+      errorCode: requestError.errorCode,
+      errorType: requestError.errorType,
     };
   }
 
-  prepareOutput(data) {
-    this.success = data.success;
-    this.message = data.message;
+  formatValidAccountInput(validatedUserInput) {
     return {
-      success: this.success,
-      message: this.message,
+      success: true,
+      validAccountEntity: {
+        accountName: validatedUserInput.accountName,
+        accountUrl: validatedUserInput.accountUrl,
+        username: validatedUserInput.username,
+        email: validatedUserInput.email,
+        password: validatedUserInput.password,
+        notes: validatedUserInput.notes,
+      },
+    };
+  }
+
+  formatSingleAccount(successfulResponse) {
+    return {
+      success: true,
+      message: successfulResponse.message,
+      account: successfulResponse.account,
+    };
+  }
+
+  formatMultipleAccounts(successfulResponse) {
+    return {
+      success: true,
+      message: successfulResponse.message,
+      accounts: successfulResponse.accounts,
+    };
+  }
+
+  formatSuccessfulResponse(successfulResponse) {
+    return {
+      success: true,
+      message: successfulResponse.message,
     };
   }
 }

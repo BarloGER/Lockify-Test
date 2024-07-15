@@ -5,8 +5,15 @@ import { Input, Span, Button } from "../atoms";
 import { SubmitButton } from "./SubmitButton";
 import "./assets/note-card.css";
 
-export const NoteCard = ({ note, onSelect, onEdit, onDelete, isLoading }) => {
+export const NoteCard = ({
+  note,
+  handleSelectNoteForEdit,
+  processUpdateNote,
+  processDeleteNote,
+  isLoading,
+}) => {
   const { t } = useTranslation();
+
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [editedNote, setEditedNote] = useState({
@@ -20,22 +27,25 @@ export const NoteCard = ({ note, onSelect, onEdit, onDelete, isLoading }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formValues = {
+    const updateNoteFormData = {
       noteTitle: e.target.noteTitle.value,
       noteContent: e.target.noteContent.value,
     };
 
-    onEdit(e, note.noteId, formValues);
+    processUpdateNote(e, note.noteId, updateNoteFormData, setIsEditing);
     setIsEditing(false);
   };
 
   return (
     <div className={`note__card ${isEditing ? "editing" : ""}`}>
       <div className="note__card_inner">
-        <div className="note__card_front" onClick={() => onSelect(note.noteId)}>
+        <div
+          className="note__card_front"
+          onClick={() => handleSelectNoteForEdit(note.noteId)}
+        >
           <h3>{note.decryptedNoteTitle}</h3>
           <p>
-            <strong>{t("note.noteContent")}:</strong>{" "}
+            <strong>{t("notesPage.noteContent")}:</strong>{" "}
             <Span text={note.decryptedNoteContent} />
           </p>
           {isDeleting ? (
@@ -43,22 +53,22 @@ export const NoteCard = ({ note, onSelect, onEdit, onDelete, isLoading }) => {
               <Button
                 type="button"
                 onClick={() => {
-                  onDelete(note.noteId), setIsDeleting(false);
+                  processDeleteNote(note.noteId), setIsDeleting(false);
                 }}
               >
-                {t("note.submitDelete")}
+                {"notesPage.submitDelete"}
               </Button>
               <Button onClick={() => setIsDeleting(false)}>
-                {t("note.cancel")}
+                {"notesPage.cancel"}
               </Button>
             </>
           ) : (
             <>
               <Button onClick={() => setIsEditing(!isEditing)}>
-                {t("note.edit")}
+                {"notesPage.edit"}
               </Button>
               <Button onClick={() => setIsDeleting(true)}>
-                {t("note.delete")}
+                {"notesPage.delete"}
               </Button>
             </>
           )}
@@ -67,26 +77,26 @@ export const NoteCard = ({ note, onSelect, onEdit, onDelete, isLoading }) => {
           <form onSubmit={handleSubmit} className="note__form">
             <Input
               id={`noteTitle-${note.noteId}`}
-              label={t("note.noteTitle")}
+              name="noteTitle"
+              label="notesPage.noteTitle"
               type="text"
               value={editedNote.noteTitle}
               onChange={(e) => handleChange(e, "noteTitle")}
-              name="noteTitle"
             />
             <Input
               id={`noteContent-${note.noteId}`}
-              label={t("note.noteContent")}
+              name="noteContent"
+              label="notesPage.noteContent"
               type="text"
               value={editedNote.noteContent}
               onChange={(e) => handleChange(e, "noteContent")}
-              name="noteContent"
             />
             <div>
               <SubmitButton isLoading={isLoading}>
-                {t("note.submitEdit")}
+                {"notesPage.submitEdit"}
               </SubmitButton>
               <Button onClick={() => setIsEditing(false)}>
-                {t("note.cancel")}
+                {"notesPage.cancel"}
               </Button>
             </div>
           </form>
@@ -102,8 +112,8 @@ NoteCard.propTypes = {
     decryptedNoteTitle: PropTypes.string.isRequired,
     decryptedNoteContent: PropTypes.string,
   }).isRequired,
-  onSelect: PropTypes.func.isRequired,
-  onEdit: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
+  handleSelectNoteForEdit: PropTypes.func.isRequired,
+  processUpdateNote: PropTypes.func.isRequired,
+  processDeleteNote: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
 };

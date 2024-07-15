@@ -3,25 +3,23 @@ import PropTypes from "prop-types";
 import { Input, Button } from "../atoms";
 import { SubmitButton } from "../molecules";
 import { FlashMessage } from "../molecules";
-import { useTranslation } from "react-i18next";
 import "./assets/new-bank-form.css";
 
 export const NewBankForm = ({
-  formValues,
-  setFormValues,
+  newBankFormData,
+  setNewBankFormData,
   handleChange,
-  handleSubmit,
+  processCreateBank,
   isBankLoading,
   message,
   setMessage,
   messageType,
 }) => {
-  const { t } = useTranslation();
   const [isCreating, setIsCreating] = useState(false);
 
   const handlePlusClick = () => {
     setIsCreating(!isCreating);
-    setFormValues({
+    setNewBankFormData({
       bankName: "",
       accountHolderFirstName: "",
       accountHolderLastName: "",
@@ -47,105 +45,105 @@ export const NewBankForm = ({
           </div>
         </div>
         <div className="new-bank__form_back">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={processCreateBank}>
             <Input
               id="bankName"
               name="bankName"
-              label={t("bank.bankName")}
-              value={formValues.bankName}
+              label="banksPage.bankName"
+              value={newBankFormData.bankName}
               onChange={handleChange}
             />
             <Input
               id="accountHolderFirstName"
               name="accountHolderFirstName"
-              label={t("bank.accountHolderFirstName")}
-              value={formValues.accountHolderFirstName}
+              label="banksPage.accountHolderFirstName"
+              value={newBankFormData.accountHolderFirstName}
               onChange={handleChange}
             />
             <Input
               id="accountHolderLastName"
               name="accountHolderLastName"
-              label={t("bank.accountHolderLastName")}
-              value={formValues.accountHolderLastName}
+              label="banksPage.accountHolderLastName"
+              value={newBankFormData.accountHolderLastName}
               onChange={handleChange}
             />
             <Input
               id="iban"
               name="iban"
-              label={t("bank.iban")}
+              label="banksPage.iban"
               type="iban"
-              value={formValues.iban}
+              value={newBankFormData.iban}
               onChange={handleChange}
             />
             <Input
               id="swiftBic"
               name="swiftBic"
-              label={t("bank.swiftBic")}
+              label="banksPage.swiftBic"
               type="swiftBic"
-              value={formValues.swiftBic}
+              value={newBankFormData.swiftBic}
               onChange={handleChange}
             />
             <Input
               id="accountType"
               name="accountType"
-              label={t("bank.accountType")}
+              label="banksPage.accountType"
               type="accountType"
-              value={formValues.accountType}
+              value={newBankFormData.accountType}
               onChange={handleChange}
             />
             <Input
               id="branchCode"
               name="branchCode"
-              label={t("bank.branchCode")}
+              label="banksPage.branchCode"
               type="branchCode"
-              value={formValues.branchCode}
+              value={newBankFormData.branchCode}
               onChange={handleChange}
             />
             <Input
               id="cardHolderFirstName"
               name="cardHolderFirstName"
-              label={t("bank.cardHolderFirstName")}
+              label="banksPage.cardHolderFirstName"
               type="cardHolderFirstName"
-              value={formValues.cardHolderFirstName}
+              value={newBankFormData.cardHolderFirstName}
               onChange={handleChange}
             />
             <Input
               id="cardHolderLastName"
               name="cardHolderLastName"
-              label={t("bank.cardHolderLastName")}
+              label="banksPage.cardHolderLastName"
               type="cardHolderLastName"
-              value={formValues.cardHolderLastName}
+              value={newBankFormData.cardHolderLastName}
               onChange={handleChange}
             />
             <Input
               id="cardNumber"
               name="cardNumber"
-              label={t("bank.cardNumber")}
+              label="banksPage.cardNumber"
               type="cardNumber"
-              value={formValues.cardNumber}
+              value={newBankFormData.cardNumber}
               onChange={handleChange}
             />
             <Input
               id="expiryDate"
               name="expiryDate"
-              label={t("bank.expiryDate")}
+              label="banksPage.expiryDate"
               type="expiryDate"
-              value={formValues.expiryDate}
+              value={newBankFormData.expiryDate}
               onChange={handleChange}
             />
             <Input
               id="cardCvvCvc"
               name="cardCvvCvc"
-              label={t("bank.cardCvvCvc")}
+              label="banksPage.cardCvvCvc"
               type="cardCvvCvc"
-              value={formValues.cardCvvCvc}
+              value={newBankFormData.cardCvvCvc}
               onChange={handleChange}
             />
             <Input
               id="cardType"
               name="cardType"
-              label={t("bank.cardType")}
-              value={formValues.cardType}
+              label="banksPage.cardType"
+              value={newBankFormData.cardType}
               onChange={handleChange}
             />
 
@@ -154,11 +152,11 @@ export const NewBankForm = ({
               modifier="hover"
               isLoading={isBankLoading}
             >
-              {t("bank.submitNewBank")}
+              {"banksPage.submitNewBank"}
             </SubmitButton>
 
             <Button onClick={handlePlusClick} modifier="hover">
-              {t("bank.cancel")}
+              {"banksPage.cancel"}
             </Button>
 
             <FlashMessage
@@ -175,7 +173,7 @@ export const NewBankForm = ({
 };
 
 NewBankForm.propTypes = {
-  formValues: PropTypes.shape({
+  newBankFormData: PropTypes.shape({
     bankName: PropTypes.string,
     accountHolderFirstName: PropTypes.string,
     accountHolderLastName: PropTypes.string,
@@ -190,9 +188,9 @@ NewBankForm.propTypes = {
     cardCvvCvc: PropTypes.string,
     cardType: PropTypes.string,
   }).isRequired,
-  setFormValues: PropTypes.func.isRequired,
+  setNewBankFormData: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  processCreateBank: PropTypes.func.isRequired,
   isBankLoading: PropTypes.bool.isRequired,
   message: PropTypes.string,
   setMessage: PropTypes.func.isRequired,

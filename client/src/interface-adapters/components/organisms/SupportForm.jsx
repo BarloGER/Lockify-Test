@@ -4,45 +4,47 @@ import { FlashMessage, SubmitButton } from "../molecules";
 import "./assets/support-form.css";
 
 export const SupportForm = ({
-  subject,
-  setSubject,
-  email,
-  setEmail,
-  html,
-  setHtml,
-  handleSubmitSupportMessage,
+  supportFormData,
+  handleChange,
+  processSupportRequest,
   isSupportMailLoading,
   message,
   setMessage,
   messageType,
 }) => {
   return (
-    <form onSubmit={handleSubmitSupportMessage}>
-      <Paragraph text="support.text" />
+    <form onSubmit={processSupportRequest}>
+      <Paragraph text="supportPage.text" />
       <Input
-        label="support.subject"
+        id="subject"
+        name="subject"
+        label="supportPage.subject"
         type="text"
-        value={subject}
-        onChange={(e) => setSubject(e.target.value)}
+        value={supportFormData.subject}
+        onChange={handleChange}
       />
       <Input
-        label="support.email"
+        id="email"
+        name="email"
+        label="supportPage.email"
         type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        value={supportFormData.email}
+        onChange={handleChange}
       />
       <Textarea
-        label="support.textarea"
-        placeholder="support.placeholder"
-        value={html}
-        onChange={(e) => setHtml(e.target.value)}
+        id="message"
+        name="html"
+        label="supportPage.textarea"
+        placeholder="supportPage.placeholder"
+        value={supportFormData.html}
+        onChange={handleChange}
       />
       <SubmitButton
         className="support-form__button"
         modifier="hover"
         isLoading={isSupportMailLoading}
       >
-        {"support.supportButton"}
+        {"supportPage.supportButton"}
       </SubmitButton>
       <FlashMessage
         message={message}
@@ -55,13 +57,13 @@ export const SupportForm = ({
 };
 
 SupportForm.propTypes = {
-  subject: PropTypes.string.isRequired,
-  setSubject: PropTypes.func.isRequired,
-  email: PropTypes.string.isRequired,
-  setEmail: PropTypes.func.isRequired,
-  html: PropTypes.string.isRequired,
-  setHtml: PropTypes.func.isRequired,
-  handleSubmitSupportMessage: PropTypes.func.isRequired,
+  supportFormData: PropTypes.shape({
+    subject: PropTypes.string.isRequired,
+    email: PropTypes.string,
+    html: PropTypes.string.isRequired,
+  }).isRequired,
+  handleChange: PropTypes.func.isRequired,
+  processSupportRequest: PropTypes.func.isRequired,
   isSupportMailLoading: PropTypes.bool.isRequired,
   message: PropTypes.string.isRequired,
   setMessage: PropTypes.func.isRequired,

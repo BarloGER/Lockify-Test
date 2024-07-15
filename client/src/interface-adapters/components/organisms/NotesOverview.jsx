@@ -4,9 +4,9 @@ import "./assets/notes-overview.css";
 
 export const NotesOverview = ({
   notes,
-  onSelectNote,
-  onEditNote,
-  onDeleteNote,
+  handleSelectNoteForEdit,
+  processUpdateNote,
+  processDeleteNote,
   isNoteLoading,
 }) => {
   return (
@@ -15,9 +15,9 @@ export const NotesOverview = ({
         <NoteCard
           key={note.noteId || index}
           note={note}
-          onSelect={() => onSelectNote(note.noteId)}
-          onEdit={onEditNote}
-          onDelete={onDeleteNote}
+          handleSelectNoteForEdit={() => handleSelectNoteForEdit(note.noteId)}
+          processUpdateNote={processUpdateNote}
+          processDeleteNote={processDeleteNote}
           isLoading={isNoteLoading}
         />
       ))}
@@ -33,8 +33,8 @@ NotesOverview.propTypes = {
       decryptedNoteContent: PropTypes.string,
     })
   ).isRequired,
-  onSelectNote: PropTypes.func.isRequired,
-  onEditNote: PropTypes.func.isRequired,
-  onDeleteNote: PropTypes.func.isRequired,
+  handleSelectNoteForEdit: PropTypes.func.isRequired,
+  processUpdateNote: PropTypes.func.isRequired,
+  processDeleteNote: PropTypes.func.isRequired,
   isNoteLoading: PropTypes.bool,
 };

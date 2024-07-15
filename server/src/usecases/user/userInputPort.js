@@ -1,93 +1,73 @@
 const { UserEntity } = require("../../entities/UserEntity");
-const { ErrorResponse } = require("../../utils");
 
 exports.UserInputPort = class UserInputPort {
-  createUser(userInput) {
-    const user = new UserEntity(userInput, { isNewUser: true });
-
-    const validationError = user.validateForRegistration();
-    if (validationError) {
-      throw new ErrorResponse({ errorCode: `${validationError}` });
-    }
-
-    return user;
-  }
-
-  authenticateUser(userInput) {
-    const credentials = new UserEntity({
-      email: userInput.email,
-      password: userInput.password,
+  validateInputForCreateUser(unvalidatedUserInput) {
+    const validUserEntity = new UserEntity(unvalidatedUserInput, {
+      isNewUser: true,
     });
 
-    const validationError = credentials.validateForLogin();
+    const validationError = validUserEntity.validateForRegistration();
     if (validationError) {
-      throw new ErrorResponse({ errorCode: `${validationError}` });
+      return { validationError };
+    }
+
+    return validUserEntity;
+  }
+
+  validateInputForAuthenticateUser(unvalidatedUserInput) {
+    const credentials = new UserEntity(unvalidatedUserInput);
+
+    const validationError = credentials.validateForAuthentication();
+    if (validationError) {
+      return { validationError };
     }
 
     return credentials;
   }
 
-  editUser(userInput) {
-    const updateData = new UserEntity({
-      username: userInput.username,
-      email: userInput.email,
-      password: userInput.password,
-      isNewsletterAllowed: userInput.isNewsletterAllowed,
-    });
+  validateInputForUpdateUser(unvalidatedUserInput) {
+    const validUserEntity = new UserEntity(unvalidatedUserInput);
 
-    const validationError = updateData.validateForUpdate();
+    const validationError = validUserEntity.validateForUpdate();
     if (validationError) {
-      throw new ErrorResponse({ errorCode: `${validationError}` });
+      return { validationError };
     }
 
-    return updateData;
+    return validUserEntity;
   }
 
-  deleteUser(userInput) {
-    const data = new UserEntity(userInput);
+  validateInputForDeleteUser(emptyUserInput) {
+    const emptyEntity = new UserEntity(emptyUserInput);
 
-    const validationError = data.validateForDelete();
+    const validationError = emptyEntity.validateForDelete();
     if (validationError) {
-      throw new ErrorResponse({ errorCode: `${validationError}` });
+      return { validationError };
     }
+
+    return emptyEntity;
   }
 
-  verifyCode(userInput) {
+  validateInputForVerification(unvalidatedUserInput) {
     const verificationData = new UserEntity({
-      verificationCode: userInput.verificationCode,
+      verificationCode: unvalidatedUserInput.verificationCode,
     });
 
     const validationError = verificationData.validateForVerification();
     if (validationError) {
-      throw new ErrorResponse({ errorCode: `${validationError}` });
+      return { validationError };
     }
 
     return verificationData;
   }
 
-  updateVerificationCode(userInput) {
-    const userData = new UserEntity({
-      email: userInput.email,
-    });
+  validateInputForUpdateData(unvalidatedUserInput) {
+    const data = new UserEntity(unvalidatedUserInput);
 
-    const validationError = userData.validateForUpdateVerificationCode();
+    const validationError = data.validateForUpdateData();
     if (validationError) {
-      throw new ErrorResponse({ errorCode: `${validationError}` });
+      return { validationError };
     }
 
-    return userData;
-  }
-
-  updatePassword(userInput) {
-    const userData = new UserEntity({
-      email: userInput.email,
-    });
-
-    const validationError = userData.validateForUpdateVerificationCode();
-    if (validationError) {
-      throw new ErrorResponse({ errorCode: `${validationError}` });
-    }
-
-    return userData;
+    return data;
   }
 };

@@ -1,33 +1,39 @@
 const { filterSensitiveData } = require("../../utils/filterSensitiveData");
-//! Will only output if success is true for now
-//! Check safeUserData
+
 exports.UserPresenter = class UserPresenter {
-  presentUser(language, output) {
-    if (!output.success) {
-      return { error: true, message: output.message };
-    }
-
-    const safeUserData = filterSensitiveData(output.user, [
-      "password",
-      "verificationCode",
-      "verificationAttempts",
-      "lastVerificationAttempt",
-    ]);
-
+  present(language, output) {
     return {
       success: true,
       message: output.message[language],
-      user: safeUserData,
     };
   }
 
-  present(language, output) {
-    if (!output.success) {
-      return { error: true, message: output.message };
-    }
+  presentUser(language, result) {
     return {
-      success: true,
-      message: output.message[language],
+      success: result.success,
+      message: result.message[language],
+      user: {
+        userId: result.user.userId,
+        isBlocked: result.user.isBlocked,
+        isVerified: result.user.isVerified,
+        username: result.user.username,
+        email: result.user.email,
+        isNewsletterAllowed: result.user.isNewsletterAllowed,
+        encryptedSecret: result.user.encryptedSecret,
+        secretEncryptionIv: result.user.secretEncryptionIv,
+        secretEncryptionSalt: result.user.secretEncryptionSalt,
+        passwordUpdatedAt: result.user.passwordUpdatedAt,
+      },
+    };
+  }
+
+  presentBlockedUser(language, result) {
+    return {
+      success: result.success,
+      message: result.message[language],
+      user: {
+        isBlocked: result.user.isBlocked,
+      },
     };
   }
 };

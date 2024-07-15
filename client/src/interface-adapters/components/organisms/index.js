@@ -7,7 +7,7 @@ export { AccountsOverview } from "./AccountsOverview";
 export { DataVaultForm } from "./DataVaultForm";
 export { ForgotPasswordForm } from "./ForgotPasswordForm";
 export { LoadingOrganism } from "./LoadingOrganism";
-export { LoginForm } from "./LoginForm";
+export { AuthenticationForm } from "./AuthenticationForm";
 export { NavBar } from "./NavBar";
 export { NotesOverview } from "./NotesOverview";
 export { ContactsOverview } from "./ContactsOverview";

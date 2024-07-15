@@ -17,45 +17,40 @@ exports.NoteInteractor = class NoteInteractor {
       });
     }
 
-    const noteOutputData = {
-      success: true,
-      message: {
-        EN: "Notes successfully queried.",
-        DE: "Notitzen erfolgreich abgefragt.",
-      },
-      notes: foundNotes,
-    };
-
-    return this.noteOutputPort.prepareNotesOutput(noteOutputData);
+    return this.noteOutputPort.formatFoundNotes(foundNotes);
   }
 
-  async createNote(userId, userInput) {
-    const note = this.noteInputPort.createNote(userInput);
-    note.userId = userId;
+  async createNote(userId, unvalidatedUserInput) {
+    const validNoteEntity = this.noteInputPort.createNote(unvalidatedUserInput);
+    if (validNoteEntity.validationError) {
+      const validationError = validNoteEntity.validationError;
+      throw new ErrorResponse({
+        errorCode: `${validationError}`,
+      });
+    }
 
-    const savedNote = await this.noteRepository.createNote(note);
-    if (!savedNote) {
+    validNoteEntity.userId = userId;
+
+    const createdNote = await this.noteRepository.createNote(validNoteEntity);
+    if (!createdNote) {
       throw new ErrorResponse({ errorCode: "DB_SERVICE_002" });
     }
 
-    const noteOutputData = {
-      success: true,
-      message: {
-        EN: "Note successfuly created.",
-        DE: "Notiz erfolgreich erstellt.",
-      },
-      note: savedNote,
-    };
-
-    return this.noteOutputPort.prepareSingleNoteOutput(noteOutputData);
+    return this.noteOutputPort.formatCreatedNote(createdNote);
   }
 
-  async updateNote(noteId, userInput) {
-    const updateData = this.noteInputPort.editNote(userInput);
+  async updateNote(noteId, unvalidatedUserInput) {
+    const validNoteEntity = this.noteInputPort.editNote(unvalidatedUserInput);
+    if (validNoteEntity.validationError) {
+      const validationError = validNoteEntity.validationError;
+      throw new ErrorResponse({
+        errorCode: `${validationError}`,
+      });
+    }
 
     const updatedNote = await this.noteRepository.updateNote(
       noteId,
-      updateData
+      validNoteEntity
     );
     if (!updatedNote) {
       throw new ErrorResponse({
@@ -63,20 +58,17 @@ exports.NoteInteractor = class NoteInteractor {
       });
     }
 
-    const noteOutputData = {
-      success: true,
-      message: {
-        EN: "Note updated successfully.",
-        DE: "Notiz erfolgreich aktualisiert",
-      },
-      note: updateData,
-    };
-
-    return this.noteOutputPort.prepareSingleNoteOutput(noteOutputData);
+    return this.noteOutputPort.formatUpdatedNote(updatedNote);
   }
 
-  async deleteNote(noteId, userInput) {
-    const data = this.noteInputPort.deleteNote(userInput);
+  async deleteNote(noteId, unvalidatedUserInput) {
+    const validNoteEntity = this.noteInputPort.deleteNote(unvalidatedUserInput);
+    if (validNoteEntity.validationError) {
+      const validationError = validNoteEntity.validationError;
+      throw new ErrorResponse({
+        errorCode: `${validationError}`,
+      });
+    }
 
     const foundNote = await this.noteRepository.findNoteById(noteId);
     if (!foundNote) {
@@ -92,14 +84,6 @@ exports.NoteInteractor = class NoteInteractor {
       });
     }
 
-    const noteOutputData = {
-      success: true,
-      message: {
-        EN: "Note deleted successfully.",
-        DE: "Notiz erfolgreich gelöscht.",
-      },
-    };
-
-    return this.noteOutputPort.output(noteOutputData);
+    return this.noteOutputPort.formatDeletedNote();
   }
 };

@@ -3,7 +3,7 @@ const language = localStorage.getItem("language");
 const URL = import.meta.env.VITE_API_KEY;
 
 export const BankRepository = class BankRepository {
-  async getBanks() {
+  async getBanksRequest() {
     try {
       const response = await fetch(`${URL}/banks/get-banks`, {
         method: "GET",
@@ -20,7 +20,7 @@ export const BankRepository = class BankRepository {
     }
   }
 
-  async createBank(userData) {
+  async createBankRequest(validEncryptedBankEntity) {
     try {
       const response = await fetch(`${URL}/banks/create-bank`, {
         method: "POST",
@@ -28,27 +28,7 @@ export const BankRepository = class BankRepository {
           "Content-Type": "application/json",
           "Accept-Language": language,
         },
-        body: JSON.stringify({
-          bankName: userData.bankName,
-          accountHolderFirstName: userData.accountHolderFirstName,
-          accountHolderLastName: userData.accountHolderLastName,
-          encryptedIban: userData.encryptedIban,
-          ibanEncryptionIv: userData.ibanEncryptionIv,
-          ibanEncryptionSalt: userData.ibanEncryptionSalt,
-          swiftBic: userData.swiftBic,
-          accountType: userData.accountType,
-          branchCode: userData.branchCode,
-          cardHolderFirstName: userData.cardHolderFirstName,
-          cardHolderLastName: userData.cardHolderLastName,
-          encryptedCardNumber: userData.encryptedCardNumber,
-          cardNumberEncryptionIv: userData.cardNumberEncryptionIv,
-          cardNumberEncryptionSalt: userData.cardNumberEncryptionSalt,
-          expiryDate: userData.expiryDate,
-          encryptedCardCvvCvc: userData.encryptedCardCvvCvc,
-          cardCvvCvcEncryptionIv: userData.cardCvvCvcEncryptionIv,
-          cardCvvCvcEncryptionSalt: userData.cardCvvCvcEncryptionSalt,
-          cardType: userData.cardType,
-        }),
+        body: JSON.stringify(validEncryptedBankEntity),
         credentials: "include",
       });
       return response.json();
@@ -57,7 +37,7 @@ export const BankRepository = class BankRepository {
     }
   }
 
-  async updateBank(bankId, updatedData) {
+  async updateBankRequest(bankId, validEncryptedBankEntity) {
     try {
       const response = await fetch(`${URL}/banks/update-bank/${bankId}`, {
         method: "PUT",
@@ -65,27 +45,7 @@ export const BankRepository = class BankRepository {
           "Content-Type": "application/json",
           "Accept-Language": language,
         },
-        body: JSON.stringify({
-          bankName: updatedData.bankName,
-          accountHolderFirstName: updatedData.accountHolderFirstName,
-          accountHolderLastName: updatedData.accountHolderLastName,
-          encryptedIban: updatedData.encryptedIban,
-          ibanEncryptionIv: updatedData.ibanEncryptionIv,
-          ibanEncryptionSalt: updatedData.ibanEncryptionSalt,
-          swiftBic: updatedData.swiftBic,
-          accountType: updatedData.accountType,
-          branchCode: updatedData.branchCode,
-          cardHolderFirstName: updatedData.cardHolderFirstName,
-          cardHolderLastName: updatedData.cardHolderLastName,
-          encryptedCardNumber: updatedData.encryptedCardNumber,
-          cardNumberEncryptionIv: updatedData.cardNumberEncryptionIv,
-          cardNumberEncryptionSalt: updatedData.cardNumberEncryptionSalt,
-          expiryDate: updatedData.expiryDate,
-          encryptedCardCvvCvc: updatedData.encryptedCardCvvCvc,
-          cardCvvCvcEncryptionIv: updatedData.cardCvvCvcEncryptionIv,
-          cardCvvCvcEncryptionSalt: updatedData.cardCvvCvcEncryptionSalt,
-          cardType: updatedData.cardType,
-        }),
+        body: JSON.stringify(validEncryptedBankEntity),
         credentials: "include",
       });
 
@@ -95,7 +55,7 @@ export const BankRepository = class BankRepository {
     }
   }
 
-  async deleteBank(bankId) {
+  async deleteBankRequest(bankId) {
     try {
       const response = await fetch(`${URL}/banks/delete-bank/${bankId}`, {
         method: "DELETE",

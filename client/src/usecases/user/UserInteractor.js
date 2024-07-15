@@ -9,136 +9,144 @@ export class UserInteractor {
   }
 
   async checkAuthAndGetUser() {
-    const authenticationResult =
-      await this.userRepository.checkAuthAndGetUser();
-
-    const authOutputData = {
-      success: authenticationResult.success,
-      message: authenticationResult.message,
-      user: authenticationResult.user,
-      statusCode: authenticationResult.statusCode,
-      statusMessage: authenticationResult.statusMessage,
-      errorType: authenticationResult.errorType,
-      errorCode: authenticationResult.errorCode,
-    };
-
-    return this.userOutputPort.prepareAuthOutput(authOutputData);
-  }
-
-  async registerUser(userInput) {
-    const user = this.userInputPort.validateRegistrationInput(userInput);
-    if (user.validationError) {
-      return { validationError: user.validationError };
+    const authenticationResponse =
+      await this.userRepository.checkAuthAndGetUserRequest();
+    if (!authenticationResponse.success && authenticationResponse.user) {
+      return this.userOutputPort.formatBlockedUser(authenticationResponse);
+    } else if (!authenticationResponse.success) {
+      return this.userOutputPort.formatFailedRequest(authenticationResponse);
     }
 
-    const registrationResult = await this.userRepository.registerUser(user);
-
-    const userOutputData = {
-      success: registrationResult.success,
-      message: registrationResult.message,
-      user: registrationResult.user,
-    };
-
-    return this.userOutputPort.prepareUserOutput(userOutputData);
+    return this.userOutputPort.formatUser(authenticationResponse);
   }
 
-  async loginUser(userInput) {
-    const credentials = this.userInputPort.validateLoginInput(userInput);
-    if (credentials.validationError) {
-      return { validationError: credentials.validationError };
+  async validateUserInputForRegisterUser(unvalidatedUserInput) {
+    const validatedUserInput =
+      this.userInputPort.validatePreEncryptionInputForRegisterUser(
+        unvalidatedUserInput
+      );
+    if (validatedUserInput.validationError) {
+      const validationError = validatedUserInput.validationError;
+      return this.userOutputPort.formatValidationError(validationError);
     }
 
-    const loginResult = await this.userRepository.loginUser(credentials);
-
-    const userOutputData = {
-      success: loginResult.success,
-      message: loginResult.message,
-      user: loginResult.user,
-    };
-
-    return this.userOutputPort.prepareUserOutput(userOutputData);
+    return this.userOutputPort.formatValidUserInput(validatedUserInput);
   }
 
-  async editUser(userInput) {
-    const user = this.userInputPort.validateUpdateInput(userInput);
-    if (user.validationError) {
-      return { validationError: user.validationError };
+  async registerUser(encryptedUserData) {
+    const validUserEntity =
+      this.userInputPort.validateEncryptedDataForRegisterUser(
+        encryptedUserData
+      );
+    if (validUserEntity.validationError) {
+      const validationError = validUserEntity.validationError;
+      return this.userOutputPort.formatValidationError(validationError);
     }
 
-    const registrationResult = await this.userRepository.updateUser(user);
+    const registrationResponse = await this.userRepository.registerUserRequest(
+      validUserEntity
+    );
+    if (!registrationResponse.success) {
+      return this.userOutputPort.formatFailedRequest(registrationResponse);
+    }
 
-    const outputData = {
-      success: registrationResult.success,
-      message: registrationResult.message,
-      user: registrationResult.user,
-    };
+    return this.userOutputPort.formatUser(registrationResponse);
+  }
 
-    return this.userOutputPort.prepareUserOutput(outputData);
+  async authenticateUser(unvalidatedUserInput) {
+    const validUserEntity =
+      this.userInputPort.validateInputForAuthenticateUser(unvalidatedUserInput);
+    if (validUserEntity.validationError) {
+      const validationError = validUserEntity.validationError;
+      return this.userOutputPort.formatValidationError(validationError);
+    }
+
+    const authenticationResponse =
+      await this.userRepository.authenticateUserRequest(validUserEntity);
+    if (!authenticationResponse.success) {
+      return this.userOutputPort.formatFailedRequest(authenticationResponse);
+    }
+
+    return this.userOutputPort.formatUser(authenticationResponse);
+  }
+
+  async updateUser(userInput) {
+    // ! Add masterPassword
+    const validUserEntity =
+      this.userInputPort.validatePreEncryptionInputForUpdateUser(userInput);
+    if (validUserEntity.validationError) {
+      return { validationError: validUserEntity.validationError };
+    }
+
+    const updateResponse = await this.userRepository.updateUserRequest(
+      validUserEntity
+    );
+    if (!updateResponse.success) {
+      return this.userOutputPort.formatFailedRequest(updateResponse);
+    }
+
+    return this.userOutputPort.formatUser(updateResponse);
   }
 
   async deleteUser() {
-    const registrationResult = await this.userRepository.deleteUser();
-
-    const outputData = {
-      success: registrationResult.success,
-      message: registrationResult.message,
-    };
-
-    return this.userOutputPort.prepareOutput(outputData);
-  }
-
-  async confirmEmailAddress(userInput) {
-    const verificationData =
-      this.userInputPort.validateVerificationInput(userInput);
-    if (verificationData.validationError) {
-      return { validationError: verificationData.validationError };
+    const deletionResponse = await this.userRepository.deleteUserRequest();
+    if (!deletionResponse.success) {
+      return this.userOutputPort.formatFailedRequest(deletionResponse);
     }
 
-    const verificationResult = await this.userRepository.confirmEmailAddress(
-      verificationData
+    return this.userOutputPort.formatSuccessfulResponse(deletionResponse);
+  }
+
+  async confirmEmailAddress(unvalidatedUserInput) {
+    const validUserEntity =
+      this.userInputPort.validateInputForVerification(unvalidatedUserInput);
+    if (validUserEntity.validationError) {
+      return {
+        validationError: validUserEntity.validationError,
+      };
+    }
+
+    const verificationResponse =
+      await this.userRepository.confirmEmailAddressRequest(validUserEntity);
+    if (!verificationResponse.success) {
+      return this.userOutputPort.formatFailedRequest(verificationResponse);
+    }
+
+    return this.userOutputPort.formatSuccessfulResponse(verificationResponse);
+  }
+
+  async requestNewVerificationCode(unvalidatedUserInput) {
+    const validUserEntity =
+      this.userInputPort.validateInputForRequest(unvalidatedUserInput);
+    if (validUserEntity.validationError) {
+      return {
+        validationError: validUserEntity.validationError,
+      };
+    }
+
+    const newCodeResponse =
+      await this.userRepository.newVerificationCodeRequest(validUserEntity);
+    if (!newCodeResponse.success) {
+      return this.userOutputPort.formatFailedRequest(newCodeResponse);
+    }
+
+    return this.userOutputPort.formatSuccessfulResponse(newCodeResponse);
+  }
+
+  async requestNewPassword(unvalidatedUserInput) {
+    const validUserEntity =
+      this.userInputPort.validateInputForRequest(unvalidatedUserInput);
+    if (validUserEntity.validationError) {
+      return { validationError: validUserEntity.validationError };
+    }
+
+    const newPasswordResponse = await this.userRepository.newPasswordRequest(
+      validUserEntity
     );
-
-    const outputData = {
-      success: verificationResult.success,
-      message: verificationResult.message,
-    };
-
-    return this.userOutputPort.prepareOutput(outputData);
-  }
-
-  async requestNewVerificationCode(userInput) {
-    const codeRequestData = this.userInputPort.validateRequestData(userInput);
-    if (codeRequestData.validationError) {
-      return { validationError: codeRequestData.validationError };
+    if (!newPasswordResponse.success) {
+      return this.userOutputPort.formatFailedRequest(newPasswordResponse);
     }
 
-    const codeRequestResult =
-      await this.userRepository.requestNewVerificationCode(codeRequestData);
-
-    const outputData = {
-      success: codeRequestResult.success,
-      message: codeRequestResult.message,
-    };
-
-    return this.userOutputPort.prepareOutput(outputData);
-  }
-
-  async requestNewPassword(userInput) {
-    const passwordRequestData =
-      this.userInputPort.validateRequestData(userInput);
-    if (passwordRequestData.validationError) {
-      return { validationError: passwordRequestData.validationError };
-    }
-
-    const passwordRequestResult = await this.userRepository.requestNewPassword(
-      passwordRequestData
-    );
-
-    const outputData = {
-      success: passwordRequestResult.success,
-      message: passwordRequestResult.message,
-    };
-
-    return this.userOutputPort.prepareOutput(outputData);
+    return this.userOutputPort.formatSuccessfulResponse(newPasswordResponse);
   }
 }

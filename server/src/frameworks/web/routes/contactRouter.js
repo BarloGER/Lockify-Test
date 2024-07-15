@@ -2,17 +2,9 @@ const { Router } = require("express");
 const {
   validateSession,
 } = require("../../../interface-adapters/middlewares/validateSession");
-// const {
-//   validateJoi,
-// } = require("../../../interface-adapters/middlewares/validateJoi");
-// const {
-//   registerUserSchema,
-//   loginUserSchema,
-//   updateUserSchema,
-//   deleteUserSchema,
-//   confirmEmailSchema,
-//   sendMailSchema,
-// } = require("../../../interface-adapters/joiSchemas/userSchemas");
+const {
+  validateRequestMetadata,
+} = require("../../../interface-adapters/middlewares/validateRequestMetadata");
 const {
   getContacts,
   createContact,
@@ -22,9 +14,29 @@ const {
 
 const contactRouter = Router();
 
-contactRouter.get("/get-contacts", validateSession, getContacts);
-contactRouter.post("/create-contact", validateSession, createContact);
-contactRouter.put("/update-contact/:id", validateSession, updateContact);
-contactRouter.delete("/delete-contact/:id", validateSession, deleteContact);
+contactRouter.get(
+  "/get-contacts",
+  validateRequestMetadata(),
+  validateSession,
+  getContacts
+);
+contactRouter.post(
+  "/create-contact",
+  validateRequestMetadata(),
+  validateSession,
+  createContact
+);
+contactRouter.put(
+  "/update-contact/:id",
+  validateRequestMetadata(),
+  validateSession,
+  updateContact
+);
+contactRouter.delete(
+  "/delete-contact/:id",
+  validateRequestMetadata(),
+  validateSession,
+  deleteContact
+);
 
 exports.contactRouter = contactRouter;

@@ -12,6 +12,7 @@ export const Input = ({
   autocomplete = "off",
 }) => {
   const { t } = useTranslation();
+
   return (
     <div className="input__container">
       <label htmlFor={id || name} className="input__label">
@@ -22,7 +23,7 @@ export const Input = ({
         name={name}
         className="input__field"
         type={type}
-        value={value}
+        value={value || ""}
         onChange={onChange}
         autoComplete={autocomplete}
       />

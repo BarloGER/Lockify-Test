@@ -2,17 +2,9 @@ const { Router } = require("express");
 const {
   validateSession,
 } = require("../../../interface-adapters/middlewares/validateSession");
-// const {
-//   validateJoi,
-// } = require("../../../interface-adapters/middlewares/validateJoi");
-// const {
-//   registerUserSchema,
-//   loginUserSchema,
-//   updateUserSchema,
-//   deleteUserSchema,
-//   confirmEmailSchema,
-//   sendMailSchema,
-// } = require("../../../interface-adapters/joiSchemas/userSchemas");
+const {
+  validateRequestMetadata,
+} = require("../../../interface-adapters/middlewares/validateRequestMetadata");
 const {
   getBanks,
   createBank,
@@ -22,9 +14,29 @@ const {
 
 const bankRouter = Router();
 
-bankRouter.get("/get-banks", validateSession, getBanks);
-bankRouter.post("/create-bank", validateSession, createBank);
-bankRouter.put("/update-bank/:id", validateSession, updateBank);
-bankRouter.delete("/delete-bank/:id", validateSession, deleteBank);
+bankRouter.get(
+  "/get-banks",
+  validateRequestMetadata(),
+  validateSession,
+  getBanks
+);
+bankRouter.post(
+  "/create-bank",
+  validateRequestMetadata(),
+  validateSession,
+  createBank
+);
+bankRouter.put(
+  "/update-bank/:id",
+  validateRequestMetadata(),
+  validateSession,
+  updateBank
+);
+bankRouter.delete(
+  "/delete-bank/:id",
+  validateRequestMetadata(),
+  validateSession,
+  deleteBank
+);
 
 exports.bankRouter = bankRouter;

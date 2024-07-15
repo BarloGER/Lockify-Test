@@ -18,60 +18,79 @@ module.exports = (sequelize, Model, DataTypes) => {
       },
       bankName: {
         type: DataTypes.STRING,
+        allowNull: true,
       },
       accountHolderFirstName: {
         type: DataTypes.STRING,
+        allowNull: true,
       },
       accountHolderLastName: {
         type: DataTypes.STRING,
+        allowNull: true,
       },
       encryptedIban: {
         type: DataTypes.TEXT,
+        allowNull: true,
       },
       ibanEncryptionIv: {
         type: DataTypes.STRING,
+        allowNull: true,
       },
       ibanEncryptionSalt: {
         type: DataTypes.STRING,
+        allowNull: true,
       },
       swiftBic: {
         type: DataTypes.STRING,
+        allowNull: true,
       },
       accountType: {
         type: DataTypes.STRING,
+        allowNull: true,
       },
       branchCode: {
         type: DataTypes.STRING,
+        allowNull: true,
       },
       cardHolderFirstName: {
         type: DataTypes.STRING,
+        allowNull: true,
       },
       cardHolderLastName: {
         type: DataTypes.STRING,
+        allowNull: true,
       },
       encryptedCardNumber: {
         type: DataTypes.TEXT,
+        allowNull: true,
       },
       cardNumberEncryptionIv: {
         type: DataTypes.STRING,
+        allowNull: true,
       },
       cardNumberEncryptionSalt: {
         type: DataTypes.STRING,
+        allowNull: true,
       },
       expiryDate: {
         type: DataTypes.STRING,
+        allowNull: true,
       },
       encryptedCardCvvCvc: {
         type: DataTypes.TEXT,
+        allowNull: true,
       },
       cardCvvCvcEncryptionIv: {
         type: DataTypes.STRING,
+        allowNull: true,
       },
       cardCvvCvcEncryptionSalt: {
         type: DataTypes.STRING,
+        allowNull: true,
       },
       cardType: {
         type: DataTypes.STRING,
+        allowNull: true,
       },
       createdAt: {
         type: DataTypes.DATE,

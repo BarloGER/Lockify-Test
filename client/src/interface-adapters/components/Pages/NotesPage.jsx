@@ -1,190 +1,146 @@
-import { useState, useEffect, useContext } from "react";
-import { NoteInteractor } from "../../../usecases/note/NoteInteractor.js";
-import { NoteRepository } from "../../repositories/NoteRepository.js";
-import { CryptographyInteractor } from "../../../usecases/cryptography/CryptographyInteractor.js";
-import { AuthContext } from "../../context/AuthContext.jsx";
+import { useState, useContext } from "react";
+import { DataVaultContext } from "../../context/DataVaultContext.jsx";
 import { NoteTemplate } from "../templates/index.js";
+import { SearchInput } from "../atoms";
 import { FlashMessage } from "../molecules/FlashMessage.jsx";
 import { NewNoteForm, NotesOverview } from "../organisms/index.js";
 
-// Initialisierung des NoteRepository und des NoteInteractor
-const noteRepository = new NoteRepository();
-const noteInteractor = new NoteInteractor(noteRepository);
-const cryptographyInteractor = new CryptographyInteractor();
-
 export const NotesPage = () => {
-  const { masterPassword } = useContext(AuthContext);
+  const {
+    masterPassword,
+    notes,
+    setNotes,
+    noteInteractor,
+    cryptographyInteractor,
+    isDataVaultUnlocked,
+  } = useContext(DataVaultContext);
 
-  const [notes, setNotes] = useState([]);
-  const [newNoteFormValues, setNewNoteFormValues] = useState({
+  const [newNoteFormData, setNewNoteFormData] = useState({
     noteTitle: "",
     noteContent: "",
   });
 
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedOption, setSelectedOption] = useState("decryptedNoteTitle");
   const [isNoteLoading, setIsNoteLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
 
+  if (!isDataVaultUnlocked) {
+    return;
+  }
+
+  const searchOptions = [{ value: "decryptedNoteTitle" }];
+  const filteredNotes = notes.filter((note) =>
+    note[selectedOption].toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setNewNoteFormValues({ ...newNoteFormValues, [name]: value });
+    setNewNoteFormData({ ...newNoteFormData, [name]: value });
   };
 
-  const decryptNoteData = async (noteData, masterPassword) => {
-    console.log("noteData", noteData);
-    // Check whether the input is an array or needs to be converted into an array
-    const notes = Array.isArray(noteData) ? noteData : [noteData];
-
-    const decryptedNotes = await Promise.all(
-      notes.map(async (note) => {
-        const decryptionResultNoteTitle =
-          await cryptographyInteractor.decryptData({
-            encryptedData: note.encryptedNoteTitle,
-            iv: note.noteTitleEncryptionIv,
-            salt: note.noteTitleEncryptionSalt,
-            masterPassword: masterPassword,
-          });
-
-        const decryptedNoteTitle = decryptionResultNoteTitle.success
-          ? decryptionResultNoteTitle.data
-          : "";
-
-        const decryptionResultNoteContent = note.encryptedNoteContent
-          ? await cryptographyInteractor.decryptData({
-              encryptedData: note.encryptedNoteContent,
-              iv: note.noteContentEncryptionIv,
-              salt: note.noteContentEncryptionSalt,
-              masterPassword: masterPassword,
-            })
-          : { success: true, data: "" };
-
-        const decryptedNoteContent = decryptionResultNoteContent.success
-          ? decryptionResultNoteContent.data
-          : "";
-
-        return {
-          ...note,
-          decryptedNoteTitle,
-          decryptedNoteContent,
-        };
-      })
-    );
-
-    return Array.isArray(noteData) ? decryptedNotes : decryptedNotes[0];
-  };
-
-  const getNotes = async (masterPassword) => {
-    setIsNoteLoading(true);
-
-    const noteRequestResponse = await noteInteractor.getNotes();
-    if (!noteRequestResponse.success) {
-      setMessage(
-        noteRequestResponse.message || "Fehler beim Abrufen der Konten"
-      );
-      setMessageType("error");
-      setNotes([]);
-      setIsNoteLoading(false);
-      return;
-    }
-
-    const decryptedNotes = await decryptNoteData(
-      noteRequestResponse.notes,
-      masterPassword
-    );
-    if (!decryptedNotes) {
-      setMessage("Fehler beim Entschlüsseln der Konten");
-      setMessageType("error");
-      setNotes([]);
-      return;
-    }
-
-    setIsNoteLoading(false);
-    setNotes(decryptedNotes);
-    setMessage(noteRequestResponse.message);
-    setMessageType("success");
-  };
-
-  useEffect(() => {
-    getNotes(masterPassword);
-  }, []);
-
-  const handleCreateNote = async (e, masterPassword) => {
+  const processCreateNote = async (e, masterPassword) => {
     e.preventDefault();
     setIsNoteLoading(true);
 
-    const validateNote = await noteInteractor.validateCreateNote({
-      noteTitle: newNoteFormValues.noteTitle,
-      noteContent: newNoteFormValues.noteContent,
-    });
-    if (validateNote && validateNote.validationError) {
+    const unvalidatedUserInput = newNoteFormData;
+    const validateUserInput =
+      await noteInteractor.validateUserInputForCreateNote(unvalidatedUserInput);
+    if (!validateUserInput.success) {
       setIsNoteLoading(false);
-      setMessage(`validationError.${validateNote.validationError}`);
+      setMessage(`validationError.${validateUserInput.message}`);
       setMessageType("error");
       return;
     }
+    const validNoteEntity = validateUserInput.validNoteEntity;
 
-    const encryptedNoteTitleObj = await cryptographyInteractor.encryptData({
-      text: newNoteFormValues.noteTitle,
-      masterPassword: masterPassword,
-    });
-
-    let encryptedNoteContentObj = {
-      data: { encryptedData: "", iv: "", salt: "" },
+    let encryptedNoteTitle = {
+      success: true,
+      encryptedData: "",
+      iv: "",
+      salt: "",
     };
-    if (newNoteFormValues.noteContent) {
-      encryptedNoteContentObj = await cryptographyInteractor.encryptData({
-        text: newNoteFormValues.noteContent,
+    if (validNoteEntity.noteTitle) {
+      encryptedNoteTitle = await cryptographyInteractor.encryptData({
+        text: validNoteEntity.noteTitle,
         masterPassword: masterPassword,
       });
     }
 
-    const creationResponse = await noteInteractor.createNote({
-      encryptedNoteTitle: encryptedNoteTitleObj.data.encryptedData,
-      noteTitleEncryptionIv: encryptedNoteTitleObj.data.iv,
-      noteTitleEncryptionSalt: encryptedNoteTitleObj.data.salt,
-      encryptedNoteContent: encryptedNoteContentObj.data.encryptedData,
-      noteContentEncryptionIv: encryptedNoteContentObj.data.iv,
-      noteContentEncryptionSalt: encryptedNoteContentObj.data.salt,
-    });
+    let encryptedNoteContent = {
+      success: true,
+      encryptedData: "",
+      iv: "",
+      salt: "",
+    };
+    if (validNoteEntity.noteContent) {
+      encryptedNoteContent = await cryptographyInteractor.encryptData({
+        text: validNoteEntity.noteContent,
+        masterPassword: masterPassword,
+      });
+    }
 
-    if (creationResponse.validationError) {
+    const encryptedNoteData = {
+      encryptedNoteTitle: encryptedNoteTitle.encryptedData,
+      noteTitleEncryptionIv: encryptedNoteTitle.iv,
+      noteTitleEncryptionSalt: encryptedNoteTitle.salt,
+      encryptedNoteContent: encryptedNoteContent.encryptedData,
+      noteContentEncryptionIv: encryptedNoteContent.iv,
+      noteContentEncryptionSalt: encryptedNoteContent.salt,
+    };
+
+    const createNoteResponse = await noteInteractor.createNote(
+      encryptedNoteData
+    );
+    if (
+      !createNoteResponse.success &&
+      createNoteResponse.message === "Failed to fetch"
+    ) {
       setIsNoteLoading(false);
-      setMessage(`validationError.${creationResponse.validationError}`);
+      setMessage("externalService.serverError");
       setMessageType("error");
       return;
-    } else if (!creationResponse.success) {
+    } else if (!createNoteResponse.success) {
       setIsNoteLoading(false);
-      setMessage(creationResponse.message);
+      setMessage(createNoteResponse.message);
       setMessageType("error");
       return;
     }
 
-    const decryptedNote = await decryptNoteData(
-      creationResponse.note,
-      masterPassword
-    );
-
-    setNotes((prevNotes) => [...prevNotes, decryptedNote]);
+    setNotes((prevNotes) => [
+      ...prevNotes,
+      {
+        ...createNoteResponse.note,
+        decryptedNoteTitle: validNoteEntity.noteTitle,
+        decryptedNoteContent: validNoteEntity.noteContent,
+      },
+    ]);
     setIsNoteLoading(false);
-    setNewNoteFormValues({
+    setNewNoteFormData({
       noteTitle: "",
       noteContent: "",
     });
-    setMessage(creationResponse.message);
+    setMessage(createNoteResponse.message);
     setMessageType("success");
   };
 
   const handleSelectNoteForEdit = (noteId) => {
     const note = notes.find((acc) => acc.noteId === noteId);
     if (note) {
-      setNewNoteFormValues({
+      setNewNoteFormData({
         noteTitle: note.decryptedNoteTitle,
         noteContent: note.decryptedNoteContent,
       });
     }
   };
 
-  const handleEditNote = async (e, noteId, formValues) => {
+  const processUpdateNote = async (
+    e,
+    noteId,
+    updateNoteFormData,
+    setIsEditing
+  ) => {
     e.preventDefault();
     setIsNoteLoading(true);
 
@@ -195,57 +151,71 @@ export const NotesPage = () => {
       return;
     }
 
-    const validateNote = await noteInteractor.validateEditNote({
-      noteTitle: formValues.noteTitle,
-      noteContent: formValues.noteContent,
-    });
-
-    if (validateNote && validateNote.validationError) {
+    const unvalidatedUserInput = updateNoteFormData;
+    const validateUserInput =
+      await noteInteractor.validateUserInputForUpdateNote(unvalidatedUserInput);
+    if (!validateUserInput.success) {
       setIsNoteLoading(false);
-      setMessage(`validationError.${validateNote.validationError}`);
+      setMessage(`validationError.${validateUserInput.message}`);
       setMessageType("error");
       return;
     }
+    const validNoteEntity = validateUserInput.validNoteEntity;
 
-    const encryptedNoteTitleObj = await cryptographyInteractor.encryptData({
-      text: formValues.noteTitle,
-      masterPassword: masterPassword,
-    });
-
-    let encryptedNoteContentObj = {
-      data: { encryptedData: "", iv: "", salt: "" },
+    let encryptedNoteTitle = {
+      success: true,
+      encryptedData: "",
+      iv: "",
+      salt: "",
     };
-    if (formValues.noteContent) {
-      encryptedNoteContentObj = await cryptographyInteractor.encryptData({
-        text: formValues.noteContent,
+    if (validNoteEntity.noteTitle) {
+      encryptedNoteTitle = await cryptographyInteractor.encryptData({
+        text: validNoteEntity.noteTitle,
         masterPassword: masterPassword,
       });
     }
 
-    const editResponse = await noteInteractor.editNote(noteId, {
-      encryptedNoteTitle: encryptedNoteTitleObj.data.encryptedData,
-      noteTitleEncryptionIv: encryptedNoteTitleObj.data.iv,
-      noteTitleEncryptionSalt: encryptedNoteTitleObj.data.salt,
-      encryptedNoteContent: encryptedNoteContentObj.data.encryptedData,
-      noteContentEncryptionIv: encryptedNoteContentObj.data.iv,
-      noteContentEncryptionSalt: encryptedNoteContentObj.data.salt,
-    });
+    let encryptedNoteContent = {
+      success: true,
+      encryptedData: "",
+      iv: "",
+      salt: "",
+    };
+    if (validNoteEntity.noteContent) {
+      encryptedNoteContent = await cryptographyInteractor.encryptData({
+        text: validNoteEntity.noteContent,
+        masterPassword: masterPassword,
+      });
+    }
 
-    if (!editResponse.success) {
+    const encryptedNoteData = {
+      encryptedNoteTitle: encryptedNoteTitle.encryptedData,
+      noteTitleEncryptionIv: encryptedNoteTitle.iv,
+      noteTitleEncryptionSalt: encryptedNoteTitle.salt,
+      encryptedNoteContent: encryptedNoteContent.encryptedData,
+      noteContentEncryptionIv: encryptedNoteContent.iv,
+      noteContentEncryptionSalt: encryptedNoteContent.salt,
+    };
+
+    const updateNoteResponse = await noteInteractor.updateNote(
+      noteId,
+      encryptedNoteData
+    );
+    if (!updateNoteResponse.success) {
       setIsNoteLoading(false);
-      setMessage(editResponse.message);
+      setMessage(updateNoteResponse.message);
       setMessageType("error");
       return;
     }
 
-    // Update local state
+    // Update local state to avoid decryption
     const updatedNote = notes.map((note) => {
       if (note.noteId === noteId) {
         return {
           ...note,
-          ...formValues,
-          decryptedNoteTitle: formValues.noteTitle,
-          decryptedNoteContent: formValues.noteContent,
+          ...validNoteEntity,
+          decryptedNoteTitle: validNoteEntity.noteTitle,
+          decryptedNoteContent: validNoteEntity.noteContent,
         };
       }
       return note;
@@ -253,11 +223,12 @@ export const NotesPage = () => {
 
     setNotes(updatedNote);
     setIsNoteLoading(false);
-    setMessage(editResponse.message);
+    setIsEditing(false);
+    setMessage(updateNoteResponse.message);
     setMessageType("success");
   };
 
-  const handleDeleteNote = async (noteId) => {
+  const processDeleteNote = async (noteId) => {
     setIsNoteLoading(true);
 
     const noteToDelete = notes.find((acc) => acc.noteId === noteId);
@@ -268,7 +239,6 @@ export const NotesPage = () => {
     }
 
     const deletionResponse = await noteInteractor.deleteNote(noteId);
-
     if (!deletionResponse.success) {
       setIsNoteLoading(false);
       setMessage(deletionResponse.message);
@@ -287,6 +257,14 @@ export const NotesPage = () => {
 
   return (
     <NoteTemplate>
+      <SearchInput
+        placeholder={selectedOption}
+        onSearchChange={setSearchTerm}
+        searchOptions={searchOptions}
+        onOptionChange={(e) => setSelectedOption(e.target.value)}
+        selectedOption={selectedOption}
+        pageName="notesPage"
+      />
       <FlashMessage
         message={message}
         setMessage={setMessage}
@@ -294,20 +272,20 @@ export const NotesPage = () => {
         className="note-page__flash-message"
       />
       <NewNoteForm
-        formValues={newNoteFormValues}
-        setFormValues={setNewNoteFormValues}
+        newNoteFormData={newNoteFormData}
+        setNewNoteFormData={setNewNoteFormData}
         handleChange={handleChange}
-        handleSubmit={(e) => handleCreateNote(e, masterPassword)}
+        processCreateNote={(e) => processCreateNote(e, masterPassword)}
         isNoteLoading={isNoteLoading}
         message={message}
         setMessage={setMessage}
         messageType={messageType}
       />
       <NotesOverview
-        notes={notes}
-        onSelectNote={handleSelectNoteForEdit}
-        onEditNote={handleEditNote}
-        onDeleteNote={handleDeleteNote}
+        notes={filteredNotes}
+        handleSelectNoteForEdit={handleSelectNoteForEdit}
+        processUpdateNote={processUpdateNote}
+        processDeleteNote={processDeleteNote}
         isNoteLoading={isNoteLoading}
         message={message}
         messageType={messageType}

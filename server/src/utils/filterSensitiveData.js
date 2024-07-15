@@ -1,24 +1,13 @@
 exports.filterSensitiveData = (object, additionalSensitiveKeys = []) => {
   const filtered = {};
-  const defaultSensitiveKeys = [
-    "password",
-    "verificationCode",
-    "verificationAttempts",
-    "lastVerificationAttempt",
-    "createdAt",
-    "updatedAt",
-  ];
+  const defaultSensitiveKeys = ["password", "verificationCode"];
   const allSensitiveKeys = [
     ...defaultSensitiveKeys,
     ...additionalSensitiveKeys,
   ];
 
   Object.keys(object).forEach((key) => {
-    if (
-      allSensitiveKeys.some((sensitiveKey) =>
-        key.toLowerCase().includes(sensitiveKey)
-      )
-    ) {
+    if (allSensitiveKeys.some((sensitiveKey) => key === sensitiveKey)) {
       filtered[key] = "***";
     } else {
       filtered[key] = object[key];

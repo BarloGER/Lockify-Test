@@ -1,18 +1,25 @@
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
 import PropTypes from "prop-types";
-import { Input, Span, Button } from "../atoms";
+import { useState } from "react";
+import {
+  Input,
+  Span,
+  Button,
+  ToggleVisibilityButton,
+  CopyButton,
+} from "../atoms";
 import { SubmitButton } from "./SubmitButton";
 import "./assets/account-card.css";
 
 export const AccountCard = ({
   account,
-  onSelect,
-  onEdit,
-  onDelete,
+  handleSelectAccountForEdit,
+  processUpdateAccount,
+  processDeleteAccount,
   isLoading,
 }) => {
   const { t } = useTranslation();
+
   const [isEditing, setIsEditing] = useState(false);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -31,7 +38,7 @@ export const AccountCard = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formValues = {
+    const updateAccountFormData = {
       accountName: e.target.accountName.value,
       accountUrl: e.target.accountUrl.value,
       username: e.target.username.value,
@@ -40,7 +47,12 @@ export const AccountCard = ({
       notes: e.target.notes.value,
     };
 
-    onEdit(e, account.accountId, formValues);
+    processUpdateAccount(
+      e,
+      account.accountId,
+      updateAccountFormData,
+      setIsEditing
+    );
   };
 
   return (
@@ -48,44 +60,45 @@ export const AccountCard = ({
       <div className="account__card_inner">
         <div
           className="account__card_front"
-          onClick={() => onSelect(account.accountId)}
+          onClick={() => handleSelectAccountForEdit(account.accountId)}
         >
           <h3>{account.accountName}</h3>
           <p>
-            <strong>{t("account.accountUrl")}:</strong>{" "}
+            <strong>{t("accountsPage.accountUrl")}:</strong>{" "}
             <a
               href={account.accountUrl}
               target="_blank"
               rel="noopener noreferrer"
             >
-              {account.accountUrl || t("account.noUrl")}
+              {account.accountUrl || ""}
             </a>
           </p>
           <p>
-            <strong>{t("account.username")}:</strong>{" "}
+            <strong>{t("accountsPage.username")}:</strong>{" "}
             <Span text={account.username} />
           </p>
           <p>
-            <strong>{t("account.email")}:</strong> <Span text={account.email} />
+            <strong>{t("accountsPage.email")}:</strong>{" "}
+            <Span text={account.email} />
           </p>
           <p>
-            <strong>{t("account.password")}:</strong>{" "}
+            <strong>{t("accountsPage.password")}:</strong>{" "}
             <Span
-              text={isPasswordHidden ? "*********" : account.decryptedPassword}
+              text={account.decryptedPassword || ""}
+              state={isPasswordHidden}
             />
-            <Button onClick={() => setIsPasswordHidden(!isPasswordHidden)}>
-              Show
-            </Button>
-            <Button
+            <ToggleVisibilityButton
+              isValueHidden={isPasswordHidden}
+              onClick={() => setIsPasswordHidden(!isPasswordHidden)}
+            />
+            <CopyButton
               onClick={() =>
                 navigator.clipboard.writeText(account.decryptedPassword)
               }
-            >
-              Copy
-            </Button>
+            />
           </p>
           <p>
-            <strong>{t("account.notes")}:</strong>{" "}
+            <strong>{t("accountsPage.notes")}:</strong>{" "}
             <Span text={account.decryptedNotes} />
           </p>
           {isDeleting ? (
@@ -93,22 +106,22 @@ export const AccountCard = ({
               <Button
                 type="button"
                 onClick={() => {
-                  onDelete(account.accountId), setIsDeleting(false);
+                  processDeleteAccount(account.accountId), setIsDeleting(false);
                 }}
               >
-                {t("account.submitDelete")}
+                {"accountsPage.submitDelete"}
               </Button>
               <Button onClick={() => setIsDeleting(false)}>
-                {t("account.cancel")}
+                {"accountsPage.cancel"}
               </Button>
             </>
           ) : (
             <>
               <Button onClick={() => setIsEditing(!isEditing)}>
-                {t("account.edit")}
+                {"accountsPage.edit"}
               </Button>
               <Button onClick={() => setIsDeleting(true)}>
-                {t("account.delete")}
+                {"accountsPage.delete"}
               </Button>
             </>
           )}
@@ -117,7 +130,7 @@ export const AccountCard = ({
           <form onSubmit={handleSubmit} className="account__form">
             <Input
               id={`accountName-${account.accountId}`}
-              label={t("account.accountName")}
+              label={"accountsPage.accountName"}
               type="text"
               value={editedAccount.accountName}
               onChange={(e) => handleChange(e, "accountName")}
@@ -125,7 +138,7 @@ export const AccountCard = ({
             />
             <Input
               id={`accountUrl-${account.accountId}`}
-              label={t("account.accountUrl")}
+              label={"accountsPage.accountUrl"}
               type="text"
               value={editedAccount.accountUrl}
               onChange={(e) => handleChange(e, "accountUrl")}
@@ -133,7 +146,7 @@ export const AccountCard = ({
             />
             <Input
               id={`username-${account.accountId}`}
-              label={t("account.username")}
+              label={"accountsPage.username"}
               type="text"
               value={editedAccount.username}
               onChange={(e) => handleChange(e, "username")}
@@ -141,7 +154,7 @@ export const AccountCard = ({
             />
             <Input
               id={`email-${account.accountId}`}
-              label={t("account.email")}
+              label={"accountsPage.email"}
               type="email"
               value={editedAccount.email}
               onChange={(e) => handleChange(e, "email")}
@@ -149,7 +162,7 @@ export const AccountCard = ({
             />
             <Input
               id={`password-${account.accountId}`}
-              label={t("account.password")}
+              label={"accountsPage.password"}
               type="password"
               value={editedAccount.password}
               onChange={(e) => handleChange(e, "password")}
@@ -157,7 +170,7 @@ export const AccountCard = ({
             />
             <Input
               id={`notes-${account.accountId}`}
-              label={t("account.notes")}
+              label={"accountsPage.notes"}
               type="text"
               value={editedAccount.notes}
               onChange={(e) => handleChange(e, "notes")}
@@ -165,10 +178,10 @@ export const AccountCard = ({
             />
             <div>
               <SubmitButton isLoading={isLoading}>
-                {t("account.submitEdit")}
+                {"account.submitEdit"}
               </SubmitButton>
               <Button onClick={() => setIsEditing(false)}>
-                {t("account.cancel")}
+                {"account.cancel"}
               </Button>
             </div>
           </form>
@@ -185,11 +198,11 @@ AccountCard.propTypes = {
     accountUrl: PropTypes.string,
     username: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
-    decryptedPassword: PropTypes.string.isRequired,
-    decryptedNotes: PropTypes.string.isRequired,
+    decryptedPassword: PropTypes.string,
+    decryptedNotes: PropTypes.string,
   }).isRequired,
-  onSelect: PropTypes.func.isRequired,
-  onEdit: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
+  handleSelectAccountForEdit: PropTypes.func.isRequired,
+  processUpdateAccount: PropTypes.func.isRequired,
+  processDeleteAccount: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
 };

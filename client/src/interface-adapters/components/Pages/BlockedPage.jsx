@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useMemo, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { MailInteractor } from "../../../usecases/mail/MailInteractor.js";
@@ -8,16 +8,21 @@ import { AuthContext } from "../../context/AuthContext.jsx";
 import { AuthTemplate } from "../templates";
 import { SupportForm } from "../organisms";
 
-const mailRepository = new MailRepository();
-const mailInteractor = new MailInteractor(mailRepository);
-
 export const BlockedPage = () => {
+  const mailRepository = useMemo(() => new MailRepository(), []);
+  const mailInteractor = useMemo(
+    () => new MailInteractor(mailRepository),
+    [mailRepository]
+  );
+
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
 
-  const [email, setEmail] = useState("");
-  const [subject, setSubject] = useState("");
-  const [html, setHtml] = useState("");
+  const [supportFormData, setSupportFormData] = useState({
+    email: "",
+    subject: "",
+    html: "",
+  });
   const [isSupportMailLoading, setIsSupportMailLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
@@ -28,17 +33,27 @@ export const BlockedPage = () => {
     }
   }, [user, navigate]);
 
-  const handleSubmitSupportMessage = async (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setSupportFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const processSupportRequest = async (e) => {
     e.preventDefault();
     setIsSupportMailLoading(true);
 
-    const message = `<p>${html}</p><p>Email des Benutzers: ${email}</p>`;
+    const unvalidatedMailData = {
+      email: supportFormData.email,
+      subject: supportFormData.subject,
+      html: `<p>${supportFormData.html}</p><p>Email des Benutzers: ${supportFormData.email}</p>`,
+    };
 
-    const supportMailResponse = await mailInteractor.sendSupportMail({
-      email,
-      subject,
-      html: message,
-    });
+    const supportMailResponse = await mailInteractor.sendSupportMail(
+      unvalidatedMailData
+    );
     if (supportMailResponse.validationError) {
       setIsSupportMailLoading(false);
       setMessage(`validationError.${supportMailResponse.validationError}`);
@@ -62,13 +77,9 @@ export const BlockedPage = () => {
   return (
     <AuthTemplate>
       <SupportForm
-        email={email}
-        setEmail={setEmail}
-        subject={subject}
-        setSubject={setSubject}
-        html={html}
-        setHtml={setHtml}
-        handleSubmitSupportMessage={handleSubmitSupportMessage}
+        supportFormData={supportFormData}
+        handleChange={handleChange}
+        processSupportRequest={processSupportRequest}
         isSupportMailLoading={isSupportMailLoading}
         message={message}
         setMessage={setMessage}

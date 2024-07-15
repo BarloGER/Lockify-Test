@@ -1,47 +1,51 @@
 import { ContactEntity } from "../../entities/ContactEntity";
 
 export class ContactInputPort {
-  validateCreationInputBeforeEncryption(userInput) {
-    const contact = new ContactEntity(userInput);
+  validatePreEncryptionInputForCreateContact(unvalidatedUserInput) {
+    const validContactEntity = new ContactEntity(unvalidatedUserInput);
 
-    const validationError = contact.validateForCreationBeforeEncryption();
+    const validationError =
+      validContactEntity.validateForCreationBeforeEncryption();
     if (validationError) {
       return { validationError };
     }
 
-    return contact;
+    return validContactEntity;
   }
 
-  validateCreationInputAfterEncryption(userInput) {
-    const contact = new ContactEntity(userInput);
+  validateEncryptedDataForCreateContact(validContactEntity) {
+    const validEncryptedContactEntity = new ContactEntity(validContactEntity);
 
-    const validationError = contact.validateForCreationAfterEncryption();
+    const validationError =
+      validEncryptedContactEntity.validateForCreationAfterEncryption();
     if (validationError) {
       return { validationError };
     }
 
-    return contact;
+    return validEncryptedContactEntity;
   }
 
-  validateUpdatedInputBeforeEncryption(userInput) {
-    const contact = new ContactEntity(userInput);
+  validatePreEncryptionInputForUpdateContact(unvalidatedUserInput) {
+    const validContactEntity = new ContactEntity(unvalidatedUserInput);
 
-    const validationError = contact.validateForUpdateBeforeEncryption();
+    const validationError =
+      validContactEntity.validateForUpdateBeforeEncryption();
     if (validationError) {
       return { validationError };
     }
 
-    return contact;
+    return validContactEntity;
   }
 
-  validateUpdatedInputAfterEncryption(userInput) {
-    const contact = new ContactEntity(userInput);
+  validateEncryptedDataForUpdateContact(validContactEntity) {
+    const validEncryptedContactEntity = new ContactEntity(validContactEntity);
 
-    const validationError = contact.validateForUpdateAfterEncryption();
+    const validationError =
+      validEncryptedContactEntity.validateForUpdateAfterEncryption();
     if (validationError) {
       return { validationError };
     }
 
-    return contact;
+    return validEncryptedContactEntity;
   }
 }

@@ -1,10 +1,39 @@
 // CryptographyOutputPort.js
 export class CryptographyOutputPort {
-  prepareOutput(data) {
+  formatValidationError(validationError) {
     return {
-      success: data.success,
-      message: data.message,
-      data: data.data,
+      success: false,
+      message: validationError,
+    };
+  }
+
+  formatEncryptionError(encryptionError) {
+    return {
+      success: false,
+      message: encryptionError,
+    };
+  }
+
+  formatEncryptedData(encryptionResult) {
+    return {
+      success: encryptionResult.success,
+      encryptedData: encryptionResult.encryptedData,
+      iv: encryptionResult.iv,
+      salt: encryptionResult.salt,
+    };
+  }
+
+  formatDecryptedData(decryptionResult) {
+    return {
+      success: true,
+      data: decryptionResult.data,
+    };
+  }
+
+  formatDecryptionError(decryptionError) {
+    return {
+      success: false,
+      message: decryptionError,
     };
   }
 }

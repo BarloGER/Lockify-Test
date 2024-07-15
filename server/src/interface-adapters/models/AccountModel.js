@@ -18,39 +18,43 @@ module.exports = (sequelize, Model, DataTypes) => {
       },
       accountName: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       accountUrl: {
         type: DataTypes.STRING,
+        allowNull: true,
       },
       username: {
         type: DataTypes.STRING,
+        allowNull: true,
       },
       email: {
         type: DataTypes.STRING,
+        allowNull: true,
       },
       encryptedPassword: {
-        type: DataTypes.STRING,
-        allowNull: false,
+        type: DataTypes.TEXT,
+        allowNull: true,
       },
       passwordEncryptionIv: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       passwordEncryptionSalt: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       encryptedNotes: {
         type: DataTypes.TEXT,
+        allowNull: true,
       },
       notesEncryptionIv: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       notesEncryptionSalt: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       createdAt: {
         type: DataTypes.DATE,

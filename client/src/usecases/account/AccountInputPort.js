@@ -1,47 +1,51 @@
 import { AccountEntity } from "../../entities/AccountEntity";
 
 export class AccountInputPort {
-  validateCreationInputBeforeEncryption(userInput) {
-    const account = new AccountEntity(userInput);
+  validatePreEncryptionInputForCreateAccount(unvalidatedUserInput) {
+    const validAccountEntity = new AccountEntity(unvalidatedUserInput);
 
-    const validationError = account.validateForCreationBeforeEncryption();
+    const validationError =
+      validAccountEntity.validateForCreationBeforeEncryption();
     if (validationError) {
       return { validationError };
     }
 
-    return account;
+    return validAccountEntity;
   }
 
-  validateCreationInputAfterEncryption(userInput) {
-    const account = new AccountEntity(userInput);
+  validateEncryptedDataForCreateAccount(validAccountEntity) {
+    const validEncryptedAccountEntity = new AccountEntity(validAccountEntity);
 
-    const validationError = account.validateForCreationAfterEncryption();
+    const validationError =
+      validEncryptedAccountEntity.validateForCreationAfterEncryption();
     if (validationError) {
       return { validationError };
     }
 
-    return account;
+    return validEncryptedAccountEntity;
   }
 
-  validateUpdatedInputBeforeEncryption(userInput) {
-    const account = new AccountEntity(userInput);
+  validatePreEncryptionInputForUpdateAccount(unvalidatedUserInput) {
+    const validAccountEntity = new AccountEntity(unvalidatedUserInput);
 
-    const validationError = account.validateForUpdateBeforeEncryption();
+    const validationError =
+      validAccountEntity.validateForUpdateBeforeEncryption();
     if (validationError) {
       return { validationError };
     }
 
-    return account;
+    return validAccountEntity;
   }
 
-  validateUpdatedInputAfterEncryption(userInput) {
-    const account = new AccountEntity(userInput);
+  validateEncryptedDataForUpdateAccount(validAccountEntity) {
+    const validEncryptedAccountEntity = new AccountEntity(validAccountEntity);
 
-    const validationError = account.validateForUpdateAfterEncryption();
+    const validationError =
+      validEncryptedAccountEntity.validateForUpdateAfterEncryption();
     if (validationError) {
       return { validationError };
     }
 
-    return account;
+    return validEncryptedAccountEntity;
   }
 }

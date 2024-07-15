@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 import "./assets/textarea.css";
 
 export const Textarea = ({
+  id,
+  name,
   label,
   placeholder,
   value,
@@ -28,6 +30,8 @@ export const Textarea = ({
     <div className="textarea__container">
       <label className="textarea__label">{t(label)}</label>
       <textarea
+        id={id}
+        name={name}
         className="textarea__field"
         placeholder={t(placeholder)}
         minLength={minLength}
@@ -45,6 +49,8 @@ export const Textarea = ({
 };
 
 Textarea.propTypes = {
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   placeholder: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,

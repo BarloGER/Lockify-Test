@@ -1,18 +1,19 @@
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
 import PropTypes from "prop-types";
+import { useState } from "react";
 import { Input, Span, Button } from "../atoms";
 import { SubmitButton } from "./SubmitButton";
 import "./assets/contact-card.css";
 
 export const ContactCard = ({
   contact,
-  onSelect,
-  onEdit,
-  onDelete,
+  handleSelectContactForEdit,
+  processUpdateContact,
+  processDeleteContact,
   isLoading,
 }) => {
   const { t } = useTranslation();
+
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [editedContact, setEditedContact] = useState({
@@ -37,7 +38,7 @@ export const ContactCard = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formValues = {
+    const updateContactFormData = {
       companyName: e.target.companyName.value,
       firstName: e.target.firstName.value,
       lastName: e.target.lastName.value,
@@ -53,7 +54,12 @@ export const ContactCard = ({
       notes: e.target.notes.value,
     };
 
-    onEdit(e, contact.contactId, formValues);
+    processUpdateContact(
+      e,
+      contact.contactId,
+      updateContactFormData,
+      setIsEditing
+    );
     setIsEditing(false);
   };
 
@@ -62,56 +68,58 @@ export const ContactCard = ({
       <div className="contact__card_inner">
         <div
           className="contact__card_front"
-          onClick={() => onSelect(contact.contactId)}
+          onClick={() => handleSelectContactForEdit(contact.contactId)}
         >
           <p>
-            <strong>{t("contact.companyName")}:</strong>{" "}
+            <strong>{t("contactsPage.companyName")}:</strong>{" "}
             <Span text={contact.companyName} />
           </p>
           <p>
-            <strong>{t("contact.firstName")}:</strong>{" "}
+            <strong>{t("contactsPage.firstName")}:</strong>{" "}
             <Span text={contact.firstName} />
           </p>
           <p>
-            <strong>{t("contact.lastName")}:</strong>{" "}
+            <strong>{t("contactsPage.lastName")}:</strong>{" "}
             <Span text={contact.lastName} />
           </p>
           <p>
-            <strong>{t("contact.streetAddress")}:</strong>{" "}
+            <strong>{t("contactsPage.streetAddress")}:</strong>{" "}
             <Span text={contact.streetAddress} />
           </p>
           <p>
-            <strong>{t("contact.additionalAddressInfo")}:</strong>{" "}
+            <strong>{t("contactsPage.additionalAddressInfo")}:</strong>{" "}
             <Span text={contact.additionalAddressInfo} />
           </p>
           <p>
-            <strong>{t("contact.city")}:</strong> <Span text={contact.city} />
+            <strong>{t("contactsPage.city")}:</strong>{" "}
+            <Span text={contact.city} />
           </p>
           <p>
-            <strong>{t("contact.stateProvinceRegion")}:</strong>{" "}
+            <strong>{t("contactsPage.stateProvinceRegion")}:</strong>{" "}
             <Span text={contact.stateProvinceRegion} />
           </p>
           <p>
-            <strong>{t("contact.postalCode")}:</strong>{" "}
+            <strong>{t("contactsPage.postalCode")}:</strong>{" "}
             <Span text={contact.postalCode} />
           </p>
           <p>
-            <strong>{t("contact.country")}:</strong>{" "}
+            <strong>{t("contactsPage.country")}:</strong>{" "}
             <Span text={contact.country} />
           </p>
           <p>
-            <strong>{t("contact.phoneNumber")}:</strong>{" "}
+            <strong>{t("contactsPage.phoneNumber")}:</strong>{" "}
             <Span text={contact.phoneNumber} />
           </p>
           <p>
-            <strong>{t("contact.email")}:</strong> <Span text={contact.email} />
+            <strong>{t("contactsPage.email")}:</strong>{" "}
+            <Span text={contact.email} />
           </p>
           <p>
-            <strong>{t("contact.birthDate")}:</strong>{" "}
+            <strong>{t("contactsPage.birthDate")}:</strong>{" "}
             <Span text={contact.birthDate} />
           </p>
           <p>
-            <strong>{t("contact.notes")}:</strong>{" "}
+            <strong>{t("contactsPage.notes")}:</strong>{" "}
             <Span text={contact.decryptedNotes} />
           </p>
           {isDeleting ? (
@@ -119,22 +127,22 @@ export const ContactCard = ({
               <Button
                 type="button"
                 onClick={() => {
-                  onDelete(contact.contactId), setIsDeleting(false);
+                  processDeleteContact(contact.contactId), setIsDeleting(false);
                 }}
               >
-                {t("contact.submitDelete")}
+                {"contactsPage.submitDelete"}
               </Button>
               <Button onClick={() => setIsDeleting(false)}>
-                {t("contact.cancel")}
+                {"contactsPage.cancel"}
               </Button>
             </>
           ) : (
             <>
               <Button onClick={() => setIsEditing(!isEditing)}>
-                {t("contact.edit")}
+                {"contactsPage.edit"}
               </Button>
               <Button onClick={() => setIsDeleting(true)}>
-                {t("contact.delete")}
+                {"contactsPage.delete"}
               </Button>
             </>
           )}
@@ -143,7 +151,7 @@ export const ContactCard = ({
           <form onSubmit={handleSubmit} className="contact__form">
             <Input
               id={`companyName-${contact.contactId}`}
-              label={t("contact.companyName")}
+              label={"contactsPage.companyName"}
               type="text"
               value={editedContact.companyName}
               onChange={(e) => handleChange(e, "companyName")}
@@ -151,7 +159,7 @@ export const ContactCard = ({
             />
             <Input
               id={`firstName-${contact.contactId}`}
-              label={t("contact.firstName")}
+              label={"contactsPage.firstName"}
               type="text"
               value={editedContact.firstName}
               onChange={(e) => handleChange(e, "firstName")}
@@ -159,7 +167,7 @@ export const ContactCard = ({
             />
             <Input
               id={`lastName-${contact.contactId}`}
-              label={t("contact.lastName")}
+              label={"contactsPage.lastName"}
               type="text"
               value={editedContact.lastName}
               onChange={(e) => handleChange(e, "lastName")}
@@ -167,7 +175,7 @@ export const ContactCard = ({
             />
             <Input
               id={`streetAddress-${contact.contactId}`}
-              label={t("contact.streetAddress")}
+              label={"contactsPage.streetAddress"}
               type="text"
               value={editedContact.streetAddress}
               onChange={(e) => handleChange(e, "streetAddress")}
@@ -175,7 +183,7 @@ export const ContactCard = ({
             />
             <Input
               id={`additionalAddressInfo-${contact.contactId}`}
-              label={t("contact.additionalAddressInfo")}
+              label={"contactsPage.additionalAddressInfo"}
               type="text"
               value={editedContact.additionalAddressInfo}
               onChange={(e) => handleChange(e, "additionalAddressInfo")}
@@ -183,7 +191,7 @@ export const ContactCard = ({
             />
             <Input
               id={`city-${contact.contactId}`}
-              label={t("contact.city")}
+              label={"contactsPage.city"}
               type="text"
               value={editedContact.city}
               onChange={(e) => handleChange(e, "city")}
@@ -191,7 +199,7 @@ export const ContactCard = ({
             />
             <Input
               id={`stateProvinceRegion-${contact.contactId}`}
-              label={t("contact.stateProvinceRegion")}
+              label={"contactsPage.stateProvinceRegion"}
               type="text"
               value={editedContact.stateProvinceRegion}
               onChange={(e) => handleChange(e, "stateProvinceRegion")}
@@ -199,7 +207,7 @@ export const ContactCard = ({
             />
             <Input
               id={`postalCode-${contact.contactId}`}
-              label={t("contact.postalCode")}
+              label={"contactsPage.postalCode"}
               type="text"
               value={editedContact.postalCode}
               onChange={(e) => handleChange(e, "postalCode")}
@@ -207,7 +215,7 @@ export const ContactCard = ({
             />
             <Input
               id={`country-${contact.contactId}`}
-              label={t("contact.country")}
+              label={"contactsPage.country"}
               type="text"
               value={editedContact.country}
               onChange={(e) => handleChange(e, "country")}
@@ -215,7 +223,7 @@ export const ContactCard = ({
             />
             <Input
               id={`phoneNumber-${contact.contactId}`}
-              label={t("contact.phoneNumber")}
+              label={"contactsPage.phoneNumber"}
               type="text"
               value={editedContact.phoneNumber}
               onChange={(e) => handleChange(e, "phoneNumber")}
@@ -223,7 +231,7 @@ export const ContactCard = ({
             />
             <Input
               id={`email-${contact.contactId}`}
-              label={t("contact.email")}
+              label={"contactsPage.email"}
               type="text"
               value={editedContact.email}
               onChange={(e) => handleChange(e, "email")}
@@ -231,7 +239,7 @@ export const ContactCard = ({
             />
             <Input
               id={`birthDate-${contact.contactId}`}
-              label={t("contact.birthDate")}
+              label={"contactsPage.birthDate"}
               type="text"
               value={editedContact.birthDate}
               onChange={(e) => handleChange(e, "birthDate")}
@@ -240,7 +248,7 @@ export const ContactCard = ({
 
             <Input
               id={`notes-${contact.contactId}`}
-              label={t("contact.notes")}
+              label={"contactsPage.notes"}
               type="text"
               value={editedContact.notes}
               onChange={(e) => handleChange(e, "notes")}
@@ -248,10 +256,10 @@ export const ContactCard = ({
             />
             <div>
               <SubmitButton isLoading={isLoading}>
-                {t("contact.submitEdit")}
+                {"contactsPage.submitEdit"}
               </SubmitButton>
               <Button onClick={() => setIsEditing(false)}>
-                {t("contact.cancel")}
+                {"contactsPage.cancel"}
               </Button>
             </div>
           </form>
@@ -278,8 +286,8 @@ ContactCard.propTypes = {
     birthDate: PropTypes.string,
     decryptedNotes: PropTypes.string,
   }).isRequired,
-  onSelect: PropTypes.func.isRequired,
-  onEdit: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
+  handleSelectContactForEdit: PropTypes.func.isRequired,
+  processUpdateContact: PropTypes.func.isRequired,
+  processDeleteContact: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
 };

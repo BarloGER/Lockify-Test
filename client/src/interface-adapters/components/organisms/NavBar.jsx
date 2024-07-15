@@ -1,44 +1,28 @@
 import { useTranslation } from "react-i18next";
 import { useContext } from "react";
 import { NavLink } from "react-router-dom";
-
-import { AuthContext } from "../../context/AuthContext";
-import { Button } from "../atoms";
+import { DataVaultContext } from "../../context/DataVaultContext";
 
 export const NavBar = () => {
-  const { t } = useTranslation();
-  const { isDataVaultUnlocked, setIsDataVaultUnlocked } =
-    useContext(AuthContext);
+  const { t, i18n } = useTranslation();
+  const { isDataVaultUnlocked } = useContext(DataVaultContext);
+
+  const changeLanguage = (language) => {
+    i18n.changeLanguage(language);
+  };
 
   return (
     <nav>
       <ul>
         <NavLink to="/">{t("navBar.home")}</NavLink>
         <NavLink to="/user-profile">{t("navBar.userProfile")}</NavLink>
-        <NavLink to="/auth/data-vault">{t("navBar.dataVault")}</NavLink>
-        {isDataVaultUnlocked && (
-          <ul>
-            <NavLink to="/auth/data-vault/accounts">
-              {t("navBar.accounts")}
-            </NavLink>
-            <NavLink to="/auth/data-vault/contacts">
-              {t("navBar.contacts")}
-            </NavLink>
-            <NavLink to="/auth/data-vault/notes">{t("navBar.notes")}</NavLink>
-            <NavLink to="/auth/data-vault/banks">
-              {t("navBar.bankInfo")}
-            </NavLink>
-            <li>
-              <Button
-                className="nav-bar__button"
-                modifier="hover"
-                onClick={() => setIsDataVaultUnlocked(false)}
-              >
-                {t("navBar.lock")}
-              </Button>
-            </li>
-          </ul>
+        {isDataVaultUnlocked ? (
+          <NavLink to="/data-vault/dashboard">{t("navBar.dashboard")}</NavLink>
+        ) : (
+          <NavLink to="/data-vault">{t("navBar.dataVault")}</NavLink>
         )}
+        <button onClick={() => changeLanguage("en-EN")}>EN</button>
+        <button onClick={() => changeLanguage("de-DE")}>DE</button>
       </ul>
     </nav>
   );

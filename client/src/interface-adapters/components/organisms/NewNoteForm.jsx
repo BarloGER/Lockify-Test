@@ -3,25 +3,23 @@ import PropTypes from "prop-types";
 import { Input, Button } from "../atoms";
 import { SubmitButton } from "../molecules";
 import { FlashMessage } from "../molecules";
-import { useTranslation } from "react-i18next";
 import "./assets/new-note-form.css";
 
 export const NewNoteForm = ({
-  formValues,
-  setFormValues,
+  newNoteFormData,
+  setNewNoteFormData,
   handleChange,
-  handleSubmit,
+  processCreateNote,
   isNoteLoading,
   message,
   setMessage,
   messageType,
 }) => {
-  const { t } = useTranslation();
   const [isCreating, setIsCreating] = useState(false);
 
   const handlePlusClick = () => {
     setIsCreating(!isCreating);
-    setFormValues({
+    setNewNoteFormData({
       noteTitle: "",
       noteContent: "",
     });
@@ -36,19 +34,19 @@ export const NewNoteForm = ({
           </div>
         </div>
         <div className="new-note__form_back">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={processCreateNote}>
             <Input
               id="noteTitle"
               name="noteTitle"
-              label={t("note.noteTitle")}
-              value={formValues.noteTitle}
+              label={"notesPage.noteTitle"}
+              value={newNoteFormData.noteTitle}
               onChange={handleChange}
             />
             <Input
               id="noteContent"
               name="noteContent"
-              label={t("note.noteContent")}
-              value={formValues.noteContent}
+              label={"notesPage.noteContent"}
+              value={newNoteFormData.noteContent}
               onChange={handleChange}
             />
             <SubmitButton
@@ -56,11 +54,11 @@ export const NewNoteForm = ({
               modifier="hover"
               isLoading={isNoteLoading}
             >
-              {t("note.submitNewNote")}
+              {"notesPage.submitNewNote"}
             </SubmitButton>
 
             <Button onClick={handlePlusClick} modifier="hover">
-              {t("note.cancel")}
+              {"notesPage.cancel"}
             </Button>
 
             <FlashMessage
@@ -77,13 +75,13 @@ export const NewNoteForm = ({
 };
 
 NewNoteForm.propTypes = {
-  formValues: PropTypes.shape({
+  newNoteFormData: PropTypes.shape({
     noteTitle: PropTypes.string,
     noteContent: PropTypes.string,
   }).isRequired,
-  setFormValues: PropTypes.func.isRequired,
+  setNewNoteFormData: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  processCreateNote: PropTypes.func.isRequired,
   isNoteLoading: PropTypes.bool.isRequired,
   message: PropTypes.string,
   setMessage: PropTypes.func.isRequired,

@@ -9,84 +9,83 @@ export class NoteInteractor {
   }
 
   async getNotes() {
-    const noteRequestResult = await this.noteRepository.getNotes();
-
-    const noteOutputData = {
-      success: noteRequestResult.success,
-      message: noteRequestResult.message,
-      notes: noteRequestResult.notes,
-      statusCode: noteRequestResult.statusCode,
-      statusMessage: noteRequestResult.statusMessage,
-      errorType: noteRequestResult.errorType,
-      errorCode: noteRequestResult.errorCode,
-    };
-
-    return this.noteOutputPort.prepareNotesOutput(noteOutputData);
-  }
-
-  async validateCreateNote(userInput) {
-    const note =
-      this.noteInputPort.validateCreationInputBeforeEncryption(userInput);
-    if (note.validationError) {
-      return { validationError: note.validationError };
-    }
-  }
-
-  async validateEditNote(userInput) {
-    const note =
-      this.noteInputPort.validateUpdatedInputBeforeEncryption(userInput);
-    if (note.validationError) {
-      return { validationError: note.validationError };
-    }
-  }
-
-  async createNote(userInput) {
-    const note =
-      this.noteInputPort.validateCreationInputAfterEncryption(userInput);
-    if (note.validationError) {
-      return { validationError: note.validationError };
+    const getNotesResponse = await this.noteRepository.getNotesRequest();
+    if (!getNotesResponse.success) {
+      return this.noteOutputPort.formatFailedRequest(getNotesResponse);
     }
 
-    const registrationResult = await this.noteRepository.createNote(note);
-
-    const outputData = {
-      success: registrationResult.success,
-      message: registrationResult.message,
-      note: registrationResult.note,
-    };
-
-    return this.noteOutputPort.prepareSingleNoteOutput(outputData);
+    return this.noteOutputPort.formatMultipleNotes(getNotesResponse);
   }
 
-  async editNote(noteId, userInput) {
-    const note =
-      this.noteInputPort.validateUpdatedInputAfterEncryption(userInput);
-    if (note.validationError) {
-      return { validationError: note.validationError };
+  async validateUserInputForCreateNote(unvalidatedUserInput) {
+    const validatedUserInput =
+      this.noteInputPort.validatePreEncryptionInputForCreateNote(
+        unvalidatedUserInput
+      );
+    if (validatedUserInput.validationError) {
+      const validationError = validatedUserInput.validationError;
+      return this.noteOutputPort.formatValidationError(validationError);
     }
 
-    const registrationResult = await this.noteRepository.updateNote(
-      noteId,
-      note
+    return this.noteOutputPort.formatValidNoteInput(validatedUserInput);
+  }
+
+  async createNote(encryptedNoteData) {
+    const validNoteEntity =
+      this.noteInputPort.validateEncryptedDataForCreateNote(encryptedNoteData);
+    if (validNoteEntity.validationError) {
+      return { validationError: validNoteEntity.validationError };
+    }
+
+    const creationResponse = await this.noteRepository.createNoteRequest(
+      validNoteEntity
     );
+    console.log(creationResponse);
+    if (!creationResponse.success) {
+      return this.noteOutputPort.formatFailedRequest(creationResponse);
+    }
 
-    const outputData = {
-      success: registrationResult.success,
-      message: registrationResult.message,
-      note: registrationResult.note,
-    };
+    return this.noteOutputPort.formatSingleNote(creationResponse);
+  }
 
-    return this.noteOutputPort.prepareSingleNoteOutput(outputData);
+  async validateUserInputForUpdateNote(unvalidatedUserInput) {
+    const validatedUserInput =
+      this.noteInputPort.validatePreEncryptionInputForUpdateNote(
+        unvalidatedUserInput
+      );
+    if (validatedUserInput.validationError) {
+      return { validationError: validatedUserInput.validationError };
+    }
+
+    return this.noteOutputPort.formatValidNoteInput(validatedUserInput);
+  }
+
+  async updateNote(noteId, encryptedNoteData) {
+    const validNoteEntity =
+      this.noteInputPort.validateEncryptedDataForUpdateNote(encryptedNoteData);
+    if (validNoteEntity.validationError) {
+      return { validationError: validNoteEntity.validationError };
+    }
+
+    const updateResponse = await this.noteRepository.updateNoteRequest(
+      noteId,
+      validNoteEntity
+    );
+    if (!updateResponse.success) {
+      return this.noteOutputPort.formatFailedRequest(updateResponse);
+    }
+
+    return this.noteOutputPort.formatSingleNote(updateResponse);
   }
 
   async deleteNote(noteId) {
-    const deletionResult = await this.noteRepository.deleteNote(noteId);
+    const deletionResponse = await this.noteRepository.deleteNoteRequest(
+      noteId
+    );
+    if (!deletionResponse.success) {
+      return this.noteOutputPort.formatFailedRequest(deletionResponse);
+    }
 
-    const outputData = {
-      success: deletionResult.success,
-      message: deletionResult.message,
-    };
-
-    return this.noteOutputPort.prepareOutput(outputData);
+    return this.noteOutputPort.formatSuccessfulResponse(deletionResponse);
   }
 }
