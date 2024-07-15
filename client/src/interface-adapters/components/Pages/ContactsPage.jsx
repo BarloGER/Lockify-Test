@@ -1,22 +1,21 @@
-import { useState, useEffect, useContext } from "react";
-import { ContactInteractor } from "../../../usecases/contact/ContactInteractor.js";
-import { ContactRepository } from "../../repositories/ContactRepository.js";
-import { CryptographyInteractor } from "../../../usecases/cryptography/CryptographyInteractor.js";
-import { AuthContext } from "../../context/AuthContext.jsx";
+import { useState, useContext } from "react";
+import { DataVaultContext } from "../../context/DataVaultContext.jsx";
 import { ContactTemplate } from "../templates";
+import { SearchInput } from "../atoms";
 import { FlashMessage } from "../molecules/FlashMessage.jsx";
 import { NewContactForm, ContactsOverview } from "../organisms";
 
-// Initialisierung des ContactRepository und des ContactInteractor
-const contactRepository = new ContactRepository();
-const contactInteractor = new ContactInteractor(contactRepository);
-const cryptographyInteractor = new CryptographyInteractor();
-
 export const ContactsPage = () => {
-  const { masterPassword } = useContext(AuthContext);
+  const {
+    masterPassword,
+    contacts,
+    setContacts,
+    contactInteractor,
+    cryptographyInteractor,
+    isDataVaultUnlocked,
+  } = useContext(DataVaultContext);
 
-  const [contacts, setContacts] = useState([]);
-  const [newContactFormValues, setNewContactFormValues] = useState({
+  const [newContactFormData, setNewContactFormData] = useState({
     companyName: "",
     firstName: "",
     lastName: "",
@@ -31,154 +30,114 @@ export const ContactsPage = () => {
     birthDate: "",
     notes: "",
   });
-
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedOption, setSelectedOption] = useState("firstName");
   const [isContactLoading, setIsContactLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
 
+  if (!isDataVaultUnlocked) {
+    return;
+  }
+
+  const searchOptions = [
+    { value: "companyName" },
+    { value: "firstName" },
+    { value: "lastName" },
+    { value: "streetAddress" },
+    { value: "additionalAddressInfo" },
+    { value: "city" },
+    { value: "stateProvinceRegion" },
+    { value: "postalCode" },
+    { value: "country" },
+    { value: "phoneNumber" },
+    { value: "email" },
+    { value: "birthDate" },
+  ];
+  const filteredContacts = contacts.filter((contact) =>
+    contact[selectedOption].toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setNewContactFormValues({ ...newContactFormValues, [name]: value });
+    setNewContactFormData({ ...newContactFormData, [name]: value });
   };
 
-  const decryptContactData = async (contactData, masterPassword) => {
-    // Check whether the input is an array or needs to be converted into an array
-    const contacts = Array.isArray(contactData) ? contactData : [contactData];
-
-    const decryptedContacts = await Promise.all(
-      contacts.map(async (contact) => {
-        const decryptionResultNotes = contact.encryptedNotes
-          ? await cryptographyInteractor.decryptData({
-              encryptedData: contact.encryptedNotes,
-              iv: contact.notesEncryptionIv,
-              salt: contact.notesEncryptionSalt,
-              masterPassword: masterPassword,
-            })
-          : { success: true, data: "" };
-
-        const decryptedNotes = decryptionResultNotes.success
-          ? decryptionResultNotes.data
-          : "";
-
-        return {
-          ...contact,
-          decryptedNotes,
-        };
-      })
-    );
-
-    return Array.isArray(contactData)
-      ? decryptedContacts
-      : decryptedContacts[0];
-  };
-
-  const getContacts = async (masterPassword) => {
-    setIsContactLoading(true);
-
-    const contactRequestResponse = await contactInteractor.getContacts();
-    if (!contactRequestResponse.success) {
-      setMessage(
-        contactRequestResponse.message || "Fehler beim Abrufen der Konten"
-      );
-      setMessageType("error");
-      setContacts([]);
-      setIsContactLoading(false);
-      return;
-    }
-
-    const decryptedContacts = await decryptContactData(
-      contactRequestResponse.contacts,
-      masterPassword
-    );
-    if (!decryptedContacts) {
-      setMessage("Fehler beim Entschlüsseln der Konten");
-      setMessageType("error");
-      setContacts([]);
-      return;
-    }
-
-    setIsContactLoading(false);
-    setContacts(decryptedContacts);
-    setMessage(contactRequestResponse.message);
-    setMessageType("success");
-  };
-
-  useEffect(() => {
-    getContacts(masterPassword);
-  }, []);
-
-  const handleCreateContact = async (e, masterPassword) => {
+  const processCreateContact = async (e, masterPassword) => {
     e.preventDefault();
     setIsContactLoading(true);
 
-    const validateContact = await contactInteractor.validateCreateContact({
-      companyName: newContactFormValues.companyName,
-      firstName: newContactFormValues.firstName,
-      lastName: newContactFormValues.lastName,
-      streetAddress: newContactFormValues.streetAddress,
-      additionalAddressInfo: newContactFormValues.additionalAddressInfo,
-      city: newContactFormValues.city,
-      stateProvinceRegion: newContactFormValues.stateProvinceRegion,
-      postalCode: newContactFormValues.postalCode,
-      country: newContactFormValues.country,
-      phoneNumber: newContactFormValues.phoneNumber,
-      email: newContactFormValues.email,
-      birthDate: newContactFormValues.birthDate,
-      notes: newContactFormValues.notes,
-    });
-    if (validateContact && validateContact.validationError) {
+    const unvalidatedUserInput = newContactFormData;
+    const validateUserInput =
+      await contactInteractor.validateUserInputForCreateContact(
+        unvalidatedUserInput
+      );
+    if (!validateUserInput.success) {
       setIsContactLoading(false);
-      setMessage(`validationError.${validateContact.validationError}`);
+      setMessage(`validationError.${validateUserInput.message}`);
       setMessageType("error");
       return;
     }
+    const validContactEntity = validateUserInput.validContactEntity;
 
-    let encryptedNotesObj = { data: { encryptedData: "", iv: "", salt: "" } };
-    if (newContactFormValues.notes) {
-      encryptedNotesObj = await cryptographyInteractor.encryptData({
-        text: newContactFormValues.notes,
+    let encryptedNotes = {
+      success: true,
+      encryptedData: "",
+      iv: "",
+      salt: "",
+    };
+    if (validContactEntity.notes) {
+      encryptedNotes = await cryptographyInteractor.encryptData({
+        text: validContactEntity.notes,
         masterPassword: masterPassword,
       });
     }
 
-    const creationResponse = await contactInteractor.createContact({
-      companyName: newContactFormValues.companyName,
-      firstName: newContactFormValues.firstName,
-      lastName: newContactFormValues.lastName,
-      streetAddress: newContactFormValues.streetAddress,
-      additionalAddressInfo: newContactFormValues.additionalAddressInfo,
-      city: newContactFormValues.city,
-      stateProvinceRegion: newContactFormValues.stateProvinceRegion,
-      postalCode: newContactFormValues.postalCode,
-      country: newContactFormValues.country,
-      phoneNumber: newContactFormValues.phoneNumber,
-      email: newContactFormValues.email,
-      birthDate: newContactFormValues.birthDate,
-      encryptedNotes: encryptedNotesObj.data.encryptedData,
-      notesEncryptionIv: encryptedNotesObj.data.iv,
-      notesEncryptionSalt: encryptedNotesObj.data.salt,
-    });
+    const encryptedContactData = {
+      companyName: validContactEntity.companyName,
+      firstName: validContactEntity.firstName,
+      lastName: validContactEntity.lastName,
+      streetAddress: validContactEntity.streetAddress,
+      additionalAddressInfo: validContactEntity.additionalAddressInfo,
+      city: validContactEntity.city,
+      stateProvinceRegion: validContactEntity.stateProvinceRegion,
+      postalCode: validContactEntity.postalCode,
+      country: validContactEntity.country,
+      phoneNumber: validContactEntity.phoneNumber,
+      email: validContactEntity.email,
+      birthDate: validContactEntity.birthDate,
+      encryptedNotes: encryptedNotes.encryptedData,
+      notesEncryptionIv: encryptedNotes.iv,
+      notesEncryptionSalt: encryptedNotes.salt,
+    };
 
-    if (creationResponse.validationError) {
+    const createContactResponse = await contactInteractor.createContact(
+      encryptedContactData
+    );
+    if (
+      !createContactResponse.success &&
+      createContactResponse.message === "Failed to fetch"
+    ) {
       setIsContactLoading(false);
-      setMessage(`validationError.${creationResponse.validationError}`);
+      setMessage("externalService.serverError");
       setMessageType("error");
       return;
-    } else if (!creationResponse.success) {
+    } else if (!createContactResponse.success) {
       setIsContactLoading(false);
-      setMessage(creationResponse.message);
+      setMessage(createContactResponse.message);
       setMessageType("error");
       return;
     }
 
-    const decryptedContact = await decryptContactData(
-      creationResponse.contact,
-      masterPassword
-    );
-
-    setContacts((prevContacts) => [...prevContacts, decryptedContact]);
+    setContacts((prevContacts) => [
+      ...prevContacts,
+      {
+        ...createContactResponse.contact,
+        decryptedNotes: validContactEntity.notes,
+      },
+    ]);
     setIsContactLoading(false);
-    setNewContactFormValues({
+    setNewContactFormData({
       companyName: "",
       firstName: "",
       lastName: "",
@@ -193,14 +152,14 @@ export const ContactsPage = () => {
       birthDate: "",
       notes: "",
     });
-    setMessage(creationResponse.message);
+    setMessage(createContactResponse.message);
     setMessageType("success");
   };
 
   const handleSelectContactForEdit = (contactId) => {
     const contact = contacts.find((acc) => acc.contactId === contactId);
     if (contact) {
-      setNewContactFormValues({
+      setNewContactFormData({
         companyName: contact.companyName,
         firstName: contact.firstName,
         lastName: contact.lastName,
@@ -218,7 +177,12 @@ export const ContactsPage = () => {
     }
   };
 
-  const handleEditContact = async (e, contactId, formValues) => {
+  const processUpdateContact = async (
+    e,
+    contactId,
+    updateContactFormData,
+    setIsEditing
+  ) => {
     e.preventDefault();
     setIsContactLoading(true);
 
@@ -229,69 +193,69 @@ export const ContactsPage = () => {
       return;
     }
 
-    const validateContact = await contactInteractor.validateEditContact({
-      companyName: formValues.companyName,
-      firstName: formValues.firstName,
-      lastName: formValues.lastName,
-      streetAddress: formValues.streetAddress,
-      additionalAddressInfo: formValues.additionalAddressInfo,
-      city: formValues.city,
-      stateProvinceRegion: formValues.stateProvinceRegion,
-      postalCode: formValues.postalCode,
-      country: formValues.country,
-      phoneNumber: formValues.phoneNumber,
-      email: formValues.email,
-      birthDate: formValues.birthDate,
-      notes: formValues.notes,
-    });
-
-    if (validateContact && validateContact.validationError) {
+    const unvalidatedUserInput = updateContactFormData;
+    const validateUserInput =
+      await contactInteractor.validateUserInputForUpdateContact(
+        unvalidatedUserInput
+      );
+    if (!validateUserInput.success) {
       setIsContactLoading(false);
-      setMessage(`validationError.${validateContact.validationError}`);
+      setMessage(`validationError.${validateUserInput.message}`);
       setMessageType("error");
       return;
     }
+    const validContactEntity = validateUserInput.validContactEntity;
 
-    let encryptedNotesObj = { data: { encryptedData: "", iv: "", salt: "" } };
-    if (formValues.notes) {
-      encryptedNotesObj = await cryptographyInteractor.encryptData({
-        text: formValues.notes,
+    let encryptedNotes = {
+      success: true,
+      encryptedData: "",
+      iv: "",
+      salt: "",
+    };
+    if (validContactEntity.notes) {
+      encryptedNotes = await cryptographyInteractor.encryptData({
+        text: validContactEntity.notes,
         masterPassword: masterPassword,
       });
     }
 
-    const editResponse = await contactInteractor.editContact(contactId, {
-      companyName: formValues.companyName,
-      firstName: formValues.firstName,
-      lastName: formValues.lastName,
-      streetAddress: formValues.streetAddress,
-      additionalAddressInfo: formValues.additionalAddressInfo,
-      city: formValues.city,
-      stateProvinceRegion: formValues.stateProvinceRegion,
-      postalCode: formValues.postalCode,
-      country: formValues.country,
-      phoneNumber: formValues.phoneNumber,
-      email: formValues.email,
-      birthDate: formValues.birthDate,
-      encryptedNotes: encryptedNotesObj.data.encryptedData,
-      notesEncryptionIv: encryptedNotesObj.data.iv,
-      notesEncryptionSalt: encryptedNotesObj.data.salt,
-    });
+    const encryptedContactData = {
+      companyName: validContactEntity.companyName,
+      firstName: validContactEntity.firstName,
+      lastName: validContactEntity.lastName,
+      streetAddress: validContactEntity.streetAddress,
+      additionalAddressInfo: validContactEntity.additionalAddressInfo,
+      city: validContactEntity.city,
+      stateProvinceRegion: validContactEntity.stateProvinceRegion,
+      postalCode: validContactEntity.postalCode,
+      country: validContactEntity.country,
+      phoneNumber: validContactEntity.phoneNumber,
+      email: validContactEntity.email,
+      birthDate: validContactEntity.birthDate,
+      encryptedNotes: encryptedNotes.encryptedData,
+      notesEncryptionIv: encryptedNotes.iv,
+      notesEncryptionSalt: encryptedNotes.salt,
+    };
 
-    if (!editResponse.success) {
+    const updateContactResponse = await contactInteractor.updateContact(
+      contactId,
+      encryptedContactData
+    );
+    if (!updateContactResponse.success) {
       setIsContactLoading(false);
-      setMessage(editResponse.message);
+      setMessage(updateContactResponse.message);
       setMessageType("error");
       return;
     }
 
-    // Update local state
+    // Update local state to avoid decryption
     const updatedContact = contacts.map((contact) => {
       if (contact.contactId === contactId) {
         return {
           ...contact,
-          ...formValues,
-          decryptedNotes: formValues.notes,
+          ...validContactEntity,
+          decryptedPassword: validContactEntity.password,
+          decryptedNotes: validContactEntity.notes,
         };
       }
       return contact;
@@ -299,11 +263,12 @@ export const ContactsPage = () => {
 
     setContacts(updatedContact);
     setIsContactLoading(false);
-    setMessage(editResponse.message);
+    setIsEditing(false);
+    setMessage(updateContactResponse.message);
     setMessageType("success");
   };
 
-  const handleDeleteContact = async (contactId) => {
+  const processDeleteContact = async (contactId) => {
     setIsContactLoading(true);
 
     const contactToDelete = contacts.find((acc) => acc.contactId === contactId);
@@ -314,7 +279,6 @@ export const ContactsPage = () => {
     }
 
     const deletionResponse = await contactInteractor.deleteContact(contactId);
-
     if (!deletionResponse.success) {
       setIsContactLoading(false);
       setMessage(deletionResponse.message);
@@ -335,6 +299,14 @@ export const ContactsPage = () => {
 
   return (
     <ContactTemplate>
+      <SearchInput
+        placeholder={selectedOption}
+        onSearchChange={setSearchTerm}
+        searchOptions={searchOptions}
+        onOptionChange={(e) => setSelectedOption(e.target.value)}
+        selectedOption={selectedOption}
+        pageName="contactsPage"
+      />
       <FlashMessage
         message={message}
         setMessage={setMessage}
@@ -342,20 +314,20 @@ export const ContactsPage = () => {
         className="contact-page__flash-message"
       />
       <NewContactForm
-        formValues={newContactFormValues}
-        setFormValues={setNewContactFormValues}
+        newContactFormData={newContactFormData}
+        setNewContactFormData={setNewContactFormData}
         handleChange={handleChange}
-        handleSubmit={(e) => handleCreateContact(e, masterPassword)}
+        processCreateContact={(e) => processCreateContact(e, masterPassword)}
         isContactLoading={isContactLoading}
         message={message}
         setMessage={setMessage}
         messageType={messageType}
       />
       <ContactsOverview
-        contacts={contacts}
-        onSelectContact={handleSelectContactForEdit}
-        onEditContact={handleEditContact}
-        onDeleteContact={handleDeleteContact}
+        contacts={filteredContacts}
+        handleSelectContactForEdit={handleSelectContactForEdit}
+        processUpdateContact={processUpdateContact}
+        processDeleteContact={processDeleteContact}
         isContactLoading={isContactLoading}
         message={message}
         messageType={messageType}

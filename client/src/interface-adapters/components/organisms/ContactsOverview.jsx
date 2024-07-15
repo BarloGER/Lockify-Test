@@ -4,9 +4,9 @@ import "./assets/contacts-overview.css";
 
 export const ContactsOverview = ({
   contacts,
-  onSelectContact,
-  onEditContact,
-  onDeleteContact,
+  handleSelectContactForEdit,
+  processUpdateContact,
+  processDeleteContact,
   isContactLoading,
 }) => {
   return (
@@ -15,9 +15,11 @@ export const ContactsOverview = ({
         <ContactCard
           key={contact.contactId || index}
           contact={contact}
-          onSelect={() => onSelectContact(contact.contactId)}
-          onEdit={onEditContact}
-          onDelete={onDeleteContact}
+          handleSelectContactForEdit={() =>
+            handleSelectContactForEdit(contact.contactId)
+          }
+          processUpdateContact={processUpdateContact}
+          processDeleteContact={processDeleteContact}
           isLoading={isContactLoading}
         />
       ))}
@@ -44,8 +46,8 @@ ContactsOverview.propTypes = {
       decryptedNotes: PropTypes.string,
     })
   ).isRequired,
-  onSelectContact: PropTypes.func.isRequired,
-  onEditContact: PropTypes.func.isRequired,
-  onDeleteContact: PropTypes.func.isRequired,
+  handleSelectContactForEdit: PropTypes.func.isRequired,
+  processUpdateContact: PropTypes.func.isRequired,
+  processDeleteContact: PropTypes.func.isRequired,
   isContactLoading: PropTypes.bool,
 };

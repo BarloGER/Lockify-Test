@@ -1,35 +1,34 @@
 const { ContactEntity } = require("../../entities/ContactEntity");
-const { ErrorResponse } = require("../../utils");
 
 exports.ContactInputPort = class ContactInputPort {
-  createContact(userInput) {
-    const contact = new ContactEntity(userInput, { isNewContact: true });
+  createContact(unvalidatedUserInput) {
+    const validContactEntity = new ContactEntity(unvalidatedUserInput);
 
-    const validationError = contact.validateForCreation();
+    const validationError = validContactEntity.validateForCreation();
     if (validationError) {
-      throw new ErrorResponse({ errorCode: `${validationError}` });
+      return { validationError };
     }
 
-    return contact;
+    return validContactEntity;
   }
 
-  editContact(userInput) {
-    const updateData = new ContactEntity(userInput);
+  editContact(unvalidatedUserInput) {
+    const validContactEntity = new ContactEntity(unvalidatedUserInput);
 
-    const validationError = updateData.validateForUpdate();
+    const validationError = validContactEntity.validateForUpdate();
     if (validationError) {
-      throw new ErrorResponse({ errorCode: `${validationError}` });
+      return { validationError };
     }
 
-    return updateData;
+    return validContactEntity;
   }
 
-  deleteContact(userInput) {
-    const data = new ContactEntity(userInput);
+  deleteContact(unvalidatedUserInput) {
+    const validContactEntity = new ContactEntity(unvalidatedUserInput);
 
-    const validationError = data.validateForDelete();
+    const validationError = validContactEntity.validateForDelete();
     if (validationError) {
-      throw new ErrorResponse({ errorCode: `${validationError}` });
+      return { validationError };
     }
   }
 };

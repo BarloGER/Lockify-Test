@@ -11,7 +11,11 @@ const contactPresenter = new ContactPresenter();
 const contactInteractor = new ContactInteractor(contactRepository);
 
 exports.getContacts = asyncHandler(async (req, res, next) => {
-  const language = req.headers["accept-language"].includes("de") ? "DE" : "EN";
+  const language =
+    req.headers["accept-language"] &&
+    req.headers["accept-language"].includes("de")
+      ? "DE"
+      : "EN";
   const { userId } = req;
 
   const isAuthenticated = req.session.userId === userId;
@@ -26,7 +30,11 @@ exports.getContacts = asyncHandler(async (req, res, next) => {
 });
 
 exports.createContact = asyncHandler(async (req, res, next) => {
-  const language = req.headers["accept-language"].includes("de") ? "DE" : "EN";
+  const language =
+    req.headers["accept-language"] &&
+    req.headers["accept-language"].includes("de")
+      ? "DE"
+      : "EN";
 
   const { userId } = req;
 
@@ -55,7 +63,11 @@ exports.createContact = asyncHandler(async (req, res, next) => {
 });
 
 exports.updateContact = asyncHandler(async (req, res, next) => {
-  const language = req.headers["accept-language"].includes("de") ? "DE" : "EN";
+  const language =
+    req.headers["accept-language"] &&
+    req.headers["accept-language"].includes("de")
+      ? "DE"
+      : "EN";
   const { userId } = req;
   const contactId = req.params.id;
 
@@ -89,7 +101,11 @@ exports.updateContact = asyncHandler(async (req, res, next) => {
 });
 
 exports.deleteContact = asyncHandler(async (req, res, next) => {
-  const language = req.headers["accept-language"].includes("de") ? "DE" : "EN";
+  const language =
+    req.headers["accept-language"] &&
+    req.headers["accept-language"].includes("de")
+      ? "DE"
+      : "EN";
   const { userId } = req;
   const contactId = req.params.id;
 

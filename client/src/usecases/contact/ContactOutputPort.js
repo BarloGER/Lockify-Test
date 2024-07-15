@@ -5,34 +5,65 @@ export class ContactOutputPort {
     this.contacts = [];
   }
 
-  prepareSingleContactOutput(data) {
-    this.success = data.success;
-    this.message = data.message;
-    this.contact = data.contact;
+  formatValidationError(validationError) {
     return {
-      success: this.success,
-      message: this.message,
-      contact: this.contact,
+      success: false,
+      message: validationError,
     };
   }
 
-  prepareContactsOutput(data) {
-    this.success = data.success;
-    this.message = data.message;
-    this.contacts = data.contacts;
+  formatFailedRequest(requestError) {
     return {
-      success: this.success,
-      message: this.message,
-      contacts: this.contacts,
+      success: requestError.success,
+      message: requestError.message,
+      statusCode: requestError.statusCode,
+      statusMessage: requestError.statusMessage,
+      errorCode: requestError.errorCode,
+      errorType: requestError.errorType,
     };
   }
 
-  prepareOutput(data) {
-    this.success = data.success;
-    this.message = data.message;
+  formatValidContactInput(validatedUserInput) {
     return {
-      success: this.success,
-      message: this.message,
+      success: true,
+      validContactEntity: {
+        companyName: validatedUserInput.companyName,
+        firstName: validatedUserInput.firstName,
+        lastName: validatedUserInput.lastName,
+        streetAddress: validatedUserInput.streetAddress,
+        additionalAddressInfo: validatedUserInput.additionalAddressInfo,
+        city: validatedUserInput.city,
+        stateProvinceRegion: validatedUserInput.stateProvinceRegion,
+        postalCode: validatedUserInput.postalCode,
+        country: validatedUserInput.country,
+        phoneNumber: validatedUserInput.phoneNumber,
+        email: validatedUserInput.email,
+        birthDate: validatedUserInput.birthDate,
+        notes: validatedUserInput.notes,
+      },
+    };
+  }
+
+  formatSingleContact(successfulResponse) {
+    return {
+      success: true,
+      message: successfulResponse.message,
+      contact: successfulResponse.contact,
+    };
+  }
+
+  formatMultipleContacts(successfulResponse) {
+    return {
+      success: true,
+      message: successfulResponse.message,
+      contacts: successfulResponse.contacts,
+    };
+  }
+
+  formatSuccessfulResponse(successfulResponse) {
+    return {
+      success: true,
+      message: successfulResponse.message,
     };
   }
 }

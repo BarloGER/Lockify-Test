@@ -7,10 +7,10 @@ import { useTranslation } from "react-i18next";
 import "./assets/new-contact-form.css";
 
 export const NewContactForm = ({
-  formValues,
-  setFormValues,
+  newContactFormData,
+  setNewContactFormData,
   handleChange,
-  handleSubmit,
+  processCreateContact,
   isContactLoading,
   message,
   setMessage,
@@ -21,7 +21,7 @@ export const NewContactForm = ({
 
   const handlePlusClick = () => {
     setIsCreating(!isCreating);
-    setFormValues({
+    setNewContactFormData({
       companyName: "",
       firstName: "",
       lastName: "",
@@ -47,105 +47,105 @@ export const NewContactForm = ({
           </div>
         </div>
         <div className="new-contact__form_back">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={processCreateContact}>
             <Input
               id="companyName"
               name="companyName"
-              label={t("contact.companyName")}
-              value={formValues.companyName}
+              label={t("contactsPage.companyName")}
+              value={newContactFormData.companyName}
               onChange={handleChange}
             />
             <Input
               id="firstName"
               name="firstName"
-              label={t("contact.firstName")}
-              value={formValues.firstName}
+              label={t("contactsPage.firstName")}
+              value={newContactFormData.firstName}
               onChange={handleChange}
             />
             <Input
               id="lastName"
               name="lastName"
-              label={t("contact.lastName")}
-              value={formValues.lastName}
+              label={t("contactsPage.lastName")}
+              value={newContactFormData.lastName}
               onChange={handleChange}
             />
             <Input
               id="streetAddress"
               name="streetAddress"
-              label={t("contact.streetAddress")}
+              label={t("contactsPage.streetAddress")}
               type="streetAddress"
-              value={formValues.streetAddress}
+              value={newContactFormData.streetAddress}
               onChange={handleChange}
             />
             <Input
               id="additionalAddressInfo"
               name="additionalAddressInfo"
-              label={t("contact.additionalAddressInfo")}
+              label={t("contactsPage.additionalAddressInfo")}
               type="additionalAddressInfo"
-              value={formValues.additionalAddressInfo}
+              value={newContactFormData.additionalAddressInfo}
               onChange={handleChange}
             />
             <Input
               id="city"
               name="city"
-              label={t("contact.city")}
+              label={t("contactsPage.city")}
               type="city"
-              value={formValues.city}
+              value={newContactFormData.city}
               onChange={handleChange}
             />
             <Input
               id="stateProvinceRegion"
               name="stateProvinceRegion"
-              label={t("contact.stateProvinceRegion")}
+              label={t("contactsPage.stateProvinceRegion")}
               type="stateProvinceRegion"
-              value={formValues.stateProvinceRegion}
+              value={newContactFormData.stateProvinceRegion}
               onChange={handleChange}
             />
             <Input
               id="postalCode"
               name="postalCode"
-              label={t("contact.postalCode")}
+              label={t("contactsPage.postalCode")}
               type="postalCode"
-              value={formValues.postalCode}
+              value={newContactFormData.postalCode}
               onChange={handleChange}
             />
             <Input
               id="country"
               name="country"
-              label={t("contact.country")}
+              label={t("contactsPage.country")}
               type="country"
-              value={formValues.country}
+              value={newContactFormData.country}
               onChange={handleChange}
             />
             <Input
               id="phoneNumber"
               name="phoneNumber"
-              label={t("contact.phoneNumber")}
+              label={t("contactsPage.phoneNumber")}
               type="phoneNumber"
-              value={formValues.phoneNumber}
+              value={newContactFormData.phoneNumber}
               onChange={handleChange}
             />
             <Input
               id="email"
               name="email"
-              label={t("contact.email")}
+              label={t("contactsPage.email")}
               type="email"
-              value={formValues.email}
+              value={newContactFormData.email}
               onChange={handleChange}
             />
             <Input
               id="birthDate"
               name="birthDate"
-              label={t("contact.birthDate")}
+              label={t("contactsPage.birthDate")}
               type="birthDate"
-              value={formValues.birthDate}
+              value={newContactFormData.birthDate}
               onChange={handleChange}
             />
             <Input
               id="notes"
               name="notes"
-              label={t("contact.notes")}
-              value={formValues.notes}
+              label={t("contactsPage.notes")}
+              value={newContactFormData.notes}
               onChange={handleChange}
             />
 
@@ -154,11 +154,11 @@ export const NewContactForm = ({
               modifier="hover"
               isLoading={isContactLoading}
             >
-              {t("contact.submitNewContact")}
+              {t("contactsPage.submitNewContact")}
             </SubmitButton>
 
             <Button onClick={handlePlusClick} modifier="hover">
-              {t("contact.cancel")}
+              {t("contactsPage.cancel")}
             </Button>
 
             <FlashMessage
@@ -175,7 +175,7 @@ export const NewContactForm = ({
 };
 
 NewContactForm.propTypes = {
-  formValues: PropTypes.shape({
+  newContactFormData: PropTypes.shape({
     companyName: PropTypes.string,
     firstName: PropTypes.string,
     lastName: PropTypes.string,
@@ -190,9 +190,9 @@ NewContactForm.propTypes = {
     birthDate: PropTypes.string,
     notes: PropTypes.string,
   }).isRequired,
-  setFormValues: PropTypes.func.isRequired,
+  setNewContactFormData: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
+  processCreateContact: PropTypes.func.isRequired,
   isContactLoading: PropTypes.bool.isRequired,
   message: PropTypes.string,
   setMessage: PropTypes.func.isRequired,
