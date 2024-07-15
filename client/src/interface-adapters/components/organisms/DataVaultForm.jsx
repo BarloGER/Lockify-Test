@@ -2,27 +2,25 @@ import PropTypes from "prop-types";
 import { Input, Paragraph } from "../atoms";
 import { SubmitButton } from "../molecules";
 import { FlashMessage } from "../molecules";
-import { useTranslation } from "react-i18next";
 import "./assets/data-vault-form.css";
 
 export const DataVaultForm = ({
   masterPassword,
   setMasterPassword,
-  handleMasterPasswordVerification,
+  processMasterPasswordVerification,
   isDataVaultLoading,
   message,
   setMessage,
   messageType,
 }) => {
-  const { t } = useTranslation();
   return (
-    <form onSubmit={handleMasterPasswordVerification}>
-      <Paragraph text="dataVault.text" />
+    <form onSubmit={processMasterPasswordVerification}>
+      <Paragraph text="dataVaultPage.text" />
 
       <Input
         id="masterPassword"
         name="masterPassword"
-        label={t("dataVault.masterPassword")}
+        label={"dataVaultPage.masterPassword"}
         type="password"
         value={masterPassword}
         onChange={(e) => setMasterPassword(e.target.value)}
@@ -32,7 +30,7 @@ export const DataVaultForm = ({
         modifier="hover"
         isLoading={isDataVaultLoading}
       >
-        {t("dataVault.submitButton")}
+        {"dataVaultPage.submitButton"}
       </SubmitButton>
 
       <FlashMessage
@@ -48,7 +46,7 @@ export const DataVaultForm = ({
 DataVaultForm.propTypes = {
   masterPassword: PropTypes.string.isRequired,
   setMasterPassword: PropTypes.func.isRequired,
-  handleMasterPasswordVerification: PropTypes.func.isRequired,
+  processMasterPasswordVerification: PropTypes.func.isRequired,
   isDataVaultLoading: PropTypes.bool.isRequired,
   message: PropTypes.string.isRequired,
   setMessage: PropTypes.func.isRequired,

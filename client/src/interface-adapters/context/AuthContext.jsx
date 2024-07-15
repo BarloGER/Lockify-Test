@@ -19,20 +19,15 @@ export const AuthProvider = ({ children }) => {
   );
 
   const [user, setUser] = useState(null);
-  const [masterPassword, setMasterPassword] = useState("");
   const [loadingAuthRequest, setLoadingAuthRequest] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isDataVaultUnlocked, setIsDataVaultUnlocked] = useState(false);
   const [isBlocked, setIsBlocked] = useState(false);
 
   const checkAuthentication = useCallback(async () => {
     setLoadingAuthRequest(true);
 
     const authenticationResponse = await userInteractor.checkAuthAndGetUser();
-    if (
-      !authenticationResponse.success &&
-      authenticationResponse.errorCode === "USER_AUTHORIZATION_001"
-    ) {
+    if (!authenticationResponse.success && authenticationResponse.user) {
       setUser(null);
       setIsBlocked(true);
       setIsAuthenticated(false);
@@ -40,15 +35,13 @@ export const AuthProvider = ({ children }) => {
       return;
     } else if (!authenticationResponse.success) {
       setUser(null);
-      setMasterPassword("");
       setIsAuthenticated(false);
       setLoadingAuthRequest(false);
       return;
     }
 
+    setUser(authenticationResponse.user);
     setIsAuthenticated(true);
-    setUser(authenticationResponse.user.dataValues);
-
     setLoadingAuthRequest(false);
   }, [userInteractor]);
 
@@ -62,12 +55,8 @@ export const AuthProvider = ({ children }) => {
         user,
         setUser,
         userInteractor,
-        masterPassword,
-        setMasterPassword,
         isAuthenticated,
         setIsAuthenticated,
-        isDataVaultUnlocked,
-        setIsDataVaultUnlocked,
         isBlocked,
         setIsBlocked,
         loadingAuthRequest,

@@ -29,12 +29,7 @@ export const ForgotPasswordPage = () => {
     const passwordRequestResponse = await userInteractor.requestNewPassword({
       email,
     });
-    if (passwordRequestResponse.validationError) {
-      setIsPasswordRequestLoading(false);
-      setMessage(`validationError.${passwordRequestResponse.validationError}`);
-      setMessageType("error");
-      return;
-    } else if (
+    if (
       !passwordRequestResponse.success &&
       passwordRequestResponse.message === "Failed to fetch"
     ) {

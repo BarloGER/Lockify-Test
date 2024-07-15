@@ -2,84 +2,90 @@ import PropTypes from "prop-types";
 import { Input, RouterLink, Paragraph } from "../atoms";
 import { SubmitButton } from "../molecules";
 import { FlashMessage, Checkbox } from "../molecules";
-import { useTranslation } from "react-i18next";
 import "./assets/register-form.css";
 
 export const RegisterForm = ({
-  username,
-  setUsername,
-  email,
-  setEmail,
-  password,
-  setPassword,
-  masterPassword,
-  setMasterPassword,
-  isNewsletterAllowed,
-  setIsNewsletterAllowed,
-  handleRegistration,
+  newUserFormData,
+  handleChange,
+  processRegistration,
   isRegistrationLoading,
   message,
   setMessage,
   messageType,
 }) => {
-  const { t } = useTranslation();
   return (
-    <form onSubmit={handleRegistration}>
+    <form className="register-form" onSubmit={processRegistration}>
       <Input
         id="username"
         name="username"
-        label={t("register.username")}
+        label="registerPage.username"
         type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        value={newUserFormData.username}
+        onChange={handleChange}
       />
       <Input
         id="email"
         name="email"
-        label={t("register.email")}
+        label="registerPage.email"
         type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        value={newUserFormData.email}
+        onChange={handleChange}
       />
       <Input
         id="password"
         name="password"
-        label={t("register.password")}
+        label="registerPage.password"
         type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        value={newUserFormData.password}
+        onChange={handleChange}
+      />
+      <Input
+        id="confirmPassword"
+        name="confirmPassword"
+        label="registerPage.confirmPassword"
+        type="password"
+        value={newUserFormData.confirmPassword}
+        onChange={handleChange}
       />
       <Input
         id="masterPassword"
         name="masterPassword"
-        label={t("register.masterPassword")}
+        label="registerPage.masterPassword"
         type="password"
-        value={masterPassword}
-        onChange={(e) => setMasterPassword(e.target.value)}
+        value={newUserFormData.masterPassword}
+        onChange={handleChange}
+      />
+      <Input
+        id="confirmMasterPassword"
+        name="confirmMasterPassword"
+        label="registerPage.confirmMasterPassword"
+        type="password"
+        value={newUserFormData.confirmMasterPassword}
+        onChange={handleChange}
       />
       <Checkbox
-        id="newsletter"
-        name="newsletter"
-        label={t("register.newsletter")}
-        checked={isNewsletterAllowed}
-        onChange={(e) => setIsNewsletterAllowed(e.target.checked)}
+        id="isNewsletterAllowed"
+        name="isNewsletterAllowed"
+        label="registerPage.newsletter"
+        checked={newUserFormData.isNewsletterAllowed}
+        onChange={handleChange}
       />
       <SubmitButton
         className="register-form__button"
         modifier="hover"
         isLoading={isRegistrationLoading}
       >
-        {t("register.registerButton")}
+        {"registerPage.registerButton"}
       </SubmitButton>
 
-      <Paragraph text="register.linkMessage" />
+      <Paragraph text="registerPage.linkMessage" />
 
       <RouterLink
         path="/login"
         className="register-form__link"
         modifier="hover"
       >
-        {"register.linkButton"}
+        {"registerPage.linkButton"}
       </RouterLink>
 
       <FlashMessage
@@ -93,19 +99,19 @@ export const RegisterForm = ({
 };
 
 RegisterForm.propTypes = {
-  username: PropTypes.string.isRequired,
-  setUsername: PropTypes.func.isRequired,
-  email: PropTypes.string.isRequired,
-  setEmail: PropTypes.func.isRequired,
-  password: PropTypes.string.isRequired,
-  setPassword: PropTypes.func.isRequired,
-  masterPassword: PropTypes.string.isRequired,
-  setMasterPassword: PropTypes.func.isRequired,
-  isNewsletterAllowed: PropTypes.bool.isRequired,
-  setIsNewsletterAllowed: PropTypes.func.isRequired,
-  handleRegistration: PropTypes.func.isRequired,
+  newUserFormData: PropTypes.shape({
+    username: PropTypes.string,
+    email: PropTypes.string,
+    password: PropTypes.string,
+    confirmPassword: PropTypes.string,
+    masterPassword: PropTypes.string,
+    confirmMasterPassword: PropTypes.string,
+    isNewsletterAllowed: PropTypes.bool,
+  }).isRequired,
   isRegistrationLoading: PropTypes.bool.isRequired,
-  message: PropTypes.string.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  processRegistration: PropTypes.func.isRequired,
+  message: PropTypes.string,
   setMessage: PropTypes.func.isRequired,
-  messageType: PropTypes.string.isRequired,
+  messageType: PropTypes.string,
 };

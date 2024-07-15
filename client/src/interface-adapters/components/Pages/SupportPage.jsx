@@ -3,12 +3,11 @@ import { useNavigate } from "react-router-dom";
 
 import { MailInteractor } from "../../../usecases/mail/MailInteractor.js";
 import { MailRepository } from "../../repositories/MailRepository.js";
-
 import { AuthContext } from "../../context/AuthContext.jsx";
-import { AuthTemplate } from "../templates";
+
 import { SupportForm } from "../organisms";
 
-export const BlockedPage = () => {
+export const SupportPage = () => {
   const mailRepository = useMemo(() => new MailRepository(), []);
   const mailInteractor = useMemo(
     () => new MailInteractor(mailRepository),
@@ -16,7 +15,7 @@ export const BlockedPage = () => {
   );
 
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { isBlocked } = useContext(AuthContext);
 
   const [supportFormData, setSupportFormData] = useState({
     email: "",
@@ -28,10 +27,10 @@ export const BlockedPage = () => {
   const [messageType, setMessageType] = useState("");
 
   useEffect(() => {
-    if (user && !user.isBlocked) {
+    if (isBlocked) {
       navigate("/");
     }
-  }, [user, navigate]);
+  }, [isBlocked, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -75,16 +74,14 @@ export const BlockedPage = () => {
   };
 
   return (
-    <AuthTemplate>
-      <SupportForm
-        supportFormData={supportFormData}
-        handleChange={handleChange}
-        processSupportRequest={processSupportRequest}
-        isSupportMailLoading={isSupportMailLoading}
-        message={message}
-        setMessage={setMessage}
-        messageType={messageType}
-      />
-    </AuthTemplate>
+    <SupportForm
+      supportFormData={supportFormData}
+      handleChange={handleChange}
+      processSupportRequest={processSupportRequest}
+      isSupportMailLoading={isSupportMailLoading}
+      message={message}
+      setMessage={setMessage}
+      messageType={messageType}
+    />
   );
 };

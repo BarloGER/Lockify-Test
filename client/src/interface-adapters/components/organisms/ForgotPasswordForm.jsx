@@ -18,7 +18,7 @@ export const ForgotPasswordForm = ({
       <Input
         id="email"
         name="email"
-        label="forgotPassword.email"
+        label="forgotPasswordPage.email"
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
@@ -28,7 +28,7 @@ export const ForgotPasswordForm = ({
         modifier="hover"
         isLoading={isPasswordRequestLoading}
       >
-        {"forgotPassword.submitButton"}
+        {"forgotPasswordPage.submitButton"}
       </SubmitButton>
 
       <RouterLink
@@ -36,7 +36,7 @@ export const ForgotPasswordForm = ({
         className="forgot-password-form__link"
         modifier="hover"
       >
-        {"forgotPassword.linkButton"}
+        {"forgotPasswordPage.linkButton"}
       </RouterLink>
 
       <FlashMessage

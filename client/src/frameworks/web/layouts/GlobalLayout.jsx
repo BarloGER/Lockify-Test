@@ -16,7 +16,11 @@ export const GlobalLayout = () => {
     }
 
     const path = location.pathname;
-    const isExceptionPath = path === "/register" || path === "/forgot-password";
+    const isExceptionPath =
+      path === "/" ||
+      path === "/forgot-password" ||
+      path === "/register" ||
+      path === "/support";
 
     if (!isExceptionPath) {
       if (isBlocked) {
@@ -25,6 +29,12 @@ export const GlobalLayout = () => {
         navigate("/login");
       } else if (user && !user.isVerified) {
         navigate("/confirm-email");
+      }
+    } else if (isExceptionPath) {
+      if (isBlocked) {
+        navigate("/blocked");
+      } else if (isAuthenticated) {
+        navigate("/");
       }
     }
   }, [

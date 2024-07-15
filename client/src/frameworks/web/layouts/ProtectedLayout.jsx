@@ -12,7 +12,6 @@ export const ProtectedLayout = () => {
     useContext(DataVaultContext);
 
   useEffect(() => {
-    if (dataVaultLoadingRequest) return;
     if (isBlocked) navigate("/blocked");
     else if (!isAuthenticated) navigate("/login");
     else if (!isDataVaultUnlocked) navigate("/data-vault");

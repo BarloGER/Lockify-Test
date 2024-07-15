@@ -17,3 +17,16 @@
   background-color: var(--input-color);
   outline: none;
 }
+
+.input__container--disabled .input__label {
+  color: var(--label-disabled-color, #999); /* Farbe für deaktivierte Labels */
+}
+
+.input__container--disabled .input__field {
+  color: var(--input-disabled-color, #ccc); /* Farbe für deaktivierten Text */
+  background-color: var(
+    --input-disabled-bg,
+    #f3f3f3
+  ); /* Hintergrundfarbe für deaktivierte Felder */
+  border: 1px solid var(--input-disabled-border, #ddd); /* Rahmenfarbe für deaktivierte Felder */
+}

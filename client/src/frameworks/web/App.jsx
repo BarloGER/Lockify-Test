@@ -4,21 +4,23 @@ import {
   createRoutesFromElements,
   Route,
 } from "react-router-dom";
-
 import { AuthProvider } from "../../interface-adapters/context/AuthContext.jsx";
+import { DataVaultProvider } from "../../interface-adapters/context/DataVaultContext.jsx";
 import { GlobalLayout, ProtectedLayout } from "./layouts/index.js";
 import {
   AccountsPage,
+  AuthenticationPage,
   BanksPage,
   BlockedPage,
   ContactsPage,
   DashboardPage,
   DataVaultPage,
   ForgotPasswordPage,
-  LoginPage,
+  LandingPage,
   NotesPage,
   RegisterPage,
-  UserProfile,
+  SupportPage,
+  UserProfilePage,
   VerificationPage,
 } from "../../interface-adapters/components/Pages/index.js";
 
@@ -26,20 +28,22 @@ export const App = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<GlobalLayout />}>
-        <Route index element={<DashboardPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route index element={<LandingPage />} />
+        <Route path="/login" element={<AuthenticationPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/user-profile" element={<UserProfile />} />
+        <Route path="/user-profile" element={<UserProfilePage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/confirm-email" element={<VerificationPage />} />
+        <Route path="/support" element={<SupportPage />} />
         <Route path="/blocked" element={<BlockedPage />} />
-        <Route path="/auth" element={<ProtectedLayout />}>
-          <Route path="data-vault" element={<DataVaultPage />}>
-            <Route path="accounts" element={<AccountsPage />} />
-            <Route path="notes" element={<NotesPage />} />
-            <Route path="contacts" element={<ContactsPage />} />
-            <Route path="banks" element={<BanksPage />} />
-          </Route>
+
+        <Route element={<ProtectedLayout />}>
+          <Route path="/data-vault" element={<DataVaultPage />} />
+          <Route path="/data-vault/dashboard" element={<DashboardPage />} />
+          <Route path="/data-vault/accounts" element={<AccountsPage />} />
+          <Route path="/data-vault/notes" element={<NotesPage />} />
+          <Route path="/data-vault/contacts" element={<ContactsPage />} />
+          <Route path="/data-vault/banks" element={<BanksPage />} />
         </Route>
       </Route>
     )
@@ -47,7 +51,9 @@ export const App = () => {
 
   return (
     <AuthProvider>
-      <RouterProvider router={router} />
+      <DataVaultProvider>
+        <RouterProvider router={router} />
+      </DataVaultProvider>
     </AuthProvider>
   );
 };

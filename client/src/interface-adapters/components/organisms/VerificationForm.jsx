@@ -5,10 +5,10 @@ import { FlashMessage } from "../molecules";
 import "./assets/verification-form.css";
 
 export const VerificationForm = ({
-  verificationCode,
-  setVerificationCode,
-  handleVerification,
-  handleNewVerificationCodeRequest,
+  verificationFormData,
+  handleChange,
+  processVerification,
+  processNewVerificationCodeRequest,
   isVerificationLoading,
   isCodeRequestLoading,
   message,
@@ -17,14 +17,14 @@ export const VerificationForm = ({
 }) => {
   return (
     <>
-      <form className="verification-form" onSubmit={handleVerification}>
+      <form className="verification-form" onSubmit={processVerification}>
         <Input
           id="verificationCode"
           name="verificationCode"
           label="verification.label"
           type="text"
-          value={verificationCode}
-          onChange={(e) => setVerificationCode(e.target.value)}
+          value={verificationFormData.verificationCode}
+          onChange={handleChange}
         />
         <SubmitButton
           className="verification-form__button"
@@ -36,7 +36,7 @@ export const VerificationForm = ({
       </form>
       <form
         className="verification-form"
-        onSubmit={handleNewVerificationCodeRequest}
+        onSubmit={processNewVerificationCodeRequest}
       >
         <Paragraph text="verification.text" />
         <SubmitButton
@@ -58,10 +58,12 @@ export const VerificationForm = ({
 };
 
 VerificationForm.propTypes = {
-  verificationCode: PropTypes.string.isRequired,
-  setVerificationCode: PropTypes.func.isRequired,
-  handleVerification: PropTypes.func.isRequired,
-  handleNewVerificationCodeRequest: PropTypes.func.isRequired,
+  verificationFormData: PropTypes.shape({
+    verificationCode: PropTypes.string,
+  }).isRequired,
+  handleChange: PropTypes.func.isRequired,
+  processVerification: PropTypes.func.isRequired,
+  processNewVerificationCodeRequest: PropTypes.func.isRequired,
   isVerificationLoading: PropTypes.bool.isRequired,
   isCodeRequestLoading: PropTypes.bool.isRequired,
   message: PropTypes.string.isRequired,
