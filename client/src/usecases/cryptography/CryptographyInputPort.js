@@ -1,20 +1,25 @@
+import { CryptoEntity } from "../../entities/CryptoEntity";
+
 export class CryptographyInputPort {
-  validateEncryptionInput(input) {
-    if (!input.text || !input.masterPassword) {
-      return { validationError: "Invalid encryption input" };
+  validateEncryptionInput(unvalidatedEncryptionInput) {
+    const cryptoEntity = new CryptoEntity(unvalidatedEncryptionInput);
+
+    const validationError = cryptoEntity.validateForEncryption();
+    if (validationError) {
+      return { validationError };
     }
-    return input;
+
+    return cryptoEntity;
   }
 
-  validateDecryptionInput(input) {
-    if (
-      !input.encryptedData ||
-      !input.iv ||
-      !input.salt ||
-      !input.masterPassword
-    ) {
-      return { validationError: "Invalid decryption input" };
+  validateDecryptionInput(unvalidatedDecryptionInput) {
+    const cryptoEntity = new CryptoEntity(unvalidatedDecryptionInput);
+
+    const validationError = cryptoEntity.validateForDecryption();
+    if (validationError) {
+      return { validationError };
     }
-    return input;
+
+    return cryptoEntity;
   }
 }

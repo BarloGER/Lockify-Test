@@ -4,9 +4,9 @@ export class MailOutputPort {
     this.message = {};
   }
 
-  prepareMailOutput(data) {
-    this.success = data.success;
-    this.message = data.message;
+  formatSuccessfulResponse(successfulResponse) {
+    this.success = successfulResponse.success;
+    this.message = successfulResponse.message;
     return {
       success: this.success,
       message: this.message,

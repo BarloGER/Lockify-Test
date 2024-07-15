@@ -1,14 +1,14 @@
 import { MailEntity } from "../../entities/MailEntity";
 
 export class MailInputPort {
-  validateSupportMailInput(userInput) {
-    const mail = new MailEntity(userInput);
+  validateSupportMailInput(unvalidatedMailInput) {
+    const validMailEntity = new MailEntity(unvalidatedMailInput);
 
-    const validationError = mail.validateForSupportMail();
+    const validationError = validMailEntity.validateForSupportMail();
     if (validationError) {
       return { validationError };
     }
 
-    return mail;
+    return validMailEntity;
   }
 }

@@ -4,7 +4,7 @@ const URL = import.meta.env.VITE_MAILSERVER_URL;
 const MAIL_ADDRESS = import.meta.env.VITE_MAIL_ADDRESS;
 
 export class MailRepository {
-  async sendSupportMail(mailData) {
+  async sendSupportMail(validMailEntity) {
     try {
       const response = await fetch(`${URL}/mail/send-mail`, {
         method: "POST",
@@ -13,8 +13,8 @@ export class MailRepository {
         },
         body: JSON.stringify({
           email: MAIL_ADDRESS,
-          subject: mailData.subject,
-          html: mailData.html,
+          subject: validMailEntity.subject,
+          html: validMailEntity.html,
         }),
       });
 

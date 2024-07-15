@@ -3,8 +3,8 @@ import { CryptographyOutputPort } from "./CryptographyOutputPort";
 
 export class CryptographyInteractor {
   constructor() {
-    this.inputPort = new CryptographyInputPort();
-    this.outputPort = new CryptographyOutputPort();
+    this.cryptographyInputPort = new CryptographyInputPort();
+    this.cryptographyOutputPort = new CryptographyOutputPort();
   }
 
   convertUint8ArrayToHex(u8arr) {
@@ -21,14 +21,14 @@ export class CryptographyInteractor {
     return bytes;
   }
 
-  async encrypt(text, masterPassword) {
+  async encrypt(validCryptoEntity) {
     try {
       const salt = crypto.getRandomValues(new Uint8Array(16));
       const enc = new TextEncoder();
 
       const keyMaterial = await crypto.subtle.importKey(
         "raw",
-        enc.encode(masterPassword),
+        enc.encode(validCryptoEntity.masterPassword),
         { name: "PBKDF2" },
         false,
         ["deriveKey"]
@@ -54,31 +54,38 @@ export class CryptographyInteractor {
           iv,
         },
         key,
-        enc.encode(text)
+        enc.encode(validCryptoEntity.text)
       );
 
       return {
-        iv: this.convertUint8ArrayToHex(iv),
+        success: true,
         encryptedData: this.convertUint8ArrayToHex(new Uint8Array(encrypted)),
+        iv: this.convertUint8ArrayToHex(iv),
         salt: this.convertUint8ArrayToHex(salt),
       };
     } catch (error) {
-      throw new Error(error.message);
+      return {
+        error,
+      };
     }
   }
 
-  async decrypt(encryptedData, iv, salt, masterPassword) {
+  async decrypt(validCryptoEntity) {
     try {
       const dec = new TextDecoder();
       const enc = new TextEncoder();
 
-      const saltUint8Array = this.convertHexToUint8Array(salt);
-      const ivArray = this.convertHexToUint8Array(iv);
-      const encryptedArray = this.convertHexToUint8Array(encryptedData);
+      const saltUint8Array = this.convertHexToUint8Array(
+        validCryptoEntity.salt
+      );
+      const ivArray = this.convertHexToUint8Array(validCryptoEntity.iv);
+      const encryptedArray = this.convertHexToUint8Array(
+        validCryptoEntity.encryptedData
+      );
 
       const keyMaterial = await crypto.subtle.importKey(
         "raw",
-        enc.encode(masterPassword),
+        enc.encode(validCryptoEntity.masterPassword),
         { name: "PBKDF2" },
         false,
         ["deriveKey"]
@@ -106,58 +113,52 @@ export class CryptographyInteractor {
         encryptedArray
       );
 
-      return dec.decode(decrypted);
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  }
-
-  async encryptData(input) {
-    const validatedInput = this.inputPort.validateEncryptionInput(input);
-    if (validatedInput.validationError) {
-      return { validationError: validatedInput.validationError };
-    }
-
-    const { text, masterPassword } = validatedInput;
-    try {
-      const encryptedResult = await this.encrypt(text, masterPassword);
-      return this.outputPort.prepareOutput({
+      return {
         success: true,
-        message: "Encryption successful",
-        data: encryptedResult,
-      });
+        data: dec.decode(decrypted),
+      };
     } catch (error) {
-      return this.outputPort.prepareOutput({
-        success: false,
-        message: error.message,
-      });
+      return "CRYPTOGRAPHY_OPERATION_001";
     }
   }
 
-  async decryptData(input) {
-    const validatedInput = this.inputPort.validateDecryptionInput(input);
-    if (validatedInput.validationError) {
-      return { validationError: validatedInput.validationError };
-    }
-
-    const { encryptedData, iv, salt, masterPassword } = validatedInput;
-    try {
-      const decryptedText = await this.decrypt(
-        encryptedData,
-        iv,
-        salt,
-        masterPassword
+  async encryptData(unvalidatedEncryptionInput) {
+    const validCryptoEntity =
+      this.cryptographyInputPort.validateEncryptionInput(
+        unvalidatedEncryptionInput
       );
-      return this.outputPort.prepareOutput({
-        success: true,
-        message: "Decryption successful",
-        data: decryptedText,
-      });
-    } catch (error) {
-      return this.outputPort.prepareOutput({
-        success: false,
-        message: error.message,
-      });
+    validCryptoEntity;
+    if (validCryptoEntity.validationError) {
+      const validationError = validCryptoEntity.validationError;
+      return this.cryptographyOutputPort.formatValidationError(validationError);
     }
+
+    const encryptionResult = await this.encrypt(validCryptoEntity);
+    if (!encryptionResult.success) {
+      const encryptionError = encryptionResult.error;
+      return this.cryptographyOutputPort.formatEncryptionError(encryptionError);
+    }
+
+    return this.cryptographyOutputPort.formatEncryptedData(encryptionResult);
+  }
+
+  async decryptData(unvalidatedDecryptionInput) {
+    const validCryptoEntity =
+      this.cryptographyInputPort.validateDecryptionInput(
+        unvalidatedDecryptionInput
+      );
+    if (validCryptoEntity.validationError) {
+      const validationError = validCryptoEntity.validationError;
+      return this.cryptographyOutputPort.formatValidationError(validationError);
+    }
+
+    const decryptionResult = await this.decrypt(validCryptoEntity);
+    if (!decryptionResult.success) {
+      return this.cryptographyOutputPort.formatDecryptionError(
+        decryptionResult
+      );
+    }
+
+    return this.cryptographyOutputPort.formatDecryptedData(decryptionResult);
   }
 }
