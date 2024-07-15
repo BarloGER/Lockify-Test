@@ -9,7 +9,11 @@ const notePresenter = new NotePresenter();
 const noteInteractor = new NoteInteractor(noteRepository);
 
 exports.getNotes = asyncHandler(async (req, res, next) => {
-  const language = req.headers["accept-language"].includes("de") ? "DE" : "EN";
+  const language =
+    req.headers["accept-language"] &&
+    req.headers["accept-language"].includes("de")
+      ? "DE"
+      : "EN";
   const { userId } = req;
 
   const isAuthenticated = req.session.userId === userId;
@@ -24,8 +28,11 @@ exports.getNotes = asyncHandler(async (req, res, next) => {
 });
 
 exports.createNote = asyncHandler(async (req, res, next) => {
-  const language = req.headers["accept-language"].includes("de") ? "DE" : "EN";
-
+  const language =
+    req.headers["accept-language"] &&
+    req.headers["accept-language"].includes("de")
+      ? "DE"
+      : "EN";
   const { userId } = req;
 
   const userInput = {
@@ -44,7 +51,11 @@ exports.createNote = asyncHandler(async (req, res, next) => {
 });
 
 exports.updateNote = asyncHandler(async (req, res, next) => {
-  const language = req.headers["accept-language"].includes("de") ? "DE" : "EN";
+  const language =
+    req.headers["accept-language"] &&
+    req.headers["accept-language"].includes("de")
+      ? "DE"
+      : "EN";
   const { userId } = req;
   const noteId = req.params.id;
 
@@ -69,7 +80,11 @@ exports.updateNote = asyncHandler(async (req, res, next) => {
 });
 
 exports.deleteNote = asyncHandler(async (req, res, next) => {
-  const language = req.headers["accept-language"].includes("de") ? "DE" : "EN";
+  const language =
+    req.headers["accept-language"] &&
+    req.headers["accept-language"].includes("de")
+      ? "DE"
+      : "EN";
   const { userId } = req;
   const noteId = req.params.id;
 

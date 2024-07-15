@@ -1,35 +1,34 @@
 const { NoteEntity } = require("../../entities/NoteEntity");
-const { ErrorResponse } = require("../../utils");
 
 exports.NoteInputPort = class NoteInputPort {
-  createNote(userInput) {
-    const note = new NoteEntity(userInput, { isNewNote: true });
+  createNote(unvalidatedUserInput) {
+    const validNoteEntity = new NoteEntity(unvalidatedUserInput);
 
-    const validationError = note.validateForCreation();
+    const validationError = validNoteEntity.validateForCreation();
     if (validationError) {
-      throw new ErrorResponse({ errorCode: `${validationError}` });
+      return { validationError };
     }
 
-    return note;
+    return validNoteEntity;
   }
 
-  editNote(userInput) {
-    const updateData = new NoteEntity(userInput);
+  editNote(unvalidatedUserInput) {
+    const validNoteEntity = new NoteEntity(unvalidatedUserInput);
 
-    const validationError = updateData.validateForUpdate();
+    const validationError = validNoteEntity.validateForUpdate();
     if (validationError) {
-      throw new ErrorResponse({ errorCode: `${validationError}` });
+      return { validationError };
     }
 
-    return updateData;
+    return validNoteEntity;
   }
 
-  deleteNote(userInput) {
-    const data = new NoteEntity(userInput);
+  deleteNote(unvalidatedUserInput) {
+    const validNoteEntity = new NoteEntity(unvalidatedUserInput);
 
-    const validationError = data.validateForDelete();
+    const validationError = validNoteEntity.validateForDelete();
     if (validationError) {
-      throw new ErrorResponse({ errorCode: `${validationError}` });
+      return { validationError };
     }
   }
 };

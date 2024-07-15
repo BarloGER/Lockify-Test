@@ -5,34 +5,54 @@ export class NoteOutputPort {
     this.notes = [];
   }
 
-  prepareSingleNoteOutput(data) {
-    this.success = data.success;
-    this.message = data.message;
-    this.note = data.note;
+  formatValidationError(validationError) {
     return {
-      success: this.success,
-      message: this.message,
-      note: this.note,
+      success: false,
+      message: validationError,
     };
   }
 
-  prepareNotesOutput(data) {
-    this.success = data.success;
-    this.message = data.message;
-    this.notes = data.notes;
+  formatFailedRequest(requestError) {
     return {
-      success: this.success,
-      message: this.message,
-      notes: this.notes,
+      success: requestError.success,
+      message: requestError.message,
+      statusCode: requestError.statusCode,
+      statusMessage: requestError.statusMessage,
+      errorCode: requestError.errorCode,
+      errorType: requestError.errorType,
     };
   }
 
-  prepareOutput(data) {
-    this.success = data.success;
-    this.message = data.message;
+  formatValidNoteInput(validatedUserInput) {
     return {
-      success: this.success,
-      message: this.message,
+      success: true,
+      validNoteEntity: {
+        noteTitle: validatedUserInput.noteTitle,
+        noteContent: validatedUserInput.noteContent,
+      },
+    };
+  }
+
+  formatSingleNote(successfulResponse) {
+    return {
+      success: true,
+      message: successfulResponse.message,
+      note: successfulResponse.note,
+    };
+  }
+
+  formatMultipleNotes(successfulResponse) {
+    return {
+      success: true,
+      message: successfulResponse.message,
+      notes: successfulResponse.notes,
+    };
+  }
+
+  formatSuccessfulResponse(successfulResponse) {
+    return {
+      success: true,
+      message: successfulResponse.message,
     };
   }
 }

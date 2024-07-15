@@ -5,34 +5,46 @@ exports.NoteOutputPort = class NoteOutputPort {
     this.note = {};
   }
 
-  prepareSingleNoteOutput(data) {
-    this.success = data.success;
-    this.message = data.message;
-    this.note = data.note;
+  formatFoundNotes(foundNotes) {
     return {
-      success: this.success,
-      message: this.message,
-      note: this.note,
+      success: true,
+      message: {
+        EN: "Notes successfully queried.",
+        DE: "Notizen erfolgreich abgefragt.",
+      },
+      notes: foundNotes.dataValues,
     };
   }
 
-  prepareNotesOutput(data) {
-    this.success = data.success;
-    this.message = data.message;
-    this.notes = data.notes;
+  formatCreatedNote(createdNote) {
     return {
-      success: this.success,
-      message: this.message,
-      notes: this.notes,
+      success: true,
+      message: {
+        EN: "Note successfuly created.",
+        DE: "Notiz erfolgreich erstellt.",
+      },
+      note: createdNote.dataValues,
     };
   }
 
-  output(data) {
-    this.success = data.success;
-    this.message = data.message;
+  formatUpdatedNote(updatedNote) {
     return {
-      success: this.success,
-      message: this.message,
+      success: true,
+      message: {
+        EN: "Note updated successfully.",
+        DE: "Notiz erfolgreich aktualisiert",
+      },
+      note: updatedNote.dataValues,
+    };
+  }
+
+  formatDeletedNote() {
+    return {
+      success: true,
+      message: {
+        EN: "Note deleted successfully.",
+        DE: "Notiz erfolgreich gelöscht.",
+      },
     };
   }
 };

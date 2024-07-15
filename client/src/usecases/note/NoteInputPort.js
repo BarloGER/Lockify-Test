@@ -1,47 +1,50 @@
 import { NoteEntity } from "../../entities/NoteEntity";
 
 export class NoteInputPort {
-  validateCreationInputBeforeEncryption(userInput) {
-    const note = new NoteEntity(userInput);
+  validatePreEncryptionInputForCreateNote(unvalidatedUserInput) {
+    const validNoteEntity = new NoteEntity(unvalidatedUserInput);
 
-    const validationError = note.validateForCreationBeforeEncryption();
+    const validationError =
+      validNoteEntity.validateForCreationBeforeEncryption();
     if (validationError) {
       return { validationError };
     }
 
-    return note;
+    return validNoteEntity;
   }
 
-  validateCreationInputAfterEncryption(userInput) {
-    const note = new NoteEntity(userInput);
+  validateEncryptedDataForCreateNote(validNoteEntity) {
+    const validEncryptedNoteEntity = new NoteEntity(validNoteEntity);
 
-    const validationError = note.validateForCreationAfterEncryption();
+    const validationError =
+      validEncryptedNoteEntity.validateForCreationAfterEncryption();
     if (validationError) {
       return { validationError };
     }
 
-    return note;
+    return validEncryptedNoteEntity;
   }
 
-  validateUpdatedInputBeforeEncryption(userInput) {
-    const note = new NoteEntity(userInput);
+  validatePreEncryptionInputForUpdateNote(unvalidatedUserInput) {
+    const validNoteEntity = new NoteEntity(unvalidatedUserInput);
 
-    const validationError = note.validateForUpdateBeforeEncryption();
+    const validationError = validNoteEntity.validateForUpdateBeforeEncryption();
     if (validationError) {
       return { validationError };
     }
 
-    return note;
+    return validNoteEntity;
   }
 
-  validateUpdatedInputAfterEncryption(userInput) {
-    const note = new NoteEntity(userInput);
+  validateEncryptedDataForUpdateNote(validNoteEntity) {
+    const validEncryptedNoteEntity = new NoteEntity(validNoteEntity);
 
-    const validationError = note.validateForUpdateAfterEncryption();
+    const validationError =
+      validEncryptedNoteEntity.validateForUpdateAfterEncryption();
     if (validationError) {
       return { validationError };
     }
 
-    return note;
+    return validEncryptedNoteEntity;
   }
 }
