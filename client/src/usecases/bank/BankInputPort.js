@@ -1,47 +1,50 @@
 import { BankEntity } from "../../entities/BankEntity";
 
 export class BankInputPort {
-  validateCreationInputBeforeEncryption(userInput) {
-    const bank = new BankEntity(userInput);
+  validatePreEncryptionInputForCreateBank(unvalidatedUserInput) {
+    const validBankEntity = new BankEntity(unvalidatedUserInput);
 
-    const validationError = bank.validateForCreationBeforeEncryption();
+    const validationError =
+      validBankEntity.validateForCreationBeforeEncryption();
     if (validationError) {
       return { validationError };
     }
 
-    return bank;
+    return validBankEntity;
   }
 
-  validateCreationInputAfterEncryption(userInput) {
-    const bank = new BankEntity(userInput);
+  validateEncryptedDataForCreateBank(validBankEntity) {
+    const validEncryptedBankEntity = new BankEntity(validBankEntity);
 
-    const validationError = bank.validateForCreationAfterEncryption();
+    const validationError =
+      validEncryptedBankEntity.validateForCreationAfterEncryption();
     if (validationError) {
       return { validationError };
     }
 
-    return bank;
+    return validEncryptedBankEntity;
   }
 
-  validateUpdatedInputBeforeEncryption(userInput) {
-    const bank = new BankEntity(userInput);
+  validatePreEncryptionInputForUpdateBank(unvalidatedUserInput) {
+    const validBankEntity = new BankEntity(unvalidatedUserInput);
 
-    const validationError = bank.validateForUpdateBeforeEncryption();
+    const validationError = validBankEntity.validateForUpdateBeforeEncryption();
     if (validationError) {
       return { validationError };
     }
 
-    return bank;
+    return validBankEntity;
   }
 
-  validateUpdatedInputAfterEncryption(userInput) {
-    const bank = new BankEntity(userInput);
+  validateEncryptedDataForUpdateBank(validBankEntity) {
+    const validEncryptedBankEntity = new BankEntity(validBankEntity);
 
-    const validationError = bank.validateForUpdateAfterEncryption();
+    const validationError =
+      validEncryptedBankEntity.validateForUpdateAfterEncryption();
     if (validationError) {
       return { validationError };
     }
 
-    return bank;
+    return validEncryptedBankEntity;
   }
 }

@@ -13,49 +13,44 @@ exports.BankInteractor = class BankInteractor {
     const foundBanks = await this.bankRepository.findBanksByUserId(userId);
     if (!foundBanks) {
       throw new ErrorResponse({
-        errorCode: "CONTACT_NOT_FOUND_002",
+        errorCode: "USER_NOT_FOUND_002",
       });
     }
 
-    const bankOutputData = {
-      success: true,
-      message: {
-        EN: "Banks successfully queried.",
-        DE: "Kontakte erfolgreich abgefragt.",
-      },
-      banks: foundBanks,
-    };
-
-    return this.bankOutputPort.prepareBanksOutput(bankOutputData);
+    return this.bankOutputPort.formatFoundBanks(foundBanks);
   }
 
-  async createBank(userId, userInput) {
-    const bank = this.bankInputPort.createBank(userInput);
-    bank.userId = userId;
+  async createBank(userId, unvalidatedUserInput) {
+    const validBankEntity = this.bankInputPort.createBank(unvalidatedUserInput);
+    if (validBankEntity.validationError) {
+      const validationError = validBankEntity.validationError;
+      throw new ErrorResponse({
+        errorCode: `${validationError}`,
+      });
+    }
 
-    const savedBank = await this.bankRepository.createBank(bank);
-    if (!savedBank) {
+    validBankEntity.userId = userId;
+
+    const createdBank = await this.bankRepository.createBank(validBankEntity);
+    if (!createdBank) {
       throw new ErrorResponse({ errorCode: "DB_SERVICE_002" });
     }
 
-    const bankOutputData = {
-      success: true,
-      message: {
-        EN: "Bank successfuly created.",
-        DE: "Kontakte erfolgreich erstellt.",
-      },
-      bank: savedBank,
-    };
-
-    return this.bankOutputPort.prepareSingleBankOutput(bankOutputData);
+    return this.bankOutputPort.formatCreatedBank(createdBank);
   }
 
-  async updateBank(bankId, userInput) {
-    const updateData = this.bankInputPort.editBank(userInput);
+  async updateBank(bankId, unvalidatedUserInput) {
+    const validBankEntity = this.bankInputPort.editBank(unvalidatedUserInput);
+    if (validBankEntity.validationError) {
+      const validationError = validBankEntity.validationError;
+      throw new ErrorResponse({
+        errorCode: `${validationError}`,
+      });
+    }
 
     const updatedBank = await this.bankRepository.updateBank(
       bankId,
-      updateData
+      validBankEntity
     );
     if (!updatedBank) {
       throw new ErrorResponse({
@@ -63,25 +58,22 @@ exports.BankInteractor = class BankInteractor {
       });
     }
 
-    const bankOutputData = {
-      success: true,
-      message: {
-        EN: "Bank updated successfully.",
-        DE: "Kontakte erfolgreich aktualisiert",
-      },
-      bank: updateData,
-    };
-
-    return this.bankOutputPort.prepareSingleBankOutput(bankOutputData);
+    return this.bankOutputPort.formatUpdatedBank(updatedBank);
   }
 
-  async deleteBank(bankId, userInput) {
-    const data = this.bankInputPort.deleteBank(userInput);
+  async deleteBank(bankId, unvalidatedUserInput) {
+    const validBankEntity = this.bankInputPort.deleteBank(unvalidatedUserInput);
+    if (validBankEntity.validationError) {
+      const validationError = validBankEntity.validationError;
+      throw new ErrorResponse({
+        errorCode: `${validationError}`,
+      });
+    }
 
     const foundBank = await this.bankRepository.findBankById(bankId);
     if (!foundBank) {
       throw new ErrorResponse({
-        errorCode: "CONTACT_NOT_FOUND_002",
+        errorCode: "ACCOUNT_NOT_FOUND_002",
       });
     }
 
@@ -92,14 +84,6 @@ exports.BankInteractor = class BankInteractor {
       });
     }
 
-    const bankOutputData = {
-      success: true,
-      message: {
-        EN: "Bank deleted successfully.",
-        DE: "Kontakte erfolgreich gelöscht.",
-      },
-    };
-
-    return this.bankOutputPort.output(bankOutputData);
+    return this.bankOutputPort.formatDeletedBank();
   }
 };

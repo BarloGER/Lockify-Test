@@ -5,34 +5,46 @@ exports.BankOutputPort = class BankOutputPort {
     this.bank = {};
   }
 
-  prepareSingleBankOutput(data) {
-    this.success = data.success;
-    this.message = data.message;
-    this.bank = data.bank;
+  formatFoundBanks(foundBanks) {
     return {
-      success: this.success,
-      message: this.message,
-      bank: this.bank,
+      success: true,
+      message: {
+        EN: "Bank accounts successfully queried.",
+        DE: "Bankkonten erfolgreich abgefragt.",
+      },
+      banks: foundBanks.dataValues,
     };
   }
 
-  prepareBanksOutput(data) {
-    this.success = data.success;
-    this.message = data.message;
-    this.banks = data.banks;
+  formatCreatedBank(createdBank) {
     return {
-      success: this.success,
-      message: this.message,
-      banks: this.banks,
+      success: true,
+      message: {
+        EN: "Bank account successfuly created.",
+        DE: "Bankkonto erfolgreich erstellt.",
+      },
+      bank: createdBank.dataValues,
     };
   }
 
-  output(data) {
-    this.success = data.success;
-    this.message = data.message;
+  formatUpdatedBank(updatedBank) {
     return {
-      success: this.success,
-      message: this.message,
+      success: true,
+      message: {
+        EN: "Bank account updated successfully.",
+        DE: "Bankkonto erfolgreich aktualisiert",
+      },
+      bank: updatedBank.dataValues,
+    };
+  }
+
+  formatDeletedBank() {
+    return {
+      success: true,
+      message: {
+        EN: "Bank account deleted successfully.",
+        DE: "Bankkonto erfolgreich gelöscht.",
+      },
     };
   }
 };

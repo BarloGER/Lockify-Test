@@ -1,35 +1,34 @@
 const { BankEntity } = require("../../entities/BankEntity");
-const { ErrorResponse } = require("../../utils");
 
 exports.BankInputPort = class BankInputPort {
-  createBank(userInput) {
-    const bank = new BankEntity(userInput, { isNewBank: true });
+  createBank(unvalidatedUserInput) {
+    const validBankEntity = new BankEntity(unvalidatedUserInput);
 
-    const validationError = bank.validateForCreation();
+    const validationError = validBankEntity.validateForCreation();
     if (validationError) {
-      throw new ErrorResponse({ errorCode: `${validationError}` });
+      return { validationError };
     }
 
-    return bank;
+    return validBankEntity;
   }
 
-  editBank(userInput) {
-    const updateData = new BankEntity(userInput);
+  editBank(unvalidatedUserInput) {
+    const validBankEntity = new BankEntity(unvalidatedUserInput);
 
-    const validationError = updateData.validateForUpdate();
+    const validationError = validBankEntity.validateForUpdate();
     if (validationError) {
-      throw new ErrorResponse({ errorCode: `${validationError}` });
+      return { validationError };
     }
 
-    return updateData;
+    return validBankEntity;
   }
 
-  deleteBank(userInput) {
-    const data = new BankEntity(userInput);
+  deleteBank(unvalidatedUserInput) {
+    const validBankEntity = new BankEntity(unvalidatedUserInput);
 
-    const validationError = data.validateForDelete();
+    const validationError = validBankEntity.validateForDelete();
     if (validationError) {
-      throw new ErrorResponse({ errorCode: `${validationError}` });
+      return { validationError };
     }
   }
 };

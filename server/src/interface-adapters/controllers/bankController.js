@@ -9,7 +9,11 @@ const bankPresenter = new BankPresenter();
 const bankInteractor = new BankInteractor(bankRepository);
 
 exports.getBanks = asyncHandler(async (req, res, next) => {
-  const language = req.headers["accept-language"].includes("de") ? "DE" : "EN";
+  const language =
+    req.headers["accept-language"] &&
+    req.headers["accept-language"].includes("de")
+      ? "DE"
+      : "EN";
   const { userId } = req;
 
   const isAuthenticated = req.session.userId === userId;
@@ -24,7 +28,11 @@ exports.getBanks = asyncHandler(async (req, res, next) => {
 });
 
 exports.createBank = asyncHandler(async (req, res, next) => {
-  const language = req.headers["accept-language"].includes("de") ? "DE" : "EN";
+  const language =
+    req.headers["accept-language"] &&
+    req.headers["accept-language"].includes("de")
+      ? "DE"
+      : "EN";
 
   const { userId } = req;
 
@@ -57,7 +65,11 @@ exports.createBank = asyncHandler(async (req, res, next) => {
 });
 
 exports.updateBank = asyncHandler(async (req, res, next) => {
-  const language = req.headers["accept-language"].includes("de") ? "DE" : "EN";
+  const language =
+    req.headers["accept-language"] &&
+    req.headers["accept-language"].includes("de")
+      ? "DE"
+      : "EN";
   const { userId } = req;
   const bankId = req.params.id;
 
@@ -95,7 +107,11 @@ exports.updateBank = asyncHandler(async (req, res, next) => {
 });
 
 exports.deleteBank = asyncHandler(async (req, res, next) => {
-  const language = req.headers["accept-language"].includes("de") ? "DE" : "EN";
+  const language =
+    req.headers["accept-language"] &&
+    req.headers["accept-language"].includes("de")
+      ? "DE"
+      : "EN";
   const { userId } = req;
   const bankId = req.params.id;
 

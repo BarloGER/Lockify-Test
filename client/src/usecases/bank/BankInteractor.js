@@ -9,84 +9,82 @@ export class BankInteractor {
   }
 
   async getBanks() {
-    const bankRequestResult = await this.bankRepository.getBanks();
-
-    const bankOutputData = {
-      success: bankRequestResult.success,
-      message: bankRequestResult.message,
-      banks: bankRequestResult.banks,
-      statusCode: bankRequestResult.statusCode,
-      statusMessage: bankRequestResult.statusMessage,
-      errorType: bankRequestResult.errorType,
-      errorCode: bankRequestResult.errorCode,
-    };
-
-    return this.bankOutputPort.prepareBanksOutput(bankOutputData);
-  }
-
-  async validateCreateBank(userInput) {
-    const bank =
-      this.bankInputPort.validateCreationInputBeforeEncryption(userInput);
-    if (bank.validationError) {
-      return { validationError: bank.validationError };
-    }
-  }
-
-  async validateEditBank(userInput) {
-    const bank =
-      this.bankInputPort.validateUpdatedInputBeforeEncryption(userInput);
-    if (bank.validationError) {
-      return { validationError: bank.validationError };
-    }
-  }
-
-  async createBank(userInput) {
-    const bank =
-      this.bankInputPort.validateCreationInputAfterEncryption(userInput);
-    if (bank.validationError) {
-      return { validationError: bank.validationError };
+    const getBanksResponse = await this.bankRepository.getBanksRequest();
+    if (!getBanksResponse.success) {
+      return this.bankOutputPort.formatFailedRequest(getBanksResponse);
     }
 
-    const registrationResult = await this.bankRepository.createBank(bank);
-
-    const outputData = {
-      success: registrationResult.success,
-      message: registrationResult.message,
-      bank: registrationResult.bank,
-    };
-
-    return this.bankOutputPort.prepareSingleBankOutput(outputData);
+    return this.bankOutputPort.formatMultipleBanks(getBanksResponse);
   }
 
-  async editBank(bankId, userInput) {
-    const bank =
-      this.bankInputPort.validateUpdatedInputAfterEncryption(userInput);
-    if (bank.validationError) {
-      return { validationError: bank.validationError };
+  async validateUserInputForCreateBank(unvalidatedUserInput) {
+    const validatedUserInput =
+      this.bankInputPort.validatePreEncryptionInputForCreateBank(
+        unvalidatedUserInput
+      );
+    if (validatedUserInput.validationError) {
+      const validationError = validatedUserInput.validationError;
+      return this.bankOutputPort.formatValidationError(validationError);
     }
 
-    const registrationResult = await this.bankRepository.updateBank(
-      bankId,
-      bank
+    return this.bankOutputPort.formatValidBankInput(validatedUserInput);
+  }
+
+  async createBank(encryptedBankData) {
+    const validBankEntity =
+      this.bankInputPort.validateEncryptedDataForCreateBank(encryptedBankData);
+    if (validBankEntity.validationError) {
+      return { validationError: validBankEntity.validationError };
+    }
+
+    const creationResponse = await this.bankRepository.createBankRequest(
+      validBankEntity
     );
+    if (!creationResponse.success) {
+      return this.bankOutputPort.formatFailedRequest(creationResponse);
+    }
 
-    const outputData = {
-      success: registrationResult.success,
-      message: registrationResult.message,
-      bank: registrationResult.bank,
-    };
+    return this.bankOutputPort.formatSingleBank(creationResponse);
+  }
 
-    return this.bankOutputPort.prepareSingleBankOutput(outputData);
+  async validateUserInputForUpdateBank(unvalidatedUserInput) {
+    const validatedUserInput =
+      this.bankInputPort.validatePreEncryptionInputForUpdateBank(
+        unvalidatedUserInput
+      );
+    if (validatedUserInput.validationError) {
+      return { validationError: validatedUserInput.validationError };
+    }
+
+    return this.bankOutputPort.formatValidBankInput(validatedUserInput);
+  }
+
+  async updateBank(bankId, encryptedBankData) {
+    const validBankEntity =
+      this.bankInputPort.validateEncryptedDataForUpdateBank(encryptedBankData);
+    if (validBankEntity.validationError) {
+      return { validationError: validBankEntity.validationError };
+    }
+
+    const updateResponse = await this.bankRepository.updateBankRequest(
+      bankId,
+      validBankEntity
+    );
+    if (!updateResponse.success) {
+      return this.bankOutputPort.formatFailedRequest(updateResponse);
+    }
+
+    return this.bankOutputPort.formatSingleBank(updateResponse);
   }
 
   async deleteBank(bankId) {
-    const deletionResult = await this.bankRepository.deleteBank(bankId);
+    const deletionResponse = await this.bankRepository.deleteBankRequest(
+      bankId
+    );
+    if (!deletionResponse.success) {
+      return this.bankOutputPort.formatFailedRequest(deletionResponse);
+    }
 
-    const outputData = {
-      success: deletionResult.success,
-      message: deletionResult.message,
-    };
-
-    return this.bankOutputPort.prepareOutput(outputData);
+    return this.bankOutputPort.formatSuccessfulResponse(deletionResponse);
   }
 }

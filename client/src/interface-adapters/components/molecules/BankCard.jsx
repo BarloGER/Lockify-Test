@@ -1,13 +1,28 @@
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { Input, Span, Button } from "../atoms";
+import {
+  Input,
+  Span,
+  Button,
+  ToggleVisibilityButton,
+  CopyButton,
+} from "../atoms";
 import { SubmitButton } from "./SubmitButton";
 import "./assets/bank-card.css";
 
-export const BankCard = ({ bank, onSelect, onEdit, onDelete, isLoading }) => {
+export const BankCard = ({
+  bank,
+  handleSelectBankForEdit,
+  processUpdateBank,
+  processDeleteBank,
+  isLoading,
+}) => {
   const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
+  const [isIbanHidden, setIsIbanHidden] = useState(true);
+  const [isCardNumberHidden, setIsCardNumberHidden] = useState(true);
+  const [isCardCvvCvcHidden, setIsCardCvvCvcHidden] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);
   const [editedBank, setEditedBank] = useState({
     bankName: bank.bankName,
@@ -31,7 +46,7 @@ export const BankCard = ({ bank, onSelect, onEdit, onDelete, isLoading }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formValues = {
+    const updateBankFormData = {
       bankName: e.target.bankName.value,
       accountHolderFirstName: e.target.accountHolderFirstName.value,
       accountHolderLastName: e.target.accountHolderLastName.value,
@@ -47,84 +62,121 @@ export const BankCard = ({ bank, onSelect, onEdit, onDelete, isLoading }) => {
       cardType: e.target.cardType.value,
     };
 
-    onEdit(e, bank.bankId, formValues);
+    processUpdateBank(e, bank.bankId, updateBankFormData, setIsEditing);
     setIsEditing(false);
   };
 
   return (
     <div className={`bank__card ${isEditing ? "editing" : ""}`}>
       <div className="bank__card_inner">
-        <div className="bank__card_front" onClick={() => onSelect(bank.bankId)}>
+        <div
+          className="bank__card_front"
+          onClick={() => handleSelectBankForEdit(bank.bankId)}
+        >
           <p>
-            <strong>{t("bank.bankName")}:</strong> <Span text={bank.bankName} />
+            <strong>{t("banksPage.bankName")}:</strong>{" "}
+            <Span text={bank.bankName} />
           </p>
           <p>
-            <strong>{t("bank.accountHolderFirstName")}:</strong>{" "}
+            <strong>{t("banksPage.accountHolderFirstName")}:</strong>{" "}
             <Span text={bank.accountHolderFirstName} />
           </p>
           <p>
-            <strong>{t("bank.accountHolderLastName")}:</strong>{" "}
+            <strong>{t("banksPage.accountHolderLastName")}:</strong>{" "}
             <Span text={bank.accountHolderLastName} />
           </p>
           <p>
-            <strong>{t("bank.iban")}:</strong>{" "}
-            <Span text={bank.decryptedIban} />
+            <strong>{t("banksPage.iban")}:</strong>{" "}
+            <Span text={bank.decryptedIban || ""} state={isIbanHidden} />
+            <ToggleVisibilityButton
+              isValueHidden={isIbanHidden}
+              onClick={() => setIsIbanHidden(!isIbanHidden)}
+            />
+            <CopyButton
+              onClick={() => navigator.clipboard.writeText(bank.decryptedIban)}
+            />
           </p>
           <p>
-            <strong>{t("bank.swiftBic")}:</strong> <Span text={bank.swiftBic} />
+            <strong>{t("banksPage.swiftBic")}:</strong>{" "}
+            <Span text={bank.swiftBic} />
           </p>
           <p>
-            <strong>{t("bank.accountType")}:</strong>{" "}
+            <strong>{t("banksPage.accountType")}:</strong>{" "}
             <Span text={bank.accountType} />
           </p>
           <p>
-            <strong>{t("bank.branchCode")}:</strong>{" "}
+            <strong>{t("banksPage.branchCode")}:</strong>{" "}
             <Span text={bank.branchCode} />
           </p>
           <p>
-            <strong>{t("bank.cardHolderFirstName")}:</strong>{" "}
+            <strong>{t("banksPage.cardHolderFirstName")}:</strong>{" "}
             <Span text={bank.cardHolderFirstName} />
           </p>
           <p>
-            <strong>{t("bank.cardHolderLastName")}:</strong>{" "}
+            <strong>{t("banksPage.cardHolderLastName")}:</strong>{" "}
             <Span text={bank.cardHolderLastName} />
           </p>
           <p>
-            <strong>{t("bank.cardNumber")}:</strong>{" "}
-            <Span text={bank.decryptedCardNumber} />
+            <strong>{t("banksPage.cardNumber")}:</strong>{" "}
+            <Span
+              text={bank.decryptedCardNumber || ""}
+              state={isCardNumberHidden}
+            />
+            <ToggleVisibilityButton
+              isValueHidden={isCardNumberHidden}
+              onClick={() => setIsCardNumberHidden(!isCardNumberHidden)}
+            />
+            <CopyButton
+              onClick={() =>
+                navigator.clipboard.writeText(bank.decryptedCardNumber)
+              }
+            />
           </p>
           <p>
-            <strong>{t("bank.expiryDate")}:</strong>{" "}
+            <strong>{t("banksPage.expiryDate")}:</strong>{" "}
             <Span text={bank.expiryDate} />
           </p>
           <p>
-            <strong>{t("bank.cardCvvCvc")}:</strong>{" "}
-            <Span text={bank.decryptedCardCvvCvc} />
+            <strong>{t("banksPage.cardCvvCvc")}:</strong>{" "}
+            <Span
+              text={bank.decryptedCardCvvCvc || ""}
+              state={isCardCvvCvcHidden}
+            />
+            <ToggleVisibilityButton
+              isValueHidden={isCardCvvCvcHidden}
+              onClick={() => setIsCardCvvCvcHidden(!isCardCvvCvcHidden)}
+            />
+            <CopyButton
+              onClick={() =>
+                navigator.clipboard.writeText(bank.decryptedCardCvvCvc)
+              }
+            />
           </p>
           <p>
-            <strong>{t("bank.cardType")}:</strong> <Span text={bank.cardType} />
+            <strong>{t("banksPage.cardType")}:</strong>{" "}
+            <Span text={bank.cardType} />
           </p>
           {isDeleting ? (
             <>
               <Button
                 type="button"
                 onClick={() => {
-                  onDelete(bank.bankId), setIsDeleting(false);
+                  processDeleteBank(bank.bankId), setIsDeleting(false);
                 }}
               >
-                {t("bank.submitDelete")}
+                {t("banksPage.submitDelete")}
               </Button>
               <Button onClick={() => setIsDeleting(false)}>
-                {t("bank.cancel")}
+                {t("banksPage.cancel")}
               </Button>
             </>
           ) : (
             <>
               <Button onClick={() => setIsEditing(!isEditing)}>
-                {t("bank.edit")}
+                {t("banksPage.edit")}
               </Button>
               <Button onClick={() => setIsDeleting(true)}>
-                {t("bank.delete")}
+                {t("banksPage.delete")}
               </Button>
             </>
           )}
@@ -133,7 +185,7 @@ export const BankCard = ({ bank, onSelect, onEdit, onDelete, isLoading }) => {
           <form onSubmit={handleSubmit} className="bank__form">
             <Input
               id={`bankName-${bank.bankId}`}
-              label={t("bank.bankName")}
+              label="banksPage.bankName"
               type="text"
               value={editedBank.bankName}
               onChange={(e) => handleChange(e, "bankName")}
@@ -141,7 +193,7 @@ export const BankCard = ({ bank, onSelect, onEdit, onDelete, isLoading }) => {
             />
             <Input
               id={`accountHolderFirstName-${bank.bankId}`}
-              label={t("bank.accountHolderFirstName")}
+              label="banksPage.accountHolderFirstName"
               type="text"
               value={editedBank.accountHolderFirstName}
               onChange={(e) => handleChange(e, "accountHolderFirstName")}
@@ -149,7 +201,7 @@ export const BankCard = ({ bank, onSelect, onEdit, onDelete, isLoading }) => {
             />
             <Input
               id={`accountHolderLastName-${bank.bankId}`}
-              label={t("bank.accountHolderLastName")}
+              label="banksPage.accountHolderLastName"
               type="text"
               value={editedBank.accountHolderLastName}
               onChange={(e) => handleChange(e, "accountHolderLastName")}
@@ -157,7 +209,7 @@ export const BankCard = ({ bank, onSelect, onEdit, onDelete, isLoading }) => {
             />
             <Input
               id={`iban-${bank.bankId}`}
-              label={t("bank.iban")}
+              label="banksPage.iban"
               type="text"
               value={editedBank.iban}
               onChange={(e) => handleChange(e, "iban")}
@@ -165,7 +217,7 @@ export const BankCard = ({ bank, onSelect, onEdit, onDelete, isLoading }) => {
             />
             <Input
               id={`swiftBic-${bank.bankId}`}
-              label={t("bank.swiftBic")}
+              label="banksPage.swiftBic"
               type="text"
               value={editedBank.swiftBic}
               onChange={(e) => handleChange(e, "swiftBic")}
@@ -173,7 +225,7 @@ export const BankCard = ({ bank, onSelect, onEdit, onDelete, isLoading }) => {
             />
             <Input
               id={`accountType-${bank.bankId}`}
-              label={t("bank.accountType")}
+              label="banksPage.accountType"
               type="text"
               value={editedBank.accountType}
               onChange={(e) => handleChange(e, "accountType")}
@@ -181,7 +233,7 @@ export const BankCard = ({ bank, onSelect, onEdit, onDelete, isLoading }) => {
             />
             <Input
               id={`branchCode-${bank.bankId}`}
-              label={t("bank.branchCode")}
+              label="banksPage.branchCode"
               type="text"
               value={editedBank.branchCode}
               onChange={(e) => handleChange(e, "branchCode")}
@@ -189,7 +241,7 @@ export const BankCard = ({ bank, onSelect, onEdit, onDelete, isLoading }) => {
             />
             <Input
               id={`cardHolderFirstName-${bank.bankId}`}
-              label={t("bank.cardHolderFirstName")}
+              label="banksPage.cardHolderFirstName"
               type="text"
               value={editedBank.cardHolderFirstName}
               onChange={(e) => handleChange(e, "cardHolderFirstName")}
@@ -197,7 +249,7 @@ export const BankCard = ({ bank, onSelect, onEdit, onDelete, isLoading }) => {
             />
             <Input
               id={`cardHolderLastName-${bank.bankId}`}
-              label={t("bank.cardHolderLastName")}
+              label="banksPage.cardHolderLastName"
               type="text"
               value={editedBank.cardHolderLastName}
               onChange={(e) => handleChange(e, "cardHolderLastName")}
@@ -205,7 +257,7 @@ export const BankCard = ({ bank, onSelect, onEdit, onDelete, isLoading }) => {
             />
             <Input
               id={`cardNumber-${bank.bankId}`}
-              label={t("bank.cardNumber")}
+              label="banksPage.cardNumber"
               type="text"
               value={editedBank.cardNumber}
               onChange={(e) => handleChange(e, "cardNumber")}
@@ -213,7 +265,7 @@ export const BankCard = ({ bank, onSelect, onEdit, onDelete, isLoading }) => {
             />
             <Input
               id={`expiryDate-${bank.bankId}`}
-              label={t("bank.expiryDate")}
+              label="banksPage.expiryDate"
               type="text"
               value={editedBank.expiryDate}
               onChange={(e) => handleChange(e, "expiryDate")}
@@ -221,7 +273,7 @@ export const BankCard = ({ bank, onSelect, onEdit, onDelete, isLoading }) => {
             />
             <Input
               id={`cardCvvCvc-${bank.bankId}`}
-              label={t("bank.cardCvvCvc")}
+              label="banksPage.cardCvvCvc"
               type="text"
               value={editedBank.cardCvvCvc}
               onChange={(e) => handleChange(e, "cardCvvCvc")}
@@ -230,7 +282,7 @@ export const BankCard = ({ bank, onSelect, onEdit, onDelete, isLoading }) => {
 
             <Input
               id={`cardType-${bank.bankId}`}
-              label={t("bank.cardType")}
+              label="banksPage.cardType"
               type="text"
               value={editedBank.cardType}
               onChange={(e) => handleChange(e, "cardType")}
@@ -238,10 +290,10 @@ export const BankCard = ({ bank, onSelect, onEdit, onDelete, isLoading }) => {
             />
             <div>
               <SubmitButton isLoading={isLoading}>
-                {t("bank.submitEdit")}
+                {t("banksPage.submitEdit")}
               </SubmitButton>
               <Button onClick={() => setIsEditing(false)}>
-                {t("bank.cancel")}
+                {t("banksPage.cancel")}
               </Button>
             </div>
           </form>
@@ -268,8 +320,8 @@ BankCard.propTypes = {
     decryptedCardCvvCvc: PropTypes.string,
     cardType: PropTypes.string,
   }).isRequired,
-  onSelect: PropTypes.func.isRequired,
-  onEdit: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
+  handleSelectBankForEdit: PropTypes.func.isRequired,
+  processUpdateBank: PropTypes.func.isRequired,
+  processDeleteBank: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
 };
