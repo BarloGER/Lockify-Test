@@ -3,16 +3,8 @@ const {
   validateSession,
 } = require("../../../interface-adapters/middlewares/validateSession");
 const {
-  validateJoi,
-} = require("../../../interface-adapters/middlewares/validateJoi");
-const {
-  registerUserSchema,
-  loginUserSchema,
-  updateUserSchema,
-  deleteUserSchema,
-  confirmEmailSchema,
-  sendMailSchema,
-} = require("../../../interface-adapters/joiSchemas/userSchemas");
+  validateRequestMetadata,
+} = require("../../../interface-adapters/middlewares/validateRequestMetadata");
 const {
   registerUser,
   loginUser,
@@ -26,36 +18,41 @@ const {
 
 const userRouter = Router();
 
-userRouter.post("/register", validateJoi(registerUserSchema), registerUser);
-userRouter.post("/login", validateJoi(loginUserSchema), loginUser);
-userRouter.get("/get-user", validateSession, getUser);
+userRouter.post("/register", validateRequestMetadata(), registerUser);
+userRouter.post("/login", validateRequestMetadata(), loginUser);
+userRouter.get(
+  "/get-user",
+  validateRequestMetadata(),
+  validateSession,
+  getUser
+);
 userRouter.put(
   "/update",
+  validateRequestMetadata(),
   validateSession,
-  // validateJoi(updateUserSchema),
   updateUser
 );
 userRouter.delete(
   "/delete",
+  validateRequestMetadata(),
   validateSession,
-  validateJoi(deleteUserSchema),
   deleteUser
 );
 userRouter.post(
   "/confirm-email",
+  validateRequestMetadata(),
   validateSession,
-  validateJoi(confirmEmailSchema),
   confirmEmailAddress
 );
 userRouter.post(
   "/send-new-code",
+  validateRequestMetadata(),
   validateSession,
-  validateJoi(sendMailSchema),
   sendNewVerificationCode
 );
 userRouter.post(
   "/send-new-password",
-  validateJoi(sendMailSchema),
+  validateRequestMetadata(),
   sendNewPassword
 );
 

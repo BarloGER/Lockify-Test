@@ -4,7 +4,7 @@ const URL = import.meta.env.VITE_API_KEY;
 const MAILSERVER_URL = import.meta.env.VITE_MAILSERVER_URL;
 
 export const UserRepository = class UserRepository {
-  async checkAuthAndGetUser() {
+  async checkAuthAndGetUserRequest() {
     try {
       const response = await fetch(`${URL}/user/get-user`, {
         method: "GET",
@@ -21,7 +21,7 @@ export const UserRepository = class UserRepository {
     }
   }
 
-  async registerUser(userData) {
+  async registerUserRequest(validEncryptedUserEntity) {
     try {
       const response = await fetch(`${URL}/user/register`, {
         method: "POST",
@@ -29,15 +29,7 @@ export const UserRepository = class UserRepository {
           "Content-Type": "application/json",
           "Accept-Language": language,
         },
-        body: JSON.stringify({
-          username: userData.username,
-          email: userData.email,
-          password: userData.password,
-          encryptedSecret: userData.encryptedSecret,
-          secretEncryptionIv: userData.secretEncryptionIv,
-          secretEncryptionSalt: userData.secretEncryptionSalt,
-          isNewsletterAllowed: userData.isNewsletterAllowed,
-        }),
+        body: JSON.stringify(validEncryptedUserEntity),
         credentials: "include",
       });
       return response.json();
@@ -46,7 +38,7 @@ export const UserRepository = class UserRepository {
     }
   }
 
-  async loginUser(credentials) {
+  async authenticateUserRequest(validUserCredentialsEntity) {
     try {
       const response = await fetch(`${URL}/user/login`, {
         method: "POST",
@@ -54,10 +46,7 @@ export const UserRepository = class UserRepository {
           "Content-Type": "application/json",
           "Accept-Language": language,
         },
-        body: JSON.stringify({
-          email: credentials.email,
-          password: credentials.password,
-        }),
+        body: JSON.stringify(validUserCredentialsEntity),
         credentials: "include",
       });
       return response.json();
@@ -66,7 +55,7 @@ export const UserRepository = class UserRepository {
     }
   }
 
-  async updateUser(updatedData) {
+  async updateUserRequest(updatedData) {
     try {
       const response = await fetch(`${URL}/user/update`, {
         method: "PUT",
@@ -85,7 +74,7 @@ export const UserRepository = class UserRepository {
     }
   }
 
-  async deleteUser() {
+  async deleteUserRequest() {
     try {
       const response = await fetch(`${URL}/user/delete`, {
         method: "DELETE",
@@ -101,7 +90,7 @@ export const UserRepository = class UserRepository {
     }
   }
 
-  async confirmEmailAddress(verificationData) {
+  async confirmEmailAddressRequest(verificationData) {
     try {
       const response = await fetch(`${URL}/user/confirm-email`, {
         method: "POST",
@@ -121,7 +110,7 @@ export const UserRepository = class UserRepository {
     }
   }
 
-  async requestNewVerificationCode(requestData) {
+  async newVerificationCodeRequest(requestData) {
     try {
       const response = await fetch(`${URL}/user/send-new-code`, {
         method: "POST",
@@ -141,7 +130,7 @@ export const UserRepository = class UserRepository {
     }
   }
 
-  async requestNewPassword(requestData) {
+  async newPasswordRequest(requestData) {
     try {
       const response = await fetch(`${URL}/user/send-new-password`, {
         method: "POST",

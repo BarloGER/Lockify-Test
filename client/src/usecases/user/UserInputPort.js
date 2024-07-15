@@ -1,21 +1,34 @@
 import { UserEntity } from "../../entities/UserEntity";
 
 export class UserInputPort {
-  validateRegistrationInput(userInput) {
-    const user = new UserEntity(userInput);
+  validatePreEncryptionInputForRegisterUser(unvalidatedUserInput) {
+    const validUserEntity = new UserEntity(unvalidatedUserInput);
 
-    const validationError = user.validateForRegistration();
+    const validationError =
+      validUserEntity.validateForRegistrationBeforeEncryption();
     if (validationError) {
       return { validationError };
     }
 
-    return user;
+    return validUserEntity;
   }
 
-  validateLoginInput(userInput) {
-    const credentials = new UserEntity(userInput);
+  validateEncryptedDataForRegisterUser(validUserEntity) {
+    const validEncryptedUserEntity = new UserEntity(validUserEntity);
 
-    const validationError = credentials.validateForLogin();
+    const validationError =
+      validEncryptedUserEntity.validateForRegistrationAfterEncryption();
+    if (validationError) {
+      return { validationError };
+    }
+
+    return validEncryptedUserEntity;
+  }
+
+  validateInputForAuthenticateUser(unvalidatedUserInput) {
+    const credentials = new UserEntity(unvalidatedUserInput);
+
+    const validationError = credentials.validateForAuthentication();
     if (validationError) {
       return { validationError };
     }
@@ -23,28 +36,31 @@ export class UserInputPort {
     return credentials;
   }
 
-  validateUpdateInput(userInput) {
-    const user = new UserEntity(userInput);
+  validatePreEncryptionInputForUpdateUser(unvalidatedUserInput) {
+    const validUserEntity = new UserEntity(unvalidatedUserInput);
 
-    const validationError = user.validateForUpdate();
+    const validationError = validUserEntity.validateForUpdateBeforeEncryption();
     if (validationError) {
       return { validationError };
     }
 
-    return user;
+    return validUserEntity;
   }
 
-  // deleteUser(userInput) {
-  //   const data = new UserEntity(userInput);
+  validateEncryptedDataForUpdateUser(validUserEntity) {
+    const validEncryptedUserEntity = new UserEntity(validUserEntity);
 
-  //   const validationError = data.validateForDelete();
-  //   if (validationError) {
-  //     throw new ErrorResponse({ errorCode: `${validationError}` });
-  //   }
-  // }
+    const validationError =
+      validEncryptedUserEntity.validateForUpdateAfterEncryption();
+    if (validationError) {
+      return { validationError };
+    }
 
-  validateVerificationInput(userInput) {
-    const verificationData = new UserEntity(userInput);
+    return validEncryptedUserEntity;
+  }
+
+  validateInputForVerification(unvalidatedUserInput) {
+    const verificationData = new UserEntity(unvalidatedUserInput);
 
     const validationError = verificationData.validateForVerification();
     if (validationError) {
@@ -54,8 +70,8 @@ export class UserInputPort {
     return verificationData;
   }
 
-  validateRequestData(userInput) {
-    const requestData = new UserEntity(userInput);
+  validateInputForRequest(unvalidatedUserInput) {
+    const requestData = new UserEntity(unvalidatedUserInput);
 
     const validationError = requestData.validateForRequest();
     if (validationError) {
