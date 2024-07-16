@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { CryptographyInteractor } from "../../../usecases/cryptography/CryptographyInteractor.js";
@@ -7,9 +7,12 @@ import { AuthContext } from "../../context/AuthContext.jsx";
 import { AuthTemplate } from "../templates";
 import { RegisterForm } from "../organisms";
 
-const cryptographyInteractor = new CryptographyInteractor();
-
 export const RegisterPage = () => {
+  const cryptographyInteractor = useMemo(
+    () => new CryptographyInteractor(),
+    []
+  );
+
   const navigate = useNavigate();
   const { setUser, userInteractor, isAuthenticated, setIsAuthenticated } =
     useContext(AuthContext);
