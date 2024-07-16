@@ -161,4 +161,86 @@ export class CryptographyInteractor {
 
     return this.cryptographyOutputPort.formatDecryptedData(decryptionResult);
   }
+
+  async securityCheck(accountsData) {
+    const maxSecurityScore = accountsData.length * 3;
+    let actualSecurityScore = 0;
+
+    const lowerCaseLetters = /[abcdefghijklmnopqrstuvwxyz]/g;
+    const upperCaseLetters = /[ABCDEFGHIJKLMNOPQRSTUVWXY]/g;
+    const numbers = /[0123456789]/g;
+    const specialChars = /[!@#$%^&*()_+{}:"<>?|[\]\\;',./`~]/g;
+
+    const unsecurePasswords = [];
+    const sufficientPasswords = [];
+    const strongPasswords = [];
+    const veryStrongPasswords = [];
+    const passwordMap = {};
+    const duplicatePasswords = [];
+
+    for (const account of accountsData) {
+      const passwordLength = account.accountPassword.length;
+
+      const foundLowerCaseLetters =
+        account.accountPassword.match(lowerCaseLetters) || [];
+      const foundUppercaseLetters =
+        account.accountPassword.match(upperCaseLetters) || [];
+      const foundNumbers = account.accountPassword.match(numbers) || [];
+      const foundSpecialChars =
+        account.accountPassword.match(specialChars) || [];
+
+      if (
+        passwordLength >= 16 &&
+        foundLowerCaseLetters.length >= 3 &&
+        foundUppercaseLetters.length >= 3 &&
+        foundNumbers.length >= 3 &&
+        foundSpecialChars.length >= 3
+      ) {
+        veryStrongPasswords.push(account);
+      } else if (
+        passwordLength >= 12 &&
+        foundLowerCaseLetters.length >= 2 &&
+        foundUppercaseLetters.length >= 2 &&
+        foundNumbers.length >= 2 &&
+        foundSpecialChars.length >= 2
+      ) {
+        strongPasswords.push(account);
+      } else if (
+        passwordLength >= 8 &&
+        foundLowerCaseLetters.length >= 1 &&
+        foundUppercaseLetters.length >= 1 &&
+        foundNumbers.length >= 1 &&
+        foundSpecialChars.length >= 1
+      ) {
+        sufficientPasswords.push(account);
+      } else {
+        unsecurePasswords.push(account);
+      }
+
+      // Check for duplicate passwords
+      if (passwordMap[account.accountPassword]) {
+        duplicatePasswords.push(account);
+      } else {
+        passwordMap[account.accountPassword] = true;
+      }
+    }
+
+    actualSecurityScore += sufficientPasswords.length;
+    actualSecurityScore += strongPasswords.length * 2;
+    actualSecurityScore += veryStrongPasswords.length * 3;
+    actualSecurityScore -= duplicatePasswords.length;
+
+    const calculatedSecurityScore = Math.floor(
+      (100 / maxSecurityScore) * actualSecurityScore
+    );
+
+    return this.cryptographyOutputPort.formatSecurityCheck(
+      unsecurePasswords,
+      sufficientPasswords,
+      strongPasswords,
+      veryStrongPasswords,
+      duplicatePasswords,
+      calculatedSecurityScore
+    );
+  }
 }
