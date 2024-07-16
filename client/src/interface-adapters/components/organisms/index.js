@@ -1,9 +1,10 @@
+export { AccountsOverview } from "./AccountsOverview";
 export { BanksOverview } from "./BanksOverview";
 export { NewAccountForm } from "./NewAccountForm";
 export { NewBankForm } from "./NewBankForm";
 export { NewNoteForm } from "./NewNoteForm";
 export { NewContactForm } from "./NewContactForm";
-export { AccountsOverview } from "./AccountsOverview";
+export { Dashboard } from "./Dashboard";
 export { DataVaultForm } from "./DataVaultForm";
 export { ForgotPasswordForm } from "./ForgotPasswordForm";
 export { LoadingOrganism } from "./LoadingOrganism";
