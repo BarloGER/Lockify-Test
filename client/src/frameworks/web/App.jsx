@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import { AuthProvider } from "../../interface-adapters/context/AuthContext.jsx";
 import { DataVaultProvider } from "../../interface-adapters/context/DataVaultContext.jsx";
+import { DesignProvider } from "../../interface-adapters/context/DesignContext";
 import { GlobalLayout, ProtectedLayout } from "./layouts/index.js";
 import {
   AccountsPage,
@@ -52,7 +53,9 @@ export const App = () => {
   return (
     <AuthProvider>
       <DataVaultProvider>
-        <RouterProvider router={router} />
+        <DesignProvider>
+          <RouterProvider router={router} />
+        </DesignProvider>
       </DataVaultProvider>
     </AuthProvider>
   );
