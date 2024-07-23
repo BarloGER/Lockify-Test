@@ -75,7 +75,8 @@ export class UserInteractor {
     const validUserEntity =
       this.userInputPort.validatePreEncryptionInputForUpdateUser(userInput);
     if (validUserEntity.validationError) {
-      return { validationError: validUserEntity.validationError };
+      const validationError = validUserEntity.validationError;
+      return this.userOutputPort.formatValidationError(validationError);
     }
 
     const updateResponse = await this.userRepository.updateUserRequest(
@@ -101,9 +102,8 @@ export class UserInteractor {
     const validUserEntity =
       this.userInputPort.validateInputForVerification(unvalidatedUserInput);
     if (validUserEntity.validationError) {
-      return {
-        validationError: validUserEntity.validationError,
-      };
+      const validationError = validUserEntity.validationError;
+      return this.userOutputPort.formatValidationError(validationError);
     }
 
     const verificationResponse =
@@ -137,7 +137,8 @@ export class UserInteractor {
     const validUserEntity =
       this.userInputPort.validateInputForRequest(unvalidatedUserInput);
     if (validUserEntity.validationError) {
-      return { validationError: validUserEntity.validationError };
+      const validationError = validUserEntity.validationError;
+      return this.userOutputPort.formatValidationError(validationError);
     }
 
     const newPasswordResponse = await this.userRepository.newPasswordRequest(

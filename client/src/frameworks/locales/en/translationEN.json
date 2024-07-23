@@ -74,6 +74,31 @@
     "delete": "Delete",
     "submitDelete": "Really delete?"
   },
+  "landingPage": {
+    "hero": {
+      "title": "Welcome to Lockify",
+      "description": "Your ultimate solution to secure and manage your passwords, bank informations and more.",
+      "button": "Learn more"
+    },
+    "features": {
+      "title": "Features",
+      "itemTitle1": "Secure Encryption",
+      "itemDescription1": "We use state-of-the-art encryption to keep your data safe and secure.",
+      "itemTitle2": "Easy Access",
+      "itemDescription2": "Access your data from any device, anytime, anywhere.",
+      "itemTitle3": "Store Everything",
+      "itemDescription3": "Store your passwords, bank information, contacts, and notes. Keep all your important information organized and secure."
+    },
+    "instructions": {
+      "title": "How it works",
+      "itemTitle1": "Step 1",
+      "itemDescription1": "Create an account and set up your master password.",
+      "itemTitle2": "Step 2",
+      "itemDescription2": "Store all your data in one secure place.",
+      "itemTitle3": "Step 3",
+      "itemDescription3": "Access and manage your data with ease."
+    }
+  },
   "userProfile": {
     "username": "Username",
     "email": "E-Mail Address",
