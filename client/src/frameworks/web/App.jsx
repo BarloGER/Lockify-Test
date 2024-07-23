@@ -24,6 +24,7 @@ import {
   UserProfilePage,
   VerificationPage,
 } from "../../interface-adapters/components/Pages/index.js";
+import "./assets/global.css";
 
 export const App = () => {
   const router = createBrowserRouter(

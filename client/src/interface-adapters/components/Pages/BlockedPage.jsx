@@ -5,7 +5,7 @@ import { MailInteractor } from "../../../usecases/mail/MailInteractor.js";
 import { MailRepository } from "../../repositories/MailRepository.js";
 
 import { AuthContext } from "../../context/AuthContext.jsx";
-import { AuthTemplate } from "../templates";
+import { BlockedTemplate } from "../templates";
 import { SupportForm } from "../organisms";
 
 export const BlockedPage = () => {
@@ -75,16 +75,18 @@ export const BlockedPage = () => {
   };
 
   return (
-    <AuthTemplate>
-      <SupportForm
-        supportFormData={supportFormData}
-        handleChange={handleChange}
-        processSupportRequest={processSupportRequest}
-        isSupportMailLoading={isSupportMailLoading}
-        message={message}
-        setMessage={setMessage}
-        messageType={messageType}
-      />
-    </AuthTemplate>
+    <BlockedTemplate>
+      <section className="blocked-template__section">
+        <SupportForm
+          supportFormData={supportFormData}
+          handleChange={handleChange}
+          processSupportRequest={processSupportRequest}
+          isSupportMailLoading={isSupportMailLoading}
+          message={message}
+          setMessage={setMessage}
+          messageType={messageType}
+        />
+      </section>
+    </BlockedTemplate>
   );
 };

@@ -1,8 +1,13 @@
 import PropTypes from "prop-types";
-import { useState, useContext } from "react";
-import { DesignContext } from "../../context/DesignContext";
-import { Input, Button } from "../atoms";
-import { Checkbox, FlashMessage, SubmitButton } from "../molecules";
+import { useState } from "react";
+import { Heading1, Input, Button } from "../atoms";
+import {
+  Checkbox,
+  FlashMessage,
+  HiddenInput,
+  SubmitButton,
+} from "../molecules";
+import "./assets/user-profile-form.css";
 
 export const UserProfileForm = ({
   updateUserFormData,
@@ -15,7 +20,6 @@ export const UserProfileForm = ({
   setMessage,
   messageType,
 }) => {
-  const { changeDesign } = useContext(DesignContext);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleCheckboxChange = (e) => {
@@ -26,92 +30,83 @@ export const UserProfileForm = ({
   };
 
   return (
-    <>
-      <form onSubmit={processUpdateUser}>
-        <Input
-          id="username"
-          name="username"
-          label="userProfilePage.username"
-          type="text"
-          value={updateUserFormData.username}
-          onChange={handleChange}
-        />
-        <Input
-          id="email"
-          name="email"
-          label="userProfilePage.email"
-          type="email"
-          value={updateUserFormData.email}
-          onChange={handleChange}
-        />
-        <Input
-          id="password"
-          name="password"
-          label="userProfilePage.password"
-          type="password"
-          value={updateUserFormData.password}
-          onChange={handleChange}
-        />
-        <Input
-          id="confirmPassword"
-          name="confirmPassword"
-          label="userProfilePage.confirmPassword"
-          type="password"
-          value={updateUserFormData.confirmPassword}
-          onChange={handleChange}
-        />
-        <Checkbox
-          id="newsletter"
-          name="newsletter"
-          label="userProfilePage.newsletter"
-          checked={updateUserFormData.isNewsletterAllowed}
-          onChange={handleCheckboxChange}
-        />
-        <SubmitButton isLoading={isUserLoading}>
-          {"userProfilePage.submit"}
-        </SubmitButton>
-        {isDeleting ? (
-          <>
-            <Button
-              type="button"
-              onClick={() => {
-                processDeleteUser(), setIsDeleting(false);
-              }}
-            >
-              {"userProfilePage.submitDelete"}
-            </Button>
-            <Button onClick={() => setIsDeleting(false)}>
-              {"userProfilePage.cancel"}
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button onClick={() => setIsDeleting(true)}>
-              {"userProfilePage.delete"}
-            </Button>
-          </>
-        )}
-        <FlashMessage
-          message={message}
-          setMessage={setMessage}
-          type={messageType}
-          className="user-profile-form__flash-message"
-        />
-      </form>
+    <form className="user-profile-form" onSubmit={processUpdateUser}>
+      <Heading1 text="userProfilePage.title" />
 
-      <div>
-        <label>Design wählen:</label>
-        <button type="button" onClick={() => changeDesign("design1")}>
-          Design 1
-        </button>
-        <button type="button" onClick={() => changeDesign("design2")}>
-          Design 2
-        </button>
-        <button type="button" onClick={() => changeDesign("design3")}>
-          Design 3
-        </button>
-      </div>
-    </>
+      <Input
+        id="username"
+        name="username"
+        label="userProfilePage.username"
+        type="text"
+        value={updateUserFormData.username}
+        onChange={handleChange}
+      />
+
+      <Input
+        id="email"
+        name="email"
+        label="userProfilePage.email"
+        type="email"
+        value={updateUserFormData.email}
+        onChange={handleChange}
+      />
+
+      <HiddenInput
+        id="password"
+        name="password"
+        label="userProfilePage.password"
+        autocomplete="false"
+        value={updateUserFormData.password}
+        onChange={handleChange}
+      />
+
+      <HiddenInput
+        id="confirmPassword"
+        name="confirmPassword"
+        label="userProfilePage.confirmPassword"
+        autocomplete="false"
+        value={updateUserFormData.confirmPassword}
+        onChange={handleChange}
+      />
+
+      <Checkbox
+        id="newsletter"
+        name="newsletter"
+        label="userProfilePage.newsletter"
+        checked={updateUserFormData.isNewsletterAllowed}
+        onChange={handleCheckboxChange}
+      />
+
+      <SubmitButton isLoading={isUserLoading}>
+        {"userProfilePage.submit"}
+      </SubmitButton>
+      {isDeleting ? (
+        <>
+          <Button onClick={() => setIsDeleting(false)}>
+            {"userProfilePage.cancel"}
+          </Button>
+          <Button
+            type="button"
+            onClick={() => {
+              processDeleteUser(), setIsDeleting(false);
+            }}
+          >
+            {"userProfilePage.submitDelete"}
+          </Button>
+        </>
+      ) : (
+        <>
+          <Button onClick={() => setIsDeleting(true)}>
+            {"userProfilePage.delete"}
+          </Button>
+        </>
+      )}
+      <FlashMessage
+        message={message}
+        setMessage={setMessage}
+        type={messageType}
+      />
+    </form>
   );
 };
 

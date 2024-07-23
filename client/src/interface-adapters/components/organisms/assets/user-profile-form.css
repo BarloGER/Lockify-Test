@@ -1,0 +1,25 @@
+.user-profile-form {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: fit-content;
+  min-height: 100px;
+  border: 1px solid var(--border-color);
+  padding: var(--padding-lg);
+  gap: var(--gap-md);
+}
+
+.user-profile-form > * {
+  width: 100%;
+}
+
+.user-profile-form .title {
+  text-align: center;
+  margin-bottom: var(--margin-md);
+}
+
+.user-profile-form__button {
+  margin-top: var(--margin-md);
+}

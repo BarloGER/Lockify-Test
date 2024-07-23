@@ -1,9 +1,8 @@
 .flash-message {
-  padding: 10px;
+  font-size: var(--font-xs);
+  padding: var(--padding-sm);
+  width: 100%;
   color: var(--text-color);
-  border-radius: 4px;
-  margin-top: 10px;
-  text-align: center;
 }
 
 .flash-message--success {

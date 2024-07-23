@@ -1,23 +1,17 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Input } from "../atoms";
+import { Input, ToggleVisibilityButton } from "../atoms";
 import { PiPasswordFill } from "react-icons/pi";
 import "./assets/password-input.css";
 
-export const PasswordInput = ({ value, onChange }) => {
+export const PasswordInput = ({ id, name, label, value, onChange }) => {
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
-
-  const togglePasswordVisibility = (e) => {
-    e.preventDefault();
-    setIsPasswordHidden(!isPasswordHidden);
-  };
 
   const generatePassword = () => {
     const numbers = "0123456789";
+    const lowerCaseLetters = "abcdefghijklmnopqrstuvwxyz";
     const upperCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const specialChars = "!@#$%^&*()_+{}:\"<>?|[];',./`~";
-    const lowerCaseLetters = "abcdefghijklmnopqrstuvwxyz";
 
     const getRandomChar = (category) => {
       const buffer = new Uint32Array(1);
@@ -30,8 +24,9 @@ export const PasswordInput = ({ value, onChange }) => {
     // Ensure minimum requirements
     for (let i = 0; i < 3; i++) {
       newPassword.push(getRandomChar(numbers));
-      newPassword.push(getRandomChar(specialChars));
+      newPassword.push(getRandomChar(lowerCaseLetters));
       newPassword.push(getRandomChar(upperCaseLetters));
+      newPassword.push(getRandomChar(specialChars));
     }
 
     // Fill the rest up to 16 characters
@@ -47,37 +42,40 @@ export const PasswordInput = ({ value, onChange }) => {
       [newPassword[i], newPassword[j]] = [newPassword[j], newPassword[i]];
     }
 
-    onChange({ target: { value: newPassword.join("") } }, "password");
+    onChange({ target: { name, value: newPassword.join("") } });
   };
 
   return (
-    <div className="password-input">
+    <div className="password-input__container">
       <Input
-        id="password"
-        label={"accountsPage.password"}
+        id={id}
+        name={name}
+        label={label}
         type={isPasswordHidden ? "password" : "text"}
         value={value}
-        onChange={(e) => onChange(e, "password")}
-        name="password"
+        onChange={(e) => onChange(e)}
       />
-      <button
-        onClick={togglePasswordVisibility}
-        className="toggle-visibility-button"
-      >
-        {isPasswordHidden ? <FaEyeSlash /> : <FaEye />}
-      </button>
-      <button
-        onClick={generatePassword}
-        type="button"
-        className="generate-password-button"
-      >
-        <PiPasswordFill />
-      </button>
+      <div className="password-input__button-wrapper">
+        <button
+          onClick={generatePassword}
+          type="button"
+          className="generate-password-button"
+        >
+          <PiPasswordFill />
+        </button>
+        <ToggleVisibilityButton
+          isValueHidden={isPasswordHidden}
+          setIsValueHidden={setIsPasswordHidden}
+        />
+      </div>
     </div>
   );
 };
 
 PasswordInput.propTypes = {
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
 };

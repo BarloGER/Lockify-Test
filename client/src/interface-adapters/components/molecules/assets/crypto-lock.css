@@ -1,0 +1,16 @@
+.crypto-lock {
+  line-height: 1;
+  width: 100%;
+}
+
+.crypto-lock__rows {
+  display: flex;
+}
+
+.crypto-lock__numbers {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--crypto-lock-color);
+}

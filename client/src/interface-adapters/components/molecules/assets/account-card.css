@@ -1,8 +1,8 @@
 .account__card {
-  perspective: 1000px;
-  height: 40rem;
+  perspective: 100px;
+  /* height: 40rem;
   width: 30rem;
-  font-size: 10rem;
+  font-size: 10rem; */
 }
 
 .account__card.editing {

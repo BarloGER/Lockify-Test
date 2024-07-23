@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../../context/AuthContext";
 
-import { AuthTemplate } from "../templates";
+import { ForgotPasswordTemplate } from "../templates";
 import { ForgotPasswordForm } from "../organisms";
 
 export const ForgotPasswordPage = () => {
@@ -29,6 +29,7 @@ export const ForgotPasswordPage = () => {
     const passwordRequestResponse = await userInteractor.requestNewPassword({
       email,
     });
+    console.log(passwordRequestResponse);
     if (
       !passwordRequestResponse.success &&
       passwordRequestResponse.message === "Failed to fetch"
@@ -51,16 +52,21 @@ export const ForgotPasswordPage = () => {
   };
 
   return (
-    <AuthTemplate>
-      <ForgotPasswordForm
-        email={email}
-        setEmail={setEmail}
-        handleNewPasswordRequest={handleNewPasswordRequest}
-        isPasswordRequestLoading={isPasswordRequestLoading}
-        message={message}
-        setMessage={setMessage}
-        messageType={messageType}
-      />
-    </AuthTemplate>
+    <ForgotPasswordTemplate>
+      <section
+        id="forgot-password"
+        className="forgot-password-template__section"
+      >
+        <ForgotPasswordForm
+          email={email}
+          setEmail={setEmail}
+          handleNewPasswordRequest={handleNewPasswordRequest}
+          isPasswordRequestLoading={isPasswordRequestLoading}
+          message={message}
+          setMessage={setMessage}
+          messageType={messageType}
+        />
+      </section>
+    </ForgotPasswordTemplate>
   );
 };

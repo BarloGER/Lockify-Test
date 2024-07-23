@@ -1,0 +1,25 @@
+.verification-template {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: auto;
+}
+
+.verification-template__section {
+  width: 100%;
+  height: calc(100vh - 50px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-lg);
+}
+
+.verification-template__section .flash-message {
+  max-width: 90%;
+}

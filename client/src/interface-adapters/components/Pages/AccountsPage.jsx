@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { DataVaultContext } from "../../context/DataVaultContext.jsx";
-import { AccountTemplate } from "../templates";
+import { AccountsTemplate } from "../templates";
 import { SearchInput } from "../atoms";
 import { FlashMessage } from "../molecules/FlashMessage.jsx";
 import { NewAccountForm, AccountsOverview } from "../organisms";
@@ -287,40 +287,47 @@ export const AccountsPage = () => {
   };
 
   return (
-    <AccountTemplate>
-      <SearchInput
-        placeholder={selectedOption}
-        onSearchChange={setSearchTerm}
-        searchOptions={searchOptions}
-        onOptionChange={(e) => setSelectedOption(e.target.value)}
-        selectedOption={selectedOption}
-        pageName="accountsPage"
-      />
+    <AccountsTemplate>
+      <section className="accounts-template__section">
+        <SearchInput
+          placeholder={selectedOption}
+          onSearchChange={setSearchTerm}
+          searchOptions={searchOptions}
+          onOptionChange={(e) => setSelectedOption(e.target.value)}
+          selectedOption={selectedOption}
+          pageName="accountsPage"
+        />
+      </section>
+      <section className="accounts-template__section">
+        <NewAccountForm
+          newAccountFormData={newAccountFormData}
+          setNewAccountFormData={setNewAccountFormData}
+          handleChange={handleChange}
+          processCreateAccount={(e) => processCreateAccount(e, masterPassword)}
+          isAccountLoading={isAccountLoading}
+          message={message}
+          setMessage={setMessage}
+          messageType={messageType}
+        />
+      </section>
+      <section className="accounts-template__section">
+        <AccountsOverview
+          accounts={filteredAccounts}
+          handleSelectAccountForEdit={handleSelectAccountForEdit}
+          processUpdateAccount={processUpdateAccount}
+          processDeleteAccount={processDeleteAccount}
+          isAccountLoading={isAccountLoading}
+          message={message}
+          messageType={messageType}
+        />
+      </section>
+      {/* 
       <FlashMessage
         message={message}
         setMessage={setMessage}
         type={messageType}
         className="account-page__flash-message"
-      />
-      <NewAccountForm
-        newAccountFormData={newAccountFormData}
-        setNewAccountFormData={setNewAccountFormData}
-        handleChange={handleChange}
-        processCreateAccount={(e) => processCreateAccount(e, masterPassword)}
-        isAccountLoading={isAccountLoading}
-        message={message}
-        setMessage={setMessage}
-        messageType={messageType}
-      />
-      <AccountsOverview
-        accounts={filteredAccounts}
-        handleSelectAccountForEdit={handleSelectAccountForEdit}
-        processUpdateAccount={processUpdateAccount}
-        processDeleteAccount={processDeleteAccount}
-        isAccountLoading={isAccountLoading}
-        message={message}
-        messageType={messageType}
-      />
-    </AccountTemplate>
+      /> */}
+    </AccountsTemplate>
   );
 };

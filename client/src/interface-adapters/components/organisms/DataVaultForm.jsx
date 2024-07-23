@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
-import { Input, Paragraph } from "../atoms";
-import { SubmitButton } from "../molecules";
-import { FlashMessage } from "../molecules";
+import { Heading1 } from "../atoms";
+import { FlashMessage, HiddenInput, SubmitButton } from "../molecules";
 import "./assets/data-vault-form.css";
 
 export const DataVaultForm = ({
@@ -14,31 +13,34 @@ export const DataVaultForm = ({
   messageType,
 }) => {
   return (
-    <form onSubmit={processMasterPasswordVerification}>
-      <Paragraph text="dataVaultPage.text" />
+    <form
+      className="data-vault-form"
+      onSubmit={processMasterPasswordVerification}
+    >
+      <Heading1 text="dataVaultPage.title" />
 
-      <Input
+      <HiddenInput
         id="masterPassword"
         name="masterPassword"
         label={"dataVaultPage.masterPassword"}
-        type="password"
+        autocomplete="false"
         value={masterPassword}
         onChange={(e) => setMasterPassword(e.target.value)}
       />
-      <SubmitButton
-        className="data-vault-form__button"
-        modifier="hover"
-        isLoading={isDataVaultLoading}
-      >
-        {"dataVaultPage.submitButton"}
-      </SubmitButton>
 
       <FlashMessage
         message={message}
         setMessage={setMessage}
         type={messageType}
-        className="data-vault-form__flash-message"
       />
+
+      <SubmitButton
+        className="data-vault-form__submit-button"
+        modifier="hover"
+        isLoading={isDataVaultLoading}
+      >
+        {"dataVaultPage.submitButton"}
+      </SubmitButton>
     </form>
   );
 };

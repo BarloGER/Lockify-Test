@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../../context/AuthContext.jsx";
 
-import { AuthTemplate } from "../templates";
+import { VerificationTemplate } from "../templates";
 import { VerificationForm } from "../organisms";
 
 // ? Add alternativ email
@@ -92,18 +92,20 @@ export const VerificationPage = () => {
   };
 
   return (
-    <AuthTemplate>
-      <VerificationForm
-        verificationFormData={verificationFormData}
-        handleChange={handleChange}
-        processVerification={processVerification}
-        processNewVerificationCodeRequest={processNewVerificationCodeRequest}
-        isVerificationLoading={isVerificationLoading}
-        isCodeRequestLoading={isCodeRequestLoading}
-        message={message}
-        setMessage={setMessage}
-        messageType={messageType}
-      />
-    </AuthTemplate>
+    <VerificationTemplate>
+      <section className="verification-template__section">
+        <VerificationForm
+          verificationFormData={verificationFormData}
+          handleChange={handleChange}
+          processVerification={processVerification}
+          processNewVerificationCodeRequest={processNewVerificationCodeRequest}
+          isVerificationLoading={isVerificationLoading}
+          isCodeRequestLoading={isCodeRequestLoading}
+          message={message}
+          setMessage={setMessage}
+          messageType={messageType}
+        />
+      </section>
+    </VerificationTemplate>
   );
 };

@@ -38,7 +38,7 @@ export const DataVaultPage = () => {
     });
     if (!decryptionResult.success) {
       setIsDataVaultLoading(false);
-      setMessage(`validationError.${decryptionResult.message}`);
+      setMessage(decryptionResult.message);
       setMessageType("error");
       return;
     }
@@ -51,8 +51,8 @@ export const DataVaultPage = () => {
   };
 
   return (
-    <>
-      <DataVaultTemplate>
+    <DataVaultTemplate>
+      <section className="data-vault-template__section">
         <DataVaultForm
           masterPassword={masterPassword}
           setMasterPassword={setMasterPassword}
@@ -62,7 +62,7 @@ export const DataVaultPage = () => {
           setMessage={setMessage}
           messageType={messageType}
         />
-      </DataVaultTemplate>
-    </>
+      </section>
+    </DataVaultTemplate>
   );
 };

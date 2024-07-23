@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { CryptographyInteractor } from "../../../usecases/cryptography/CryptographyInteractor.js";
 import { AuthContext } from "../../context/AuthContext.jsx";
 
-import { AuthTemplate } from "../templates";
+import { RegisterTemplate } from "../templates";
 import { RegisterForm } from "../organisms";
 
 export const RegisterPage = () => {
@@ -55,7 +55,7 @@ export const RegisterPage = () => {
       );
     if (!validateUserInput.success) {
       setIsRegistrationLoading(false);
-      setMessage(`validationError.${validateUserInput.message}`);
+      setMessage(validateUserInput.message);
       setMessageType("error");
       return;
     }
@@ -67,7 +67,7 @@ export const RegisterPage = () => {
     });
     if (!encryptedSecret.success) {
       setIsRegistrationLoading(false);
-      setMessage(`validationError.${encryptedSecret.message}`);
+      setMessage(encryptedSecret.message);
       setMessageType("error");
       return;
     }
@@ -109,16 +109,18 @@ export const RegisterPage = () => {
   };
 
   return (
-    <AuthTemplate>
-      <RegisterForm
-        newUserFormData={newUserFormData}
-        handleChange={handleChange}
-        processRegistration={processRegistration}
-        isRegistrationLoading={isRegistrationLoading}
-        message={message}
-        setMessage={setMessage}
-        messageType={messageType}
-      />
-    </AuthTemplate>
+    <RegisterTemplate>
+      <section id="register-form" className="register-template__section">
+        <RegisterForm
+          newUserFormData={newUserFormData}
+          handleChange={handleChange}
+          processRegistration={processRegistration}
+          isRegistrationLoading={isRegistrationLoading}
+          message={message}
+          setMessage={setMessage}
+          messageType={messageType}
+        />
+      </section>
+    </RegisterTemplate>
   );
 };
