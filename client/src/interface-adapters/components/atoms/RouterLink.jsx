@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import "./assets/link.css";
+import "./assets/router-link.css";
 
 export const RouterLink = ({
   path,

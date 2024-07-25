@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../../context/AuthContext.jsx";
 
-import { AuthTemplate } from "../templates/index.js";
+import { AuthenticationTemplate } from "../templates";
 import { AuthenticationForm } from "../organisms/index.js";
 
 export const AuthenticationPage = () => {
@@ -40,12 +40,8 @@ export const AuthenticationPage = () => {
     const authenticationResponse = await userInteractor.authenticateUser(
       authenticationFormData
     );
-    if (authenticationResponse.validationError) {
-      setIsAuthenticationLoading(false);
-      setMessage(`${authenticationResponse.validationError}`);
-      setMessageType("error");
-      return;
-    } else if (
+    console.log(authenticationResponse);
+    if (
       !authenticationResponse.success &&
       authenticationResponse.message === "Failed to fetch"
     ) {
@@ -69,16 +65,21 @@ export const AuthenticationPage = () => {
   };
 
   return (
-    <AuthTemplate>
-      <AuthenticationForm
-        authenticationFormData={authenticationFormData}
-        handleChange={handleChange}
-        processAuthentication={processAuthentication}
-        isAuthenticationLoading={isAuthenticationLoading}
-        message={message}
-        setMessage={setMessage}
-        messageType={messageType}
-      />
-    </AuthTemplate>
+    <AuthenticationTemplate>
+      <section
+        id="authentication-form"
+        className="authentication-template__section"
+      >
+        <AuthenticationForm
+          authenticationFormData={authenticationFormData}
+          handleChange={handleChange}
+          processAuthentication={processAuthentication}
+          isAuthenticationLoading={isAuthenticationLoading}
+          message={message}
+          setMessage={setMessage}
+          messageType={messageType}
+        />
+      </section>
+    </AuthenticationTemplate>
   );
 };

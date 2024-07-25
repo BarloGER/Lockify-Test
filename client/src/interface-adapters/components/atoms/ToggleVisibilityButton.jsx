@@ -2,15 +2,19 @@ import PropTypes from "prop-types";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./assets/toggle-visibility-button.css";
 
-export const ToggleVisibilityButton = ({ isValueHidden, onClick }) => {
+export const ToggleVisibilityButton = ({ isValueHidden, setIsValueHidden }) => {
   return (
-    <button onClick={onClick}>
-      {isValueHidden ? <FaEyeSlash /> : <FaEye />}
+    <button
+      className="toggle-visibility-button"
+      type="button"
+      onClick={() => setIsValueHidden(!isValueHidden)}
+    >
+      {isValueHidden ? <FaEye /> : <FaEyeSlash />}
     </button>
   );
 };
 
 ToggleVisibilityButton.propTypes = {
   isValueHidden: PropTypes.bool.isRequired,
-  onClick: PropTypes.func.isRequired,
+  setIsValueHidden: PropTypes.func.isRequired,
 };

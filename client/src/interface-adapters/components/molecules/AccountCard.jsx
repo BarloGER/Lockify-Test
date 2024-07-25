@@ -8,6 +8,7 @@ import {
   ToggleVisibilityButton,
   CopyButton,
 } from "../atoms";
+import { PasswordInput } from "./PasswordInput";
 import { SubmitButton } from "./SubmitButton";
 import "./assets/account-card.css";
 
@@ -160,13 +161,9 @@ export const AccountCard = ({
               onChange={(e) => handleChange(e, "email")}
               name="email"
             />
-            <Input
-              id={`password-${account.accountId}`}
-              label={"accountsPage.password"}
-              type="password"
+            <PasswordInput
               value={editedAccount.password}
-              onChange={(e) => handleChange(e, "password")}
-              name="password"
+              onChange={handleChange}
             />
             <Input
               id={`notes-${account.accountId}`}

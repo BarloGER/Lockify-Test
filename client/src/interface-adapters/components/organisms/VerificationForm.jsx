@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Input, Paragraph } from "../atoms";
+import { Heading1, Input, Paragraph } from "../atoms";
 import { SubmitButton } from "../molecules";
 import { FlashMessage } from "../molecules";
 import "./assets/verification-form.css";
@@ -17,42 +17,47 @@ export const VerificationForm = ({
 }) => {
   return (
     <>
+      <Heading1 text="verificationPage.title" />
+
       <form className="verification-form" onSubmit={processVerification}>
         <Input
           id="verificationCode"
           name="verificationCode"
-          label="verification.label"
+          label="verificationPage.label"
           type="text"
           value={verificationFormData.verificationCode}
           onChange={handleChange}
         />
+
         <SubmitButton
           className="verification-form__button"
           modifier="hover"
           isLoading={isVerificationLoading}
         >
-          {"verification.submit"}
+          {"verificationPage.submit"}
         </SubmitButton>
       </form>
+
       <form
         className="verification-form"
         onSubmit={processNewVerificationCodeRequest}
       >
-        <Paragraph text="verification.text" />
+        <Paragraph text="verificationPage.text" />
+
         <SubmitButton
           className="verification-form__button"
           modifier="hover"
           isLoading={isCodeRequestLoading}
         >
-          {"verification.newCodeButton"}
+          {"verificationPage.newCodeButton"}
         </SubmitButton>
-        <FlashMessage
-          message={message}
-          setMessage={setMessage}
-          type={messageType}
-          className="verification-form__flash-message"
-        />
       </form>
+
+      <FlashMessage
+        message={message}
+        setMessage={setMessage}
+        type={messageType}
+      />
     </>
   );
 };

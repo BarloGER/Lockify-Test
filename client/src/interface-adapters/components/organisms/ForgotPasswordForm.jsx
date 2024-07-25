@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Input, RouterLink } from "../atoms";
+import { Heading1, Input, RouterLink } from "../atoms";
 import { SubmitButton } from "../molecules";
 import { FlashMessage } from "../molecules";
 import "./assets/forgot-password-form.css";
@@ -15,6 +15,8 @@ export const ForgotPasswordForm = ({
 }) => {
   return (
     <form className="forgot-password-form" onSubmit={handleNewPasswordRequest}>
+      <Heading1 text="forgotPasswordPage.title" />
+
       <Input
         id="email"
         name="email"
@@ -23,21 +25,6 @@ export const ForgotPasswordForm = ({
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
-      <SubmitButton
-        className="forgot-password-form__button"
-        modifier="hover"
-        isLoading={isPasswordRequestLoading}
-      >
-        {"forgotPasswordPage.submitButton"}
-      </SubmitButton>
-
-      <RouterLink
-        path="/login"
-        className="forgot-password-form__link"
-        modifier="hover"
-      >
-        {"forgotPasswordPage.linkButton"}
-      </RouterLink>
 
       <FlashMessage
         message={message}
@@ -45,6 +32,24 @@ export const ForgotPasswordForm = ({
         type={messageType}
         className="forgot-password-form__flash-message"
       />
+
+      <div className="forgot-password-form__button-container">
+        <RouterLink
+          path="/login"
+          className="forgot-password-form__link"
+          modifier="hover"
+        >
+          {"forgotPasswordPage.linkButton"}
+        </RouterLink>
+
+        <SubmitButton
+          className="forgot-password-form__submit-button"
+          modifier="hover"
+          isLoading={isPasswordRequestLoading}
+        >
+          {"forgotPasswordPage.submitButton"}
+        </SubmitButton>
+      </div>
     </form>
   );
 };

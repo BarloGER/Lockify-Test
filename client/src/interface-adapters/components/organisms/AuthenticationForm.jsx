@@ -1,8 +1,7 @@
 import PropTypes from "prop-types";
-import { Input, Paragraph, RouterLink } from "../atoms";
-import { SubmitButton } from "../molecules";
-import { FlashMessage } from "../molecules";
-import "./assets/login-form.css";
+import { Heading1, Input, RouterLink } from "../atoms";
+import { FlashMessage, HiddenInput, SubmitButton } from "../molecules";
+import "./assets/authentication-form.css";
 
 export const AuthenticationForm = ({
   authenticationFormData,
@@ -14,57 +13,61 @@ export const AuthenticationForm = ({
   messageType,
 }) => {
   return (
-    <form className="login-form" onSubmit={processAuthentication}>
-      <Input
-        id="email"
-        name="email"
-        label="authenticationPage.email"
-        type="email"
-        value={authenticationFormData.email}
-        onChange={handleChange}
-      />
-      <Input
-        id="password"
-        name="password"
-        label="authenticationPage.password"
-        type="password"
-        value={authenticationFormData.password}
-        onChange={handleChange}
-      />
-      <SubmitButton
-        className="login-form__button"
-        modifier="hover"
-        isLoading={isAuthenticationLoading}
-      >
-        {"authenticationPage.authenticationButton"}
-      </SubmitButton>
+    <form className="authentication-form" onSubmit={processAuthentication}>
+      <Heading1 text="authenticationPage.title" />
 
-      <Paragraph text="authenticationPage.linkMessage" />
-
-      <RouterLink
-        path="/register"
-        className="login-form__link"
-        modifier="hover"
-      >
-        {"authenticationPage.linkButton"}
-      </RouterLink>
-
-      <Paragraph text="authenticationPage.forgotMessage" />
-
-      <RouterLink
-        path="/forgot-password"
-        className="login-form__link"
-        modifier="hover"
-      >
-        {"authenticationPage.forgotLink"}
-      </RouterLink>
+      <div className="authentication-form__input-container">
+        <Input
+          id="email"
+          name="email"
+          label="authenticationPage.email"
+          type="email"
+          value={authenticationFormData.email}
+          onChange={handleChange}
+        />
+        <HiddenInput
+          id="password"
+          name="password"
+          label="authenticationPage.password"
+          autocomplete="false"
+          value={authenticationFormData.password}
+          onChange={handleChange}
+        />
+      </div>
 
       <FlashMessage
         message={message}
         setMessage={setMessage}
         type={messageType}
-        className="login-form__flash-message"
+        className="authentication-form__flash-message"
       />
+
+      <div className="authentication-form__button-container">
+        <div className="authentication-form__link-wrapper">
+          <RouterLink
+            path="/forgot-password"
+            className="authentication-form__link"
+            modifier="hover"
+          >
+            {"authenticationPage.forgotLink"}
+          </RouterLink>
+          <RouterLink
+            path="/register"
+            className="authentication-form__link"
+            modifier="hover"
+          >
+            {"authenticationPage.linkButton"}
+          </RouterLink>
+        </div>
+
+        <SubmitButton
+          className="authentication-form__submit-button"
+          modifier="hover"
+          isLoading={isAuthenticationLoading}
+        >
+          {"authenticationPage.authenticationButton"}
+        </SubmitButton>
+      </div>
     </form>
   );
 };

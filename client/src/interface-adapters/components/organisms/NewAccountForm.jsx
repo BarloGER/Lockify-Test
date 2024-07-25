@@ -30,14 +30,17 @@ export const NewAccountForm = ({
   };
 
   return (
-    <div className={`new-account__form ${isCreating ? "creating" : ""}`}>
-      <div className="new-account__form_inner">
-        <div className="new-account__form_front">
-          <div className="plus-container" onClick={handlePlusClick}>
+    <div className={`new-account-form ${isCreating ? "creating" : ""}`}>
+      <div className="new-account-form--inner">
+        <div className="new-account-form--front">
+          <div
+            className="new-account-form__plus-container"
+            onClick={handlePlusClick}
+          >
             <span className="plus">+</span>
           </div>
         </div>
-        <div className="new-account__form_back">
+        <div className="new-account-form--back">
           <form onSubmit={processCreateAccount}>
             <Input
               id="accountName"

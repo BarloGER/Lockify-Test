@@ -102,15 +102,20 @@ export class UserEntity {
       "username",
       "email",
       "password",
+      "confirmPassword",
       "isNewsletterAllowed",
     ];
 
     const fieldsToUpdate = validFields.filter((field) => this[field]);
+
+    if (this.password) {
+      fieldsToUpdate.push("confirmPassword");
+    }
+
     if (fieldsToUpdate.length === 0) {
       return "USER_VALIDATION_001";
     }
 
-    // Validate each passed field
     for (const field of fieldsToUpdate) {
       const validateMethod = `validate${
         field.charAt(0).toUpperCase() + field.slice(1)

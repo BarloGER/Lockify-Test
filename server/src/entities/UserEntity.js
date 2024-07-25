@@ -44,7 +44,7 @@ exports.UserEntity = class UserEntity {
     return null;
   }
 
-  validateForCreateUser() {
+  validateForRegistration() {
     const validFields = [
       "username",
       "email",
@@ -67,8 +67,8 @@ exports.UserEntity = class UserEntity {
       this.validateEmail(true) ||
       this.validatePassword(true) ||
       this.validateEncryptedSecret(true) ||
-      this.validatesecretEncryptionIv(true) ||
-      this.secretEncryptionSalt(true) ||
+      this.validateSecretEncryptionIv(true) ||
+      this.validateSecretEncryptionSalt(true) ||
       this.validateIsNewsletterAllowed(true)
     );
   }

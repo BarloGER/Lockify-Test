@@ -1,6 +1,8 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import { UserProfileTemplate } from "../templates";
 import { UserProfileForm } from "../organisms";
+import { Settings } from "../organisms";
 
 export const UserProfilePage = () => {
   const { user, setUser, userInteractor, isAuthenticated, setIsAuthenticated } =
@@ -114,16 +116,23 @@ export const UserProfilePage = () => {
   };
 
   return (
-    <UserProfileForm
-      updateUserFormData={updateUserFormData}
-      setUpdateUserFormData={setUpdateUserFormData}
-      isUserLoading={isUserLoading}
-      handleChange={handleChange}
-      processUpdateUser={processUpdateUser}
-      processDeleteUser={processDeleteUser}
-      message={message}
-      setMessage={setMessage}
-      messageType={messageType}
-    />
+    <UserProfileTemplate>
+      <section className="user-profile-template__section">
+        <UserProfileForm
+          updateUserFormData={updateUserFormData}
+          setUpdateUserFormData={setUpdateUserFormData}
+          isUserLoading={isUserLoading}
+          handleChange={handleChange}
+          processUpdateUser={processUpdateUser}
+          processDeleteUser={processDeleteUser}
+          message={message}
+          setMessage={setMessage}
+          messageType={messageType}
+        />
+      </section>
+      <section className="user-profile-template__section">
+        <Settings />
+      </section>
+    </UserProfileTemplate>
   );
 };

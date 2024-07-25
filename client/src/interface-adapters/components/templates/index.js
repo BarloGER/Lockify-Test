@@ -1,7 +1,13 @@
-export { AccountTemplate } from "./AccountTemplate";
-export { AuthTemplate } from "./AuthTemplate";
+export { AccountsTemplate } from "./AccountsTemplate";
+export { AuthenticationTemplate } from "./AuthenticationTemplate";
 export { ContactTemplate } from "./ContactTemplate";
 export { BankTemplate } from "./BankTemplate";
+export { BlockedTemplate } from "./BlockedTemplate";
 export { DataVaultTemplate } from "./DataVaultTemplate";
+export { ForgotPasswordTemplate } from "./ForgotPasswordTemplate";
+export { LandingPageTemplate } from "./LandingPageTemplate";
 export { LoadingTemplate } from "./LoadingTemplate";
 export { NoteTemplate } from "./NoteTemplate";
+export { RegisterTemplate } from "./RegisterTemplate";
+export { UserProfileTemplate } from "./UserProfileTemplate";
+export { VerificationTemplate } from "./VerificationTemplate";

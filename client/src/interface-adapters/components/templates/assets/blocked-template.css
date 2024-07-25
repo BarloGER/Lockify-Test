@@ -1,0 +1,19 @@
+.blocked-template {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: auto;
+}
+
+.blocked-template__section {
+  width: 90%;
+  height: calc(100vh - 50px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

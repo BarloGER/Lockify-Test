@@ -1,7 +1,12 @@
 import PropTypes from "prop-types";
-import { Input, RouterLink, Paragraph } from "../atoms";
+import { Heading1, Input, RouterLink } from "../atoms";
 import { SubmitButton } from "../molecules";
-import { FlashMessage, Checkbox } from "../molecules";
+import {
+  Checkbox,
+  FlashMessage,
+  HiddenInput,
+  PasswordInput,
+} from "../molecules";
 import "./assets/register-form.css";
 
 export const RegisterForm = ({
@@ -15,70 +20,72 @@ export const RegisterForm = ({
 }) => {
   return (
     <form className="register-form" onSubmit={processRegistration}>
-      <Input
-        id="username"
-        name="username"
-        label="registerPage.username"
-        type="text"
-        value={newUserFormData.username}
-        onChange={handleChange}
-      />
-      <Input
-        id="email"
-        name="email"
-        label="registerPage.email"
-        type="email"
-        value={newUserFormData.email}
-        onChange={handleChange}
-      />
-      <Input
-        id="password"
-        name="password"
-        label="registerPage.password"
-        type="password"
-        value={newUserFormData.password}
-        onChange={handleChange}
-      />
-      <Input
-        id="confirmPassword"
-        name="confirmPassword"
-        label="registerPage.confirmPassword"
-        type="password"
-        value={newUserFormData.confirmPassword}
-        onChange={handleChange}
-      />
-      <Input
-        id="masterPassword"
-        name="masterPassword"
-        label="registerPage.masterPassword"
-        type="password"
-        value={newUserFormData.masterPassword}
-        onChange={handleChange}
-      />
-      <Input
-        id="confirmMasterPassword"
-        name="confirmMasterPassword"
-        label="registerPage.confirmMasterPassword"
-        type="password"
-        value={newUserFormData.confirmMasterPassword}
-        onChange={handleChange}
-      />
-      <Checkbox
-        id="isNewsletterAllowed"
-        name="isNewsletterAllowed"
-        label="registerPage.newsletter"
-        checked={newUserFormData.isNewsletterAllowed}
-        onChange={handleChange}
-      />
-      <SubmitButton
-        className="register-form__button"
-        modifier="hover"
-        isLoading={isRegistrationLoading}
-      >
-        {"registerPage.registerButton"}
-      </SubmitButton>
+      <Heading1 text="registerPage.title" />
 
-      <Paragraph text="registerPage.linkMessage" />
+      <div className="register-form__input-container">
+        <Input
+          id="username"
+          name="username"
+          label="registerPage.username"
+          type="text"
+          value={newUserFormData.username}
+          onChange={handleChange}
+        />
+        <Input
+          id="email"
+          name="email"
+          label="registerPage.email"
+          type="email"
+          value={newUserFormData.email}
+          onChange={handleChange}
+        />
+        <HiddenInput
+          id="password"
+          name="password"
+          label="registerPage.password"
+          autocomplete="false"
+          value={newUserFormData.password}
+          onChange={handleChange}
+        />
+        <HiddenInput
+          id="confirmPassword"
+          name="confirmPassword"
+          label="registerPage.confirmPassword"
+          autocomplete="false"
+          value={newUserFormData.confirmPassword}
+          onChange={handleChange}
+        />
+        <PasswordInput
+          id="masterPassword"
+          name="masterPassword"
+          label="registerPage.masterPassword"
+          type="password"
+          value={newUserFormData.masterPassword}
+          onChange={handleChange}
+        />
+        <HiddenInput
+          id="confirmMasterPassword"
+          name="confirmMasterPassword"
+          label="registerPage.confirmMasterPassword"
+          autocomplete="false"
+          value={newUserFormData.confirmMasterPassword}
+          onChange={handleChange}
+        />
+        <Checkbox
+          id="isNewsletterAllowed"
+          name="isNewsletterAllowed"
+          label="registerPage.newsletter"
+          checked={newUserFormData.isNewsletterAllowed}
+          onChange={handleChange}
+        />
+      </div>
+
+      <FlashMessage
+        message={message}
+        setMessage={setMessage}
+        type={messageType}
+        className="register-form__flash-message"
+      />
 
       <RouterLink
         path="/login"
@@ -88,12 +95,13 @@ export const RegisterForm = ({
         {"registerPage.linkButton"}
       </RouterLink>
 
-      <FlashMessage
-        message={message}
-        setMessage={setMessage}
-        type={messageType}
-        className="register-form__flash-message"
-      />
+      <SubmitButton
+        className="register-form__submit-button"
+        modifier="hover"
+        isLoading={isRegistrationLoading}
+      >
+        {"registerPage.registerButton"}
+      </SubmitButton>
     </form>
   );
 };

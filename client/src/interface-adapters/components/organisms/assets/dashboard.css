@@ -1,0 +1,91 @@
+.dashboard-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #1e1e1e;
+  color: white;
+}
+
+.dashboard {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.dashboard__security-info,
+.dashboard__not-optimal-passwords,
+.dashboard__duplicate-passwords {
+  background: #2e2e2e;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 10px;
+  flex: 1;
+  min-width: 300px;
+}
+
+.dashboard__security-info h2,
+.dashboard__not-optimal-passwords h2,
+.dashboard__duplicate-passwords h2 {
+  text-align: center;
+}
+
+.dashboard__security-status {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.dashboard__security-status-ring {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background: conic-gradient(green 0%, red 100%);
+}
+
+.dashboard__security-status-inner {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: #2e2e2e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 20px;
+  position: absolute;
+}
+
+.dashboard__password--unsecure {
+  background: red;
+  padding: 5px;
+  margin: 5px 0;
+  border-radius: 5px;
+}
+
+.dashboard__password--sufficient {
+  background: orange;
+  padding: 5px;
+  margin: 5px 0;
+  border-radius: 5px;
+}
+
+.dashboard__password--strong {
+  background: yellow;
+  padding: 5px;
+  margin: 5px 0;
+  border-radius: 5px;
+}
+
+.dashboard__password--duplicate {
+  background: grey;
+  padding: 5px;
+  margin: 5px 0;
+  border-radius: 5px;
+}

@@ -36,4 +36,23 @@ export class CryptographyOutputPort {
       message: decryptionError,
     };
   }
+
+  formatSecurityCheck(
+    unsecurePasswords,
+    sufficientPasswords,
+    strongPasswords,
+    veryStrongPasswords,
+    duplicatePasswords,
+    calculatedSecurityScore
+  ) {
+    return {
+      success: true,
+      unsecureAccounts: unsecurePasswords,
+      sufficientAccounts: sufficientPasswords,
+      strongAccounts: strongPasswords,
+      veryStrongAccounts: veryStrongPasswords,
+      duplicateAccounts: duplicatePasswords,
+      securityScore: calculatedSecurityScore,
+    };
+  }
 }

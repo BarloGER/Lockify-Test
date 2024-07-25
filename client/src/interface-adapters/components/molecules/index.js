@@ -1,7 +1,10 @@
 export { AccountCard } from "./AccountCard";
-export { NoteCard } from "./NoteCard";
+export { CryptoLock } from "./CryptoLock";
 export { ContactCard } from "./ContactCard";
 export { BankCard } from "./BankCard";
 export { Checkbox } from "./Checkbox";
 export { FlashMessage } from "./FlashMessage";
+export { HiddenInput } from "./HiddenInput";
+export { NoteCard } from "./NoteCard";
+export { PasswordInput } from "./PasswordInput";
 export { SubmitButton } from "./SubmitButton";

@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Paragraph, Input, Textarea } from "../atoms";
+import { Heading1, Input, Textarea } from "../atoms";
 import { FlashMessage, SubmitButton } from "../molecules";
 import "./assets/support-form.css";
 
@@ -13,8 +13,9 @@ export const SupportForm = ({
   messageType,
 }) => {
   return (
-    <form onSubmit={processSupportRequest}>
-      <Paragraph text="supportPage.text" />
+    <form className="support-form" onSubmit={processSupportRequest}>
+      <Heading1 text="supportPage.title" />
+
       <Input
         id="subject"
         name="subject"

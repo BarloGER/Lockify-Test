@@ -1,7 +1,13 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-import { Input, Button } from "../atoms";
-import { Checkbox, FlashMessage, SubmitButton } from "../molecules";
+import { Heading1, Input, Button } from "../atoms";
+import {
+  Checkbox,
+  FlashMessage,
+  HiddenInput,
+  SubmitButton,
+} from "../molecules";
+import "./assets/user-profile-form.css";
 
 export const UserProfileForm = ({
   updateUserFormData,
@@ -24,7 +30,9 @@ export const UserProfileForm = ({
   };
 
   return (
-    <form onSubmit={processUpdateUser}>
+    <form className="user-profile-form" onSubmit={processUpdateUser}>
+      <Heading1 text="userProfilePage.title" />
+
       <Input
         id="username"
         name="username"
@@ -33,6 +41,7 @@ export const UserProfileForm = ({
         value={updateUserFormData.username}
         onChange={handleChange}
       />
+
       <Input
         id="email"
         name="email"
@@ -41,22 +50,25 @@ export const UserProfileForm = ({
         value={updateUserFormData.email}
         onChange={handleChange}
       />
-      <Input
+
+      <HiddenInput
         id="password"
         name="password"
         label="userProfilePage.password"
-        type="password"
+        autocomplete="false"
         value={updateUserFormData.password}
         onChange={handleChange}
       />
-      <Input
+
+      <HiddenInput
         id="confirmPassword"
         name="confirmPassword"
         label="userProfilePage.confirmPassword"
-        type="password"
+        autocomplete="false"
         value={updateUserFormData.confirmPassword}
         onChange={handleChange}
       />
+
       <Checkbox
         id="newsletter"
         name="newsletter"
@@ -64,11 +76,15 @@ export const UserProfileForm = ({
         checked={updateUserFormData.isNewsletterAllowed}
         onChange={handleCheckboxChange}
       />
+
       <SubmitButton isLoading={isUserLoading}>
         {"userProfilePage.submit"}
       </SubmitButton>
       {isDeleting ? (
         <>
+          <Button onClick={() => setIsDeleting(false)}>
+            {"userProfilePage.cancel"}
+          </Button>
           <Button
             type="button"
             onClick={() => {
@@ -76,9 +92,6 @@ export const UserProfileForm = ({
             }}
           >
             {"userProfilePage.submitDelete"}
-          </Button>
-          <Button onClick={() => setIsDeleting(false)}>
-            {"userProfilePage.cancel"}
           </Button>
         </>
       ) : (
@@ -92,7 +105,6 @@ export const UserProfileForm = ({
         message={message}
         setMessage={setMessage}
         type={messageType}
-        className="user-profile-form__flash-message"
       />
     </form>
   );

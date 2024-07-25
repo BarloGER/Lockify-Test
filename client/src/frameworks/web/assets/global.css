@@ -1,87 +1,92 @@
-/* ---------------------------------- Start of global color vars ---------------------------------- */
+:root {
+  /* Base units */
+  --base-size: 16px; /* Basic size that can be scaled */
+  --spacing-unit: calc(var(--base-size) * 0.5); /* Base distance unit */
 
-/* Design 1 */
-/* :root {
-  --component-color: #252c41;
-  --component-background-color: #2b3348;
+  /* Font sizes */
+  --font-xs: calc(var(--base-size) * 0.75);
+  --font-sm: var(--base-size);
+  --font-md: calc(var(--base-size) * 1.25);
+  --font-lg: calc(var(--base-size) * 1.5);
+  --font-lx: calc(var(--base-size) * 1.75);
+  --font-xl: calc(var(--base-size) * 2);
+
+  /* Paddings */
+  --padding-xs: calc(var(--spacing-unit) * 0.75);
+  --padding-sm: calc(var(--spacing-unit) * 1);
+  --padding-md: calc(var(--spacing-unit) * 1.5);
+  --padding-lg: calc(var(--spacing-unit) * 2);
+
+  /* Margins */
+  --margin-xs: calc(var(--spacing-unit) * 0.75);
+  --margin-sm: calc(var(--spacing-unit) * 1);
+  --margin-md: calc(var(--spacing-unit) * 1.5);
+  --margin-lg: calc(var(--spacing-unit) * 2);
+
+  /* Gaps */
+  --gap-xs: calc(var(--spacing-unit) * 0.75);
+  --gap-sm: calc(var(--spacing-unit) * 1);
+  --gap-md: calc(var(--spacing-unit) * 1.5);
+  --gap-lg: calc(var(--spacing-unit) * 2);
+}
+
+.theme-design1 {
+  /* dark mode */
+  --primary-color: #3a8dca;
+  --primary-color-hover: #2b3348;
   --background-color: #1c2029;
+  --component-background-color: #252c41;
   --text-color: #d1d1d1;
-  --button-color: #3a8dca;
-  --button-color-hover: #2b3348;
-  --input-color: #2a3147;
+  --button-color: #1a74af;
+  --button-hover-color: #d1d1d1;
+  --input-background-color: #2a3147;
   --input-focus-color: #3a8dca;
   --border-color: #3a3f4b;
   --success-color: #27ae60;
   --warning-color: #f2c94c;
   --error-color: #cd1605;
-} */
+  --secondary-background-color: #2b3348;
+  --secondary-text-color: #a3a3a3;
+  --crypto-lock-color: #00ff00;
+}
 
-/* Design 2 */
-/* :root {
-  --component-color: #394053;
-  --component-background-color: #323a4f;
-  --background-color: #262b38;
-  --text-color: #f8f8f2;
-  --button-color: #f29559;
-  --button-color-hover: #f27735;
-  --input-color: #3b4252;
-  --input-focus-color: #d08770;
-  --border-color: #434c5e;
-  --success-color: #a3be8c;
-  --warning-color: #ebcb8b;
-  --error-color: #bf616a;
-} */
-
-/* Design 3 */
-:root {
-  --component-color: #2e3440;
-  --component-background-color: #3b4252;
-  --background-color: #2b303b;
-  --text-color: #e5e9f0;
-  --button-color: #007bff;
-  --button-color-hover: #0056b3;
-  --input-color: #434c5e;
+.theme-design2 {
+  /* light mode */
+  --primary-color: #007bff;
+  --primary-color-hover: #0056b3;
+  --background-color: #ffffff;
+  --component-background-color: #f0f0f0;
+  --text-color: #2e3440;
+  --input-background-color: #e5e9f0;
   --input-focus-color: #88c0d0;
-  --border-color: #4c566a;
+  --border-color: #d8dee9;
   --success-color: #15bd4a;
   --warning-color: #d08770;
   --error-color: #bf616a;
+  --secondary-background-color: #e5e9f0;
+  --secondary-text-color: #4c566a;
+  --crypto-lock-color: #00ff00;
 }
-
-/* ---------------------------------- End of global color vars ---------------------------------- */
-
-/* ---------------------------------- Start of global styling ---------------------------------- */
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-size: 62.5%; /* 1 rem = 10px */
-  font-family: "Roboto", sans-serif;
+  font-family: "Space Mono", monospace;
 }
 
 html {
   height: 100%;
   min-height: 100%;
   margin: 0;
+  scroll-behavior: smooth;
 }
 
 body {
   height: 100%;
   min-height: 100%;
   background-color: var(--background-color);
-  font-family: "Roboto", sans-serif;
-  font-size: 10rem;
   margin: 0;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: "Nanum Gothic", sans-serif;
 }
 
 ol,
@@ -113,7 +118,63 @@ a {
   background-color: darken(var(--border-color), 10%);
 }
 
-/* ---------------------------------- Debugging ---------------------------------- */
+/* Debugging Hilfe */
 .border {
   border: 1px solid var(--error-color);
+}
+
+/* Media Queries für verschiedene Bildschirmgrößen und Orientierungen */
+/* Sehr kleine Mobilgeräte (Handys, hochkant) */
+@media (max-width: 320px) {
+  :root {
+    --base-size: 12px;
+  }
+}
+
+@media (max-width: 479px) {
+  :root {
+    --base-size: 14px;
+  }
+}
+
+/* Kleine Mobilgeräte (Handys, quer) */
+@media (max-width: 480px) and (orientation: landscape) {
+  :root {
+    --base-size: 14px;
+  }
+}
+
+/* Mittelgroße Geräte (Tablets, hochkant) */
+@media (min-width: 481px) and (max-width: 768px) {
+  :root {
+    --base-size: 15px;
+  }
+}
+
+/* Große Geräte (Tablets, quer) */
+@media (min-width: 769px) and (max-width: 1024px) and (orientation: landscape) {
+  :root {
+    --base-size: 16px;
+  }
+}
+
+/* Kleinere Laptops */
+@media (min-width: 1025px) and (max-width: 1366px) {
+  :root {
+    --base-size: 18px;
+  }
+}
+
+/* Desktops */
+@media (min-width: 1367px) and (max-width: 1920px) {
+  :root {
+    --base-size: 20px;
+  }
+}
+
+/* Großbildschirme und 4K Monitore */
+@media (min-width: 1921px) {
+  :root {
+    --base-size: 22px;
+  }
 }

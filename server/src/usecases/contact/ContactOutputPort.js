@@ -2,17 +2,19 @@ exports.ContactOutputPort = class ContactOutputPort {
   constructor() {
     this.success = false;
     this.message = {};
-    this.account = {};
+    this.contact = {};
   }
 
   formatFoundContacts(foundContacts) {
+    const contacts = foundContacts.map((contact) => contact.dataValues);
+
     return {
       success: true,
       message: {
         EN: "Contacts successfully queried.",
         DE: "Kontakte erfolgreich abgefragt.",
       },
-      accounts: foundContacts.dataValues,
+      contacts: contacts,
     };
   }
 
@@ -23,7 +25,7 @@ exports.ContactOutputPort = class ContactOutputPort {
         EN: "Contact successfuly created.",
         DE: "Kontakt erfolgreich erstellt.",
       },
-      account: createdContact.dataValues,
+      contact: createdContact.dataValues,
     };
   }
 
@@ -34,7 +36,7 @@ exports.ContactOutputPort = class ContactOutputPort {
         EN: "Contact updated successfully.",
         DE: "Kontakt erfolgreich aktualisiert",
       },
-      account: updatedContact.dataValues,
+      contact: updatedContact.dataValues,
     };
   }
 

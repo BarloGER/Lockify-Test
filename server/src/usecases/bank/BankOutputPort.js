@@ -6,13 +6,15 @@ exports.BankOutputPort = class BankOutputPort {
   }
 
   formatFoundBanks(foundBanks) {
+    const banks = foundBanks.map((bank) => bank.dataValues);
+
     return {
       success: true,
       message: {
         EN: "Bank accounts successfully queried.",
         DE: "Bankkonten erfolgreich abgefragt.",
       },
-      banks: foundBanks.dataValues,
+      banks: banks,
     };
   }
 

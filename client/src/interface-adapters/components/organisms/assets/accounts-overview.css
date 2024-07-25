@@ -1,17 +1,14 @@
-/* ./assets/accounts-overview.css */
 .accounts-overview {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
-  gap: 20px; /* Setzt einen Abstand zwischen den Karten */
-  justify-content: flex-start; /* Ausrichtung am Anfang */
-  align-items: flex-start; /* Verhindert Höhenunterschiede bei unterschiedlichem Inhalt */
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
   padding: 20px;
   width: 100%;
 }
 
-@media (max-width: 768px) {
-  .accounts-overview {
-    justify-content: center; /* Zentriert die Karten auf kleineren Bildschirmen */
-  }
+.accounts-overview > * {
+  display: inline-flex;
 }

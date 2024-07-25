@@ -1,6 +1,22 @@
-import { useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import { LandingPageTemplate } from "../templates";
+import {
+  LandingPageHero,
+  LandingPageFeatures,
+  LandingPageInstructions,
+} from "../organisms";
 
 export const LandingPage = () => {
-  return <h1>LandingPage</h1>;
+  return (
+    <LandingPageTemplate>
+      <section id="hero" className="landing-page-template__section">
+        <LandingPageHero />
+      </section>
+      <section id="features" className="landing-page-template__section">
+        <LandingPageFeatures />
+      </section>
+      <section id="instructions" className="landing-page-template__section">
+        <LandingPageInstructions />
+      </section>
+    </LandingPageTemplate>
+  );
 };

@@ -1,0 +1,27 @@
+.secondary-navigation-bar {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: var(--font-sm);
+  height: 30px;
+}
+
+.secondary-navigation-bar__list {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding: var(--padding-sm);
+}
+
+.secondary-navigation-bar__lock-button {
+  background: none;
+  color: var(--error-color);
+  height: 100%;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: var(--font-md);
+}

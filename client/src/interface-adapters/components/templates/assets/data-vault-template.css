@@ -1,22 +1,19 @@
-/* Pfad zur CSS-Datei anpassen, z.B. ./assets/data-vault-template.css */
-.dataVaultContainer {
+.data-vault-template {
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 20px;
-  gap: 20px;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 50px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: auto;
 }
 
-.newAccountForm {
-  flex: 1 1 300px; /* Flex-Basis von 300px, aber flexibel */
-}
-
-.accountsContainer {
-  flex: 3 1 100%; /* Nimmt verbleibenden Platz ein */
-}
-
-@media (max-width: 768px) {
-  .dataVaultContainer {
-    flex-direction: column;
-  }
+.data-vault-template__section {
+  margin-top: var(--margin-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
