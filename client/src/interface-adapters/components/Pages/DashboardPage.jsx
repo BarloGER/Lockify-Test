@@ -1,12 +1,13 @@
 import { useState, useContext, useEffect, useMemo, useCallback } from "react";
 import { CryptographyInteractor } from "../../../usecases/cryptography/CryptographyInteractor";
 import { DataVaultContext } from "../../context/DataVaultContext";
-import { Dashboard } from "../organisms";
+import { DashboardSecurityCheck } from "../organisms";
+import { DashboardTemplate } from "../templates/Dashboard-Template";
 
 export const DashboardPage = () => {
   const cryptographyInteractor = useMemo(
     () => new CryptographyInteractor(),
-    []
+    [],
   );
 
   const {
@@ -66,14 +67,10 @@ export const DashboardPage = () => {
   console.log(securityCheckResult);
 
   return (
-    <div className="dashboard-page">
-      <h1>Dashboard</h1>
-      {securityCheckResult && (
-        <Dashboard
-          securityCheckResult={securityCheckResult}
-          accounts={accounts}
-        />
-      )}
-    </div>
+    <DashboardTemplate>
+      <section className="dashboard-template__section">
+        {<DashboardSecurityCheck securityCheckResult={securityCheckResult} />}
+      </section>
+    </DashboardTemplate>
   );
 };

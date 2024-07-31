@@ -104,7 +104,15 @@
     }
   },
 
-  "dashboardPage": {},
+  "dashboardPage": {
+    "title": "Dashboard",
+    "securityScore": "Sicherheitswert",
+    "sufficientAccount": "Ausreichend gesichert",
+    "strongAccount": "Stark gesichert",
+    "veryStrongAccount": "Sehr stark gesichert",
+    "unsecureAccounts": "Unsichere Passwörter",
+    "duplicateAccounts": "Doppelte Passwörter"
+  },
 
   "dataVaultPage": {
     "title": "Datentresor",

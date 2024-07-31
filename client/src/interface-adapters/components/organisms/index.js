@@ -4,7 +4,7 @@ export { NewAccountForm } from "./NewAccountForm";
 export { NewBankForm } from "./NewBankForm";
 export { NewNoteForm } from "./NewNoteForm";
 export { NewContactForm } from "./NewContactForm";
-export { Dashboard } from "./Dashboard";
+export { DashboardSecurityCheck } from "./DashboardSecurityCheck";
 export { DataVaultForm } from "./DataVaultForm";
 export { ForgotPasswordForm } from "./ForgotPasswordForm";
 export { LandingPageFeatures } from "./LandingPageFeatures";

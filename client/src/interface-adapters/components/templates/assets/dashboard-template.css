@@ -1,8 +1,8 @@
-.user-profile-template {
+.dashboard-template {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-top: 50px;
+  margin-top: 80px;
   position: fixed;
   top: 0;
   left: 0;
@@ -11,8 +11,9 @@
   overflow: auto;
 }
 
-.user-profile-template__section {
+.dashboard-template__section {
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100vh;
 }
