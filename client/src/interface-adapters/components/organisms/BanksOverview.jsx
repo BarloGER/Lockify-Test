@@ -10,18 +10,19 @@ export const BanksOverview = ({
   isBankLoading,
 }) => {
   return (
-    <section className="banks-overview">
+    <ul className="banks-overview">
       {banks.map((bank, index) => (
-        <BankCard
-          key={bank.bankId || index}
-          bank={bank}
-          handleSelectBankForEdit={() => handleSelectBankForEdit(bank.bankId)}
-          processUpdateBank={processUpdateBank}
-          processDeleteBank={processDeleteBank}
-          isLoading={isBankLoading}
-        />
+        <li key={bank.bankId || index}>
+          <BankCard
+            bank={bank}
+            handleSelectBankForEdit={() => handleSelectBankForEdit(bank.bankId)}
+            processUpdateBank={processUpdateBank}
+            processDeleteBank={processDeleteBank}
+            isLoading={isBankLoading}
+          />
+        </li>
       ))}
-    </section>
+    </ul>
   );
 };
 
@@ -42,7 +43,7 @@ BanksOverview.propTypes = {
       expiryDate: PropTypes.string,
       decryptedCardCvvCvc: PropTypes.string,
       cardType: PropTypes.string,
-    })
+    }),
   ).isRequired,
   handleSelectBankForEdit: PropTypes.func.isRequired,
   processUpdateBank: PropTypes.func.isRequired,

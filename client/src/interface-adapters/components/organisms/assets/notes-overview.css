@@ -1,17 +1,8 @@
-/* ./assets/notes-overview.css */
 .notes-overview {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
-  gap: 20px; /* Setzt einen Abstand zwischen den Karten */
-  justify-content: flex-start; /* Ausrichtung am Anfang */
-  align-items: flex-start; /* Verhindert Höhenunterschiede bei unterschiedlichem Inhalt */
-  padding: 20px;
-  width: 100%;
-}
-
-@media (max-width: 768px) {
-  .notes-overview {
-    justify-content: center; /* Zentriert die Karten auf kleineren Bildschirmen */
-  }
+  gap: var(--gap-xs);
+  justify-content: center;
+  width: 90%;
 }

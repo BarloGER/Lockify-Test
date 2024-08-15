@@ -10,18 +10,19 @@ export const NotesOverview = ({
   isNoteLoading,
 }) => {
   return (
-    <section className="notes-overview">
+    <ul className="notes-overview">
       {notes.map((note, index) => (
-        <NoteCard
-          key={note.noteId || index}
-          note={note}
-          handleSelectNoteForEdit={() => handleSelectNoteForEdit(note.noteId)}
-          processUpdateNote={processUpdateNote}
-          processDeleteNote={processDeleteNote}
-          isLoading={isNoteLoading}
-        />
+        <li key={note.noteId || index}>
+          <NoteCard
+            note={note}
+            handleSelectNoteForEdit={() => handleSelectNoteForEdit(note.noteId)}
+            processUpdateNote={processUpdateNote}
+            processDeleteNote={processDeleteNote}
+            isLoading={isNoteLoading}
+          />
+        </li>
       ))}
-    </section>
+    </ul>
   );
 };
 
@@ -31,7 +32,7 @@ NotesOverview.propTypes = {
       noteId: PropTypes.number.isRequired,
       decryptedNoteTitle: PropTypes.string,
       decryptedNoteContent: PropTypes.string,
-    })
+    }),
   ).isRequired,
   handleSelectNoteForEdit: PropTypes.func.isRequired,
   processUpdateNote: PropTypes.func.isRequired,

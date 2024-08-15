@@ -10,20 +10,21 @@ export const AccountsOverview = ({
   isAccountLoading,
 }) => {
   return (
-    <section className="accounts-overview">
+    <ul className="accounts-overview">
       {accounts.map((account, index) => (
-        <AccountCard
-          key={account.accountId || index}
-          account={account}
-          handleSelectAccountForEdit={() =>
-            handleSelectAccountForEdit(account.accountId)
-          }
-          processUpdateAccount={processUpdateAccount}
-          processDeleteAccount={processDeleteAccount}
-          isLoading={isAccountLoading}
-        />
+        <li key={account.accountId || index}>
+          <AccountCard
+            account={account}
+            handleSelectAccountForEdit={() =>
+              handleSelectAccountForEdit(account.accountId)
+            }
+            processUpdateAccount={processUpdateAccount}
+            processDeleteAccount={processDeleteAccount}
+            isLoading={isAccountLoading}
+          />
+        </li>
       ))}
-    </section>
+    </ul>
   );
 };
 
@@ -37,7 +38,7 @@ AccountsOverview.propTypes = {
       email: PropTypes.string,
       decryptedPassword: PropTypes.string,
       decryptedNotes: PropTypes.string,
-    })
+    }),
   ).isRequired,
   handleSelectAccountForEdit: PropTypes.func.isRequired,
   processUpdateAccount: PropTypes.func.isRequired,

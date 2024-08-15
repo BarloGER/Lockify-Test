@@ -55,7 +55,7 @@ export const ContactsPage = () => {
     { value: "birthDate" },
   ];
   const filteredContacts = contacts.filter((contact) =>
-    contact[selectedOption].toLowerCase().includes(searchTerm.toLowerCase())
+    contact[selectedOption].toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const handleChange = (event) => {
@@ -70,7 +70,7 @@ export const ContactsPage = () => {
     const unvalidatedUserInput = newContactFormData;
     const validateUserInput =
       await contactInteractor.validateUserInputForCreateContact(
-        unvalidatedUserInput
+        unvalidatedUserInput,
       );
     if (!validateUserInput.success) {
       setIsContactLoading(false);
@@ -111,9 +111,8 @@ export const ContactsPage = () => {
       notesEncryptionSalt: encryptedNotes.salt,
     };
 
-    const createContactResponse = await contactInteractor.createContact(
-      encryptedContactData
-    );
+    const createContactResponse =
+      await contactInteractor.createContact(encryptedContactData);
     if (
       !createContactResponse.success &&
       createContactResponse.message === "Failed to fetch"
@@ -181,7 +180,7 @@ export const ContactsPage = () => {
     e,
     contactId,
     updateContactFormData,
-    setIsEditing
+    setIsEditing,
   ) => {
     e.preventDefault();
     setIsContactLoading(true);
@@ -196,7 +195,7 @@ export const ContactsPage = () => {
     const unvalidatedUserInput = updateContactFormData;
     const validateUserInput =
       await contactInteractor.validateUserInputForUpdateContact(
-        unvalidatedUserInput
+        unvalidatedUserInput,
       );
     if (!validateUserInput.success) {
       setIsContactLoading(false);
@@ -239,7 +238,7 @@ export const ContactsPage = () => {
 
     const updateContactResponse = await contactInteractor.updateContact(
       contactId,
-      encryptedContactData
+      encryptedContactData,
     );
     if (!updateContactResponse.success) {
       setIsContactLoading(false);
@@ -288,7 +287,7 @@ export const ContactsPage = () => {
 
     // Update local state
     const updatedContacts = contacts.filter(
-      (contact) => contact.contactId !== contactId
+      (contact) => contact.contactId !== contactId,
     );
 
     setContacts(updatedContacts);
@@ -299,39 +298,45 @@ export const ContactsPage = () => {
 
   return (
     <ContactTemplate>
-      <SearchInput
-        placeholder={selectedOption}
-        onSearchChange={setSearchTerm}
-        searchOptions={searchOptions}
-        onOptionChange={(e) => setSelectedOption(e.target.value)}
-        selectedOption={selectedOption}
-        pageName="contactsPage"
-      />
-      <FlashMessage
+      <section className="contacts-template__section">
+        <SearchInput
+          placeholder={selectedOption}
+          onSearchChange={setSearchTerm}
+          searchOptions={searchOptions}
+          onOptionChange={(e) => setSelectedOption(e.target.value)}
+          selectedOption={selectedOption}
+          pageName="contactsPage"
+        />
+      </section>
+      {/* <FlashMessage
         message={message}
         setMessage={setMessage}
         type={messageType}
         className="contact-page__flash-message"
-      />
-      <NewContactForm
-        newContactFormData={newContactFormData}
-        setNewContactFormData={setNewContactFormData}
-        handleChange={handleChange}
-        processCreateContact={(e) => processCreateContact(e, masterPassword)}
-        isContactLoading={isContactLoading}
-        message={message}
-        setMessage={setMessage}
-        messageType={messageType}
-      />
-      <ContactsOverview
-        contacts={filteredContacts}
-        handleSelectContactForEdit={handleSelectContactForEdit}
-        processUpdateContact={processUpdateContact}
-        processDeleteContact={processDeleteContact}
-        isContactLoading={isContactLoading}
-        message={message}
-        messageType={messageType}
-      />
+      /> */}
+      <section className="accounts-template__section">
+        <NewContactForm
+          newContactFormData={newContactFormData}
+          setNewContactFormData={setNewContactFormData}
+          handleChange={handleChange}
+          processCreateContact={(e) => processCreateContact(e, masterPassword)}
+          isContactLoading={isContactLoading}
+          message={message}
+          setMessage={setMessage}
+          messageType={messageType}
+        />
+      </section>
+      <section className="accounts-template__section">
+        <ContactsOverview
+          contacts={filteredContacts}
+          handleSelectContactForEdit={handleSelectContactForEdit}
+          processUpdateContact={processUpdateContact}
+          processDeleteContact={processDeleteContact}
+          isContactLoading={isContactLoading}
+          message={message}
+          messageType={messageType}
+        />
+      </section>
     </ContactTemplate>
   );
 };

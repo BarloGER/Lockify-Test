@@ -10,9 +10,8 @@ exports.AccountInteractor = class AccountInteractor {
   }
 
   async getAccounts(userId) {
-    const foundAccounts = await this.accountRepository.findAccountsByUserId(
-      userId
-    );
+    const foundAccounts =
+      await this.accountRepository.findAccountsByUserId(userId);
     if (!foundAccounts) {
       throw new ErrorResponse({
         errorCode: "USER_NOT_FOUND_002",
@@ -34,9 +33,8 @@ exports.AccountInteractor = class AccountInteractor {
 
     validAccountEntity.userId = userId;
 
-    const createdAccount = await this.accountRepository.createAccount(
-      validAccountEntity
-    );
+    const createdAccount =
+      await this.accountRepository.createAccount(validAccountEntity);
     if (!createdAccount) {
       throw new ErrorResponse({ errorCode: "DB_SERVICE_002" });
     }
@@ -56,7 +54,7 @@ exports.AccountInteractor = class AccountInteractor {
 
     const updatedAccount = await this.accountRepository.updateAccount(
       accountId,
-      validAccountEntity
+      validAccountEntity,
     );
     if (!updatedAccount) {
       throw new ErrorResponse({
@@ -77,19 +75,16 @@ exports.AccountInteractor = class AccountInteractor {
       });
     }
 
-    const foundAccount = await this.accountRepository.findAccountById(
-      accountId
-    );
+    const foundAccount =
+      await this.accountRepository.findAccountById(accountId);
     if (!foundAccount) {
       throw new ErrorResponse({
         errorCode: "ACCOUNT_NOT_FOUND_002",
       });
     }
 
-    const deletedAccount = await this.accountRepository.deleteAccount(
-      accountId,
-      data
-    );
+    const deletedAccount =
+      await this.accountRepository.deleteAccount(accountId);
     if (!deletedAccount) {
       throw new ErrorResponse({
         errorCode: "DB_SERVICE_002",

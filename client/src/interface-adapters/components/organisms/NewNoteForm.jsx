@@ -26,14 +26,9 @@ export const NewNoteForm = ({
   };
 
   return (
-    <div className={`new-note__form ${isCreating ? "creating" : ""}`}>
-      <div className="new-note__form_inner">
-        <div className="new-note__form_front">
-          <div className="plus-container" onClick={handlePlusClick}>
-            <span className="plus">+</span>
-          </div>
-        </div>
-        <div className="new-note__form_back">
+    <div className="new-note-form">
+      {isCreating ? (
+        <div className="new-note-form__inner">
           <form onSubmit={processCreateNote}>
             <Input
               id="noteTitle"
@@ -49,27 +44,37 @@ export const NewNoteForm = ({
               value={newNoteFormData.noteContent}
               onChange={handleChange}
             />
-            <SubmitButton
-              className="note-form__button"
-              modifier="hover"
-              isLoading={isNoteLoading}
-            >
-              {"notesPage.submitNewNote"}
-            </SubmitButton>
 
-            <Button onClick={handlePlusClick} modifier="hover">
-              {"notesPage.cancel"}
-            </Button>
+            <div className="new-note-form__button-wrapper">
+              <SubmitButton
+                className="new-note-form__button"
+                modifier="hover"
+                isLoading={isNoteLoading}
+              >
+                {"notesPage.submitNewNote"}
+              </SubmitButton>
+
+              <Button onClick={handlePlusClick} modifier="hover">
+                {"notesPage.cancel"}
+              </Button>
+            </div>
 
             <FlashMessage
               message={message}
               setMessage={setMessage}
               type={messageType}
-              className="note-form__flash-message"
+              className="new-note-form__flash-message"
             />
           </form>
         </div>
-      </div>
+      ) : (
+        <div
+          className="new-note-form__inner"
+          onClick={() => setIsCreating(!isCreating)}
+        >
+          <span className="plus">+</span>
+        </div>
+      )}
     </div>
   );
 };

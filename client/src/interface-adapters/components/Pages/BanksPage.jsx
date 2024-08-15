@@ -53,7 +53,7 @@ export const BanksPage = () => {
     { value: "cardType" },
   ];
   const filteredBanks = banks.filter((bank) =>
-    bank[selectedOption].toLowerCase().includes(searchTerm.toLowerCase())
+    bank[selectedOption].toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const handleChange = (event) => {
@@ -137,9 +137,8 @@ export const BanksPage = () => {
       cardType: validBankEntity.cardType,
     };
 
-    const createBankResponse = await bankInteractor.createBank(
-      encryptedBankData
-    );
+    const createBankResponse =
+      await bankInteractor.createBank(encryptedBankData);
     if (
       !createBankResponse.success &&
       createBankResponse.message === "Failed to fetch"
@@ -209,7 +208,7 @@ export const BanksPage = () => {
     e,
     bankId,
     updateBankFormData,
-    setIsEditing
+    setIsEditing,
   ) => {
     e.preventDefault();
     setIsBankLoading(true);
@@ -221,7 +220,7 @@ export const BanksPage = () => {
       return;
     }
 
-    const unvalidatedUserInput = newBankFormData;
+    const unvalidatedUserInput = updateBankFormData;
     const validateUserInput =
       await bankInteractor.validateUserInputForCreateBank(unvalidatedUserInput);
     if (!validateUserInput.success) {
@@ -295,7 +294,7 @@ export const BanksPage = () => {
 
     const updateBankResponse = await bankInteractor.updateBank(
       bankId,
-      encryptedBankData
+      encryptedBankData,
     );
     if (!updateBankResponse.success) {
       setIsBankLoading(false);
@@ -354,39 +353,46 @@ export const BanksPage = () => {
 
   return (
     <BankTemplate>
-      <SearchInput
-        placeholder={selectedOption}
-        onSearchChange={setSearchTerm}
-        searchOptions={searchOptions}
-        onOptionChange={(e) => setSelectedOption(e.target.value)}
-        selectedOption={selectedOption}
-        pageName="banksPage"
-      />
+      <section className="banks-template__section">
+        <SearchInput
+          placeholder={selectedOption}
+          onSearchChange={setSearchTerm}
+          searchOptions={searchOptions}
+          onOptionChange={(e) => setSelectedOption(e.target.value)}
+          selectedOption={selectedOption}
+          pageName="banksPage"
+        />
+      </section>
+      {/* 
       <FlashMessage
         message={message}
         setMessage={setMessage}
         type={messageType}
         className="bank-page__flash-message"
-      />
-      <NewBankForm
-        newBankFormData={newBankFormData}
-        setNewBankFormData={setNewBankFormData}
-        handleChange={handleChange}
-        processCreateBank={(e) => processCreateBank(e, masterPassword)}
-        isBankLoading={isBankLoading}
-        message={message}
-        setMessage={setMessage}
-        messageType={messageType}
-      />
-      <BanksOverview
-        banks={filteredBanks}
-        handleSelectBankForEdit={handleSelectBankForEdit}
-        processUpdateBank={processUpdateBank}
-        processDeleteBank={processDeleteBank}
-        isBankLoading={isBankLoading}
-        message={message}
-        messageType={messageType}
-      />
+      /> */}
+      <section className="banks-template__section">
+        <NewBankForm
+          newBankFormData={newBankFormData}
+          setNewBankFormData={setNewBankFormData}
+          handleChange={handleChange}
+          processCreateBank={(e) => processCreateBank(e, masterPassword)}
+          isBankLoading={isBankLoading}
+          message={message}
+          setMessage={setMessage}
+          messageType={messageType}
+        />
+      </section>
+      <section className="banks-template__section">
+        <BanksOverview
+          banks={filteredBanks}
+          handleSelectBankForEdit={handleSelectBankForEdit}
+          processUpdateBank={processUpdateBank}
+          processDeleteBank={processDeleteBank}
+          isBankLoading={isBankLoading}
+          message={message}
+          messageType={messageType}
+        />
+      </section>
     </BankTemplate>
   );
 };

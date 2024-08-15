@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import {
+  Heading1,
   Input,
   Span,
   Button,
@@ -10,17 +11,18 @@ import {
 } from "../atoms";
 import { PasswordInput } from "./PasswordInput";
 import { SubmitButton } from "./SubmitButton";
+import { SlArrowUp, SlArrowDown } from "react-icons/sl";
 import "./assets/account-card.css";
 
 export const AccountCard = ({
   account,
-  handleSelectAccountForEdit,
   processUpdateAccount,
   processDeleteAccount,
   isLoading,
 }) => {
   const { t } = useTranslation();
 
+  const [isClicked, setIsClicked] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -52,138 +54,154 @@ export const AccountCard = ({
       e,
       account.accountId,
       updateAccountFormData,
-      setIsEditing
+      setIsEditing,
     );
   };
 
   return (
-    <div className={`account__card ${isEditing ? "editing" : ""}`}>
-      <div className="account__card_inner">
-        <div
-          className="account__card_front"
-          onClick={() => handleSelectAccountForEdit(account.accountId)}
-        >
-          <h3>{account.accountName}</h3>
-          <p>
-            <strong>{t("accountsPage.accountUrl")}:</strong>{" "}
-            <a
-              href={account.accountUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {account.accountUrl || ""}
-            </a>
-          </p>
-          <p>
-            <strong>{t("accountsPage.username")}:</strong>{" "}
-            <Span text={account.username} />
-          </p>
-          <p>
-            <strong>{t("accountsPage.email")}:</strong>{" "}
-            <Span text={account.email} />
-          </p>
-          <p>
-            <strong>{t("accountsPage.password")}:</strong>{" "}
-            <Span
-              text={account.decryptedPassword || ""}
-              state={isPasswordHidden}
-            />
-            <ToggleVisibilityButton
-              isValueHidden={isPasswordHidden}
-              onClick={() => setIsPasswordHidden(!isPasswordHidden)}
-            />
-            <CopyButton
-              onClick={() =>
-                navigator.clipboard.writeText(account.decryptedPassword)
-              }
-            />
-          </p>
-          <p>
-            <strong>{t("accountsPage.notes")}:</strong>{" "}
-            <Span text={account.decryptedNotes} />
-          </p>
-          {isDeleting ? (
-            <>
-              <Button
-                type="button"
-                onClick={() => {
-                  processDeleteAccount(account.accountId), setIsDeleting(false);
-                }}
-              >
-                {"accountsPage.submitDelete"}
-              </Button>
-              <Button onClick={() => setIsDeleting(false)}>
-                {"accountsPage.cancel"}
-              </Button>
-            </>
+    <div className="account-card">
+      <div
+        className="account-card__title"
+        onClick={() => setIsClicked(!isClicked)}
+      >
+        <Heading1 text={account.accountName} />
+        {isClicked ? <SlArrowUp /> : <SlArrowDown />}
+      </div>
+
+      {isClicked && (
+        <div className="account-card--expanded">
+          {isEditing ? (
+            <div className="account-card--editing">
+              <form onSubmit={handleSubmit} className="account__form">
+                <Input
+                  id={`accountName-${account.accountId}`}
+                  label={"accountsPage.accountName"}
+                  type="text"
+                  value={editedAccount.accountName}
+                  onChange={(e) => handleChange(e, "accountName")}
+                  name="accountName"
+                />
+                <Input
+                  id={`accountUrl-${account.accountId}`}
+                  label={"accountsPage.accountUrl"}
+                  type="text"
+                  value={editedAccount.accountUrl}
+                  onChange={(e) => handleChange(e, "accountUrl")}
+                  name="accountUrl"
+                />
+                <Input
+                  id={`username-${account.accountId}`}
+                  label={"accountsPage.username"}
+                  type="text"
+                  value={editedAccount.username}
+                  onChange={(e) => handleChange(e, "username")}
+                  name="username"
+                />
+                <Input
+                  id={`email-${account.accountId}`}
+                  label={"accountsPage.email"}
+                  type="email"
+                  value={editedAccount.email}
+                  onChange={(e) => handleChange(e, "email")}
+                  name="email"
+                />
+                <PasswordInput
+                  id={`password-${account.accountId}`}
+                  label={"accountsPage.password"}
+                  value={editedAccount.password}
+                  onChange={handleChange}
+                  name="password"
+                />
+                <Input
+                  id={`notes-${account.accountId}`}
+                  label={"accountsPage.notes"}
+                  type="text"
+                  value={editedAccount.notes}
+                  onChange={(e) => handleChange(e, "notes")}
+                  name="notes"
+                />
+                <div className="account-card__button-wrapper">
+                  <SubmitButton isLoading={isLoading}>
+                    {"accountsPage.submitEdit"}
+                  </SubmitButton>
+                  <Button onClick={() => setIsEditing(false)}>
+                    {"accountsPage.cancel"}
+                  </Button>
+                </div>
+              </form>
+            </div>
           ) : (
-            <>
-              <Button onClick={() => setIsEditing(!isEditing)}>
-                {"accountsPage.edit"}
-              </Button>
-              <Button onClick={() => setIsDeleting(true)}>
-                {"accountsPage.delete"}
-              </Button>
-            </>
+            <div className="account-card--overview">
+              <div className="account-card__info-container">
+                <strong>{t("accountsPage.accountUrl")}:</strong>{" "}
+                <a
+                  href={account.accountUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {account.accountUrl || ""}
+                </a>
+              </div>
+              <div className="account-card__info-container">
+                <strong>{t("accountsPage.username")}:</strong>{" "}
+                <Span text={account.username} />
+              </div>
+              <div className="account-card__info-container">
+                <strong>{t("accountsPage.email")}:</strong>{" "}
+                <Span text={account.email} />
+              </div>
+              <div className="account-card__info-container">
+                <strong>{t("accountsPage.password")}:</strong>{" "}
+                <div className="account-card__password-container">
+                  <Span
+                    text={account.decryptedPassword || ""}
+                    state={isPasswordHidden}
+                  />
+                  <ToggleVisibilityButton
+                    isValueHidden={isPasswordHidden}
+                    setIsValueHidden={setIsPasswordHidden}
+                    onClick={() => setIsPasswordHidden(!isPasswordHidden)}
+                  />
+                  <CopyButton
+                    onClick={() =>
+                      navigator.clipboard.writeText(account.decryptedPassword)
+                    }
+                  />
+                </div>
+              </div>
+              <div className="account-card__info-container">
+                <strong>{t("accountsPage.notes")}:</strong>{" "}
+                <Span text={account.decryptedNotes} />
+              </div>
+              {isDeleting ? (
+                <div className="account-card__button-wrapper">
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      processDeleteAccount(account.accountId),
+                        setIsDeleting(false);
+                    }}
+                  >
+                    {"accountsPage.submitDelete"}
+                  </Button>
+                  <Button onClick={() => setIsDeleting(false)}>
+                    {"accountsPage.cancel"}
+                  </Button>
+                </div>
+              ) : (
+                <div className="account-card__button-wrapper">
+                  <Button onClick={() => setIsEditing(!isEditing)}>
+                    {"accountsPage.edit"}
+                  </Button>
+                  <Button onClick={() => setIsDeleting(true)}>
+                    {"accountsPage.delete"}
+                  </Button>
+                </div>
+              )}
+            </div>
           )}
         </div>
-        <div className="account__card_back">
-          <form onSubmit={handleSubmit} className="account__form">
-            <Input
-              id={`accountName-${account.accountId}`}
-              label={"accountsPage.accountName"}
-              type="text"
-              value={editedAccount.accountName}
-              onChange={(e) => handleChange(e, "accountName")}
-              name="accountName"
-            />
-            <Input
-              id={`accountUrl-${account.accountId}`}
-              label={"accountsPage.accountUrl"}
-              type="text"
-              value={editedAccount.accountUrl}
-              onChange={(e) => handleChange(e, "accountUrl")}
-              name="accountUrl"
-            />
-            <Input
-              id={`username-${account.accountId}`}
-              label={"accountsPage.username"}
-              type="text"
-              value={editedAccount.username}
-              onChange={(e) => handleChange(e, "username")}
-              name="username"
-            />
-            <Input
-              id={`email-${account.accountId}`}
-              label={"accountsPage.email"}
-              type="email"
-              value={editedAccount.email}
-              onChange={(e) => handleChange(e, "email")}
-              name="email"
-            />
-            <PasswordInput
-              value={editedAccount.password}
-              onChange={handleChange}
-            />
-            <Input
-              id={`notes-${account.accountId}`}
-              label={"accountsPage.notes"}
-              type="text"
-              value={editedAccount.notes}
-              onChange={(e) => handleChange(e, "notes")}
-              name="notes"
-            />
-            <div>
-              <SubmitButton isLoading={isLoading}>
-                {"account.submitEdit"}
-              </SubmitButton>
-              <Button onClick={() => setIsEditing(false)}>
-                {"account.cancel"}
-              </Button>
-            </div>
-          </form>
-        </div>
-      </div>
+      )}
     </div>
   );
 };

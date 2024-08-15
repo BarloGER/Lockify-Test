@@ -30,17 +30,9 @@ export const NewAccountForm = ({
   };
 
   return (
-    <div className={`new-account-form ${isCreating ? "creating" : ""}`}>
-      <div className="new-account-form--inner">
-        <div className="new-account-form--front">
-          <div
-            className="new-account-form__plus-container"
-            onClick={handlePlusClick}
-          >
-            <span className="plus">+</span>
-          </div>
-        </div>
-        <div className="new-account-form--back">
+    <div className="new-account-form">
+      {isCreating ? (
+        <div className="new-account-form__inner">
           <form onSubmit={processCreateAccount}>
             <Input
               id="accountName"
@@ -87,27 +79,36 @@ export const NewAccountForm = ({
               onChange={handleChange}
             />
 
-            <SubmitButton
-              className="account-form__button"
-              modifier="hover"
-              isLoading={isAccountLoading}
-            >
-              {"accountsPage.submitNewAccount"}
-            </SubmitButton>
+            <div className="new-account-form__button-wrapper">
+              <SubmitButton
+                className="account-form__button"
+                modifier="hover"
+                isLoading={isAccountLoading}
+              >
+                {"accountsPage.submitNewAccount"}
+              </SubmitButton>
 
-            <Button onClick={handlePlusClick} modifier="hover">
-              {"accountsPage.cancel"}
-            </Button>
+              <Button onClick={handlePlusClick} modifier="hover">
+                {"accountsPage.cancel"}
+              </Button>
+            </div>
 
             <FlashMessage
               message={message}
               setMessage={setMessage}
               type={messageType}
-              className="account-form__flash-message"
+              className="new-account-form__flash-message"
             />
           </form>
         </div>
-      </div>
+      ) : (
+        <div
+          className="new-account-form__inner"
+          onClick={() => setIsCreating(!isCreating)}
+        >
+          <span className="plus">+</span>
+        </div>
+      )}
     </div>
   );
 };

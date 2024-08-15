@@ -30,5 +30,7 @@ exports.AccountInputPort = class AccountInputPort {
     if (validationError) {
       return { validationError };
     }
+
+    return validAccountEntity;
   }
 };
