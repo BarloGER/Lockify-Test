@@ -32,7 +32,7 @@ export const NotesPage = () => {
 
   const searchOptions = [{ value: "decryptedNoteTitle" }];
   const filteredNotes = notes.filter((note) =>
-    note[selectedOption].toLowerCase().includes(searchTerm.toLowerCase())
+    note[selectedOption].toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const handleChange = (event) => {
@@ -90,9 +90,8 @@ export const NotesPage = () => {
       noteContentEncryptionSalt: encryptedNoteContent.salt,
     };
 
-    const createNoteResponse = await noteInteractor.createNote(
-      encryptedNoteData
-    );
+    const createNoteResponse =
+      await noteInteractor.createNote(encryptedNoteData);
     if (
       !createNoteResponse.success &&
       createNoteResponse.message === "Failed to fetch"
@@ -139,7 +138,7 @@ export const NotesPage = () => {
     e,
     noteId,
     updateNoteFormData,
-    setIsEditing
+    setIsEditing,
   ) => {
     e.preventDefault();
     setIsNoteLoading(true);
@@ -199,7 +198,7 @@ export const NotesPage = () => {
 
     const updateNoteResponse = await noteInteractor.updateNote(
       noteId,
-      encryptedNoteData
+      encryptedNoteData,
     );
     if (!updateNoteResponse.success) {
       setIsNoteLoading(false);
@@ -257,39 +256,45 @@ export const NotesPage = () => {
 
   return (
     <NoteTemplate>
-      <SearchInput
-        placeholder={selectedOption}
-        onSearchChange={setSearchTerm}
-        searchOptions={searchOptions}
-        onOptionChange={(e) => setSelectedOption(e.target.value)}
-        selectedOption={selectedOption}
-        pageName="notesPage"
-      />
-      <FlashMessage
+      <section className="notes-template__section">
+        <SearchInput
+          placeholder={selectedOption}
+          onSearchChange={setSearchTerm}
+          searchOptions={searchOptions}
+          onOptionChange={(e) => setSelectedOption(e.target.value)}
+          selectedOption={selectedOption}
+          pageName="notesPage"
+        />
+      </section>
+      {/*  <FlashMessage
         message={message}
         setMessage={setMessage}
         type={messageType}
         className="note-page__flash-message"
-      />
-      <NewNoteForm
-        newNoteFormData={newNoteFormData}
-        setNewNoteFormData={setNewNoteFormData}
-        handleChange={handleChange}
-        processCreateNote={(e) => processCreateNote(e, masterPassword)}
-        isNoteLoading={isNoteLoading}
-        message={message}
-        setMessage={setMessage}
-        messageType={messageType}
-      />
-      <NotesOverview
-        notes={filteredNotes}
-        handleSelectNoteForEdit={handleSelectNoteForEdit}
-        processUpdateNote={processUpdateNote}
-        processDeleteNote={processDeleteNote}
-        isNoteLoading={isNoteLoading}
-        message={message}
-        messageType={messageType}
-      />
+      /> */}
+      <section className="notes-template__section">
+        <NewNoteForm
+          newNoteFormData={newNoteFormData}
+          setNewNoteFormData={setNewNoteFormData}
+          handleChange={handleChange}
+          processCreateNote={(e) => processCreateNote(e, masterPassword)}
+          isNoteLoading={isNoteLoading}
+          message={message}
+          setMessage={setMessage}
+          messageType={messageType}
+        />
+      </section>
+      <section className="notes-template__section">
+        <NotesOverview
+          notes={filteredNotes}
+          handleSelectNoteForEdit={handleSelectNoteForEdit}
+          processUpdateNote={processUpdateNote}
+          processDeleteNote={processDeleteNote}
+          isNoteLoading={isNoteLoading}
+          message={message}
+          messageType={messageType}
+        />
+      </section>
     </NoteTemplate>
   );
 };

@@ -37,14 +37,9 @@ export const NewBankForm = ({
   };
 
   return (
-    <div className={`new-bank__form ${isCreating ? "creating" : ""}`}>
-      <div className="new-bank__form_inner">
-        <div className="new-bank__form_front">
-          <div className="plus-container" onClick={handlePlusClick}>
-            <span className="plus">+</span>
-          </div>
-        </div>
-        <div className="new-bank__form_back">
+    <div className="new-bank-form">
+      {isCreating ? (
+        <div className="new-bank-form__inner">
           <form onSubmit={processCreateBank}>
             <Input
               id="bankName"
@@ -146,28 +141,35 @@ export const NewBankForm = ({
               value={newBankFormData.cardType}
               onChange={handleChange}
             />
+            <div className="new-bank-form__button-wrapper">
+              <SubmitButton
+                className="new-bank-form__button"
+                modifier="hover"
+                isLoading={isBankLoading}
+              >
+                {"banksPage.submitNewBank"}
+              </SubmitButton>
 
-            <SubmitButton
-              className="bank-form__button"
-              modifier="hover"
-              isLoading={isBankLoading}
-            >
-              {"banksPage.submitNewBank"}
-            </SubmitButton>
-
-            <Button onClick={handlePlusClick} modifier="hover">
-              {"banksPage.cancel"}
-            </Button>
-
+              <Button onClick={handlePlusClick} modifier="hover">
+                {"banksPage.cancel"}
+              </Button>
+            </div>
             <FlashMessage
               message={message}
               setMessage={setMessage}
               type={messageType}
-              className="bank-form__flash-message"
+              className="new-bank-form__flash-message"
             />
           </form>
         </div>
-      </div>
+      ) : (
+        <div
+          className="new-bank-form__inner"
+          onClick={() => setIsCreating(!isCreating)}
+        >
+          <span className="plus">+</span>
+        </div>
+      )}
     </div>
   );
 };

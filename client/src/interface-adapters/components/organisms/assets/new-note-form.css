@@ -1,68 +1,28 @@
-.new-note__form {
-  perspective: 1000px;
-  width: 300px;
-  margin: 20px;
-  font-size: 10rem;
+.new-note-form {
+  width: 90%;
+  display: block;
+  color: var(--text-color);
+  margin: var(--margin-lg) 0;
 }
 
-.new-note__form_inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.6s;
-  transform-style: preserve-3d;
-}
-
-.new-note__form.creating .new-note__form_inner {
-  transform: rotateY(180deg);
-}
-
-.new-note__form_front,
-.new-note__form_back {
-  position: absolute;
-  width: 100%;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-.new-note__form_back {
-  transform: rotateY(180deg);
-}
-
-.plus-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  cursor: pointer;
-  border: 3px solid var(--component-background-color);
-  padding: 20rem 10rem;
-}
-
-.plus {
-  font-size: 3em;
-  color: #007bff;
-}
-
-.note__form {
+.new-note-form__inner {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  padding: var(--padding-md);
 }
 
-.note__form input {
-  margin-bottom: 10px;
+.new-note-form__inner form {
+  width: 100%;
 }
 
-.note__form button {
-  align-self: flex-end;
-  padding: 8px 16px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+.new-note-form__inner span {
+  font-size: var(--font-xl);
 }
 
-.note__form button:hover {
-  background-color: #0056b3;
+.new-note-form__button-wrapper {
+  display: flex;
+  justify-content: space-between;
 }

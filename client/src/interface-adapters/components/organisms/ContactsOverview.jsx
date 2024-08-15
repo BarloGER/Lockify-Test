@@ -10,20 +10,21 @@ export const ContactsOverview = ({
   isContactLoading,
 }) => {
   return (
-    <section className="contacts-overview">
+    <ul className="contacts-overview">
       {contacts.map((contact, index) => (
-        <ContactCard
-          key={contact.contactId || index}
-          contact={contact}
-          handleSelectContactForEdit={() =>
-            handleSelectContactForEdit(contact.contactId)
-          }
-          processUpdateContact={processUpdateContact}
-          processDeleteContact={processDeleteContact}
-          isLoading={isContactLoading}
-        />
+        <li key={contact.contactId || index}>
+          <ContactCard
+            contact={contact}
+            handleSelectContactForEdit={() =>
+              handleSelectContactForEdit(contact.contactId)
+            }
+            processUpdateContact={processUpdateContact}
+            processDeleteContact={processDeleteContact}
+            isLoading={isContactLoading}
+          />
+        </li>
       ))}
-    </section>
+    </ul>
   );
 };
 
@@ -44,7 +45,7 @@ ContactsOverview.propTypes = {
       email: PropTypes.string,
       birthDate: PropTypes.string,
       decryptedNotes: PropTypes.string,
-    })
+    }),
   ).isRequired,
   handleSelectContactForEdit: PropTypes.func.isRequired,
   processUpdateContact: PropTypes.func.isRequired,

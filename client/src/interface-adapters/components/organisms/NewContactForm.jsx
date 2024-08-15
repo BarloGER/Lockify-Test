@@ -39,14 +39,9 @@ export const NewContactForm = ({
   };
 
   return (
-    <div className={`new-contact__form ${isCreating ? "creating" : ""}`}>
-      <div className="new-contact__form_inner">
-        <div className="new-contact__form_front">
-          <div className="plus-container" onClick={handlePlusClick}>
-            <span className="plus">+</span>
-          </div>
-        </div>
-        <div className="new-contact__form_back">
+    <div className="new-contact-form">
+      {isCreating ? (
+        <div className="new-contact-form__inner">
           <form onSubmit={processCreateContact}>
             <Input
               id="companyName"
@@ -149,27 +144,35 @@ export const NewContactForm = ({
               onChange={handleChange}
             />
 
-            <SubmitButton
-              className="contact-form__button"
-              modifier="hover"
-              isLoading={isContactLoading}
-            >
-              {t("contactsPage.submitNewContact")}
-            </SubmitButton>
+            <div className="new-contact-form__button-wrapper">
+              <SubmitButton
+                className="new-contact-form__button"
+                modifier="hover"
+                isLoading={isContactLoading}
+              >
+                {t("contactsPage.submitNewContact")}
+              </SubmitButton>
 
-            <Button onClick={handlePlusClick} modifier="hover">
-              {t("contactsPage.cancel")}
-            </Button>
-
+              <Button onClick={handlePlusClick} modifier="hover">
+                {t("contactsPage.cancel")}
+              </Button>
+            </div>
             <FlashMessage
               message={message}
               setMessage={setMessage}
               type={messageType}
-              className="contact-form__flash-message"
+              className="new-contact-form__flash-message"
             />
           </form>
         </div>
-      </div>
+      ) : (
+        <div
+          className="new-contact-form__inner"
+          onClick={() => setIsCreating(!isCreating)}
+        >
+          <span className="plus">+</span>
+        </div>
+      )}
     </div>
   );
 };

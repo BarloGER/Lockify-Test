@@ -24,7 +24,7 @@ exports.AccountEntity = class AccountEntity {
   validateValidFields(validFields) {
     const fields = Object.keys(this);
     const specifiedFields = fields.filter(
-      (field) => this[field] !== undefined && this[field] !== ""
+      (field) => this[field] !== undefined && this[field] !== "",
     );
     if (specifiedFields.length === 0) {
       return "ACCOUNT_VALIDATION_001";
@@ -101,8 +101,9 @@ exports.AccountEntity = class AccountEntity {
 
   validateForDelete() {
     const validFields = [];
+
     const extraFields = validFields.filter(
-      (field) => this[field] !== undefined
+      (field) => this[field] !== undefined,
     );
 
     if (extraFields.length > 0) {
@@ -149,7 +150,7 @@ exports.AccountEntity = class AccountEntity {
         "(?::\\d{2,5})?" + // port number
         "(?:[/?#]\\S*)?" + // resource path
         "$",
-      "i"
+      "i",
     );
 
     if (isRequired && !this.accountUrl) return "ACCOUNT_VALIDATION_007";

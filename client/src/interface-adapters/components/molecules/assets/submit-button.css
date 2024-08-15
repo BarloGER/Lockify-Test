@@ -4,7 +4,6 @@
   padding: var(--padding-sm);
   cursor: pointer;
   border: none;
-  margin: 0 auto;
   font-size: var(--font-sm);
 }
 
