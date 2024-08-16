@@ -38,15 +38,18 @@ export class CryptographyOutputPort {
   }
 
   formatSecurityCheck(
+    withoutPassword,
     unsecurePasswords,
     sufficientPasswords,
     strongPasswords,
     veryStrongPasswords,
     duplicatePasswords,
-    calculatedSecurityScore
+    calculatedSecurityScore,
   ) {
+    console.log(calculatedSecurityScore);
     return {
       success: true,
+      emptyAccounts: withoutPassword,
       unsecureAccounts: unsecurePasswords,
       sufficientAccounts: sufficientPasswords,
       strongAccounts: strongPasswords,

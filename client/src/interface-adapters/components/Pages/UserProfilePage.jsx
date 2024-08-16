@@ -115,6 +115,27 @@ export const UserProfilePage = () => {
     setIsAuthenticated(false);
   };
 
+  const processLogoutUser = async () => {
+    setIsUserLoading(true);
+
+    const logoutResponse = await userInteractor.logoutUser();
+    if (
+      !logoutResponse.success &&
+      logoutResponse.message === "Failed to fetch"
+    ) {
+      setIsUserLoading(false);
+      setMessage("externalService.serverError");
+      setMessageType("error");
+    } else if (!logoutResponse.success) {
+      setIsUserLoading(false);
+      setMessage(logoutResponse.message);
+      setMessageType("error");
+      return;
+    }
+
+    setIsAuthenticated(false);
+  };
+
   return (
     <UserProfileTemplate>
       <section className="user-profile-template__section">
@@ -125,6 +146,7 @@ export const UserProfilePage = () => {
           handleChange={handleChange}
           processUpdateUser={processUpdateUser}
           processDeleteUser={processDeleteUser}
+          processLogoutUser={processLogoutUser}
           message={message}
           setMessage={setMessage}
           messageType={messageType}

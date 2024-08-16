@@ -4,12 +4,11 @@ import { NavLink } from "react-router-dom";
 import { IoIosLock } from "react-icons/io";
 
 import { DataVaultContext } from "../../context/DataVaultContext";
-import { Button } from "../atoms";
 import "./assets/secondary-navigation-bar.css";
 
 export const SecondaryNavigationBar = () => {
   const { t } = useTranslation();
-  const { isDataVaultUnlocked, setIsDataVaultUnlocked } =
+  const { setMasterPassword, isDataVaultUnlocked, setIsDataVaultUnlocked } =
     useContext(DataVaultContext);
 
   if (!isDataVaultUnlocked) {
@@ -35,7 +34,9 @@ export const SecondaryNavigationBar = () => {
         <li>
           <button
             className="secondary-navigation-bar__lock-button"
-            onClick={() => setIsDataVaultUnlocked(false)}
+            onClick={() => {
+              setMasterPassword(""), setIsDataVaultUnlocked(false);
+            }}
           >
             <IoIosLock />
           </button>

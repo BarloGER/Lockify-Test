@@ -13,7 +13,7 @@ const passwordHashingService = new PasswordHashingService();
 const userInteractor = new UserInteractor(
   userRepository,
   mailRepository,
-  passwordHashingService
+  passwordHashingService,
 );
 
 exports.getUser = asyncHandler(async (req, res, next) => {
@@ -145,6 +145,41 @@ exports.deleteUser = asyncHandler(async (req, res, next) => {
   res.status(200).json(response);
 });
 
+exports.logoutUser = asyncHandler(async (req, res, next) => {
+  const language =
+    req.headers["accept-language"] &&
+    req.headers["accept-language"].includes("de")
+      ? "DE"
+      : "EN";
+  const { userId } = req;
+
+  const isAuthenticated = req.session.userId === userId;
+  if (!isAuthenticated) {
+    throw new ErrorResponse({ errorCode: "USER_AUTHENTICATION_001" });
+  }
+
+  const response = {
+    success: true,
+    message:
+      language === "DE" ? "Erfolgreich ausgeloggt" : "Logged out successfully",
+  };
+
+  req.session.destroy((err) => {
+    if (err) {
+      throw new ErrorResponse({ errorCode: "SYS_SERVICE_002" });
+    }
+
+    res.clearCookie("connect.sid", {
+      path: "/",
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
+      sameSite: true,
+    });
+
+    res.status(200).json(response);
+  });
+});
+
 exports.confirmEmailAddress = asyncHandler(async (req, res, next) => {
   const language =
     req.headers["accept-language"] &&
@@ -188,7 +223,7 @@ exports.sendNewVerificationCode = asyncHandler(async (req, res, next) => {
 
   const result = await userInteractor.updateVerificationCode(
     userId,
-    unvalidatedUserInput
+    unvalidatedUserInput,
   );
   const response = userPresenter.present(language, result);
 

@@ -111,7 +111,8 @@
     "strongAccount": "Stark gesichert",
     "veryStrongAccount": "Sehr stark gesichert",
     "unsecureAccounts": "Unsichere Passwörter",
-    "duplicateAccounts": "Doppelte Passwörter"
+    "duplicateAccounts": "Doppelte Passwörter",
+    "emptyAccounts": "Ohne Passwörter"
   },
 
   "dataVaultPage": {
@@ -198,7 +199,8 @@
     "submit": "Speichern",
     "delete": "Benutzerkonto löschen",
     "submitDelete": "Ja, löschen",
-    "cancel": "Abbrechen"
+    "cancel": "Abbrechen",
+    "logout": "Ausloggen"
   },
 
   "verificationPage": {

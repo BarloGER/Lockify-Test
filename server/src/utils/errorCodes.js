@@ -1867,4 +1867,12 @@ exports.errorCodes = {
       DE: "Die Session konnte nicht generiert werden.",
     },
   },
+  SYS_SERVICE_002: {
+    statusCode: 500,
+    errorTypes: errorTypes.ServerError,
+    message: {
+      EN: "The session could not be deleted.",
+      DE: "Die Session konnte nicht gelöscht werden.",
+    },
+  },
 };
