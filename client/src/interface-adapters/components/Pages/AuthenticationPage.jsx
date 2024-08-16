@@ -38,9 +38,8 @@ export const AuthenticationPage = () => {
     setIsAuthenticationLoading(true);
 
     const authenticationResponse = await userInteractor.authenticateUser(
-      authenticationFormData
+      authenticationFormData,
     );
-    console.log(authenticationResponse);
     if (
       !authenticationResponse.success &&
       authenticationResponse.message === "Failed to fetch"

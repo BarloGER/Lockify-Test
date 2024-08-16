@@ -20,7 +20,7 @@ export class NoteInteractor {
   async validateUserInputForCreateNote(unvalidatedUserInput) {
     const validatedUserInput =
       this.noteInputPort.validatePreEncryptionInputForCreateNote(
-        unvalidatedUserInput
+        unvalidatedUserInput,
       );
     if (validatedUserInput.validationError) {
       const validationError = validatedUserInput.validationError;
@@ -37,10 +37,8 @@ export class NoteInteractor {
       return { validationError: validNoteEntity.validationError };
     }
 
-    const creationResponse = await this.noteRepository.createNoteRequest(
-      validNoteEntity
-    );
-    console.log(creationResponse);
+    const creationResponse =
+      await this.noteRepository.createNoteRequest(validNoteEntity);
     if (!creationResponse.success) {
       return this.noteOutputPort.formatFailedRequest(creationResponse);
     }
@@ -51,7 +49,7 @@ export class NoteInteractor {
   async validateUserInputForUpdateNote(unvalidatedUserInput) {
     const validatedUserInput =
       this.noteInputPort.validatePreEncryptionInputForUpdateNote(
-        unvalidatedUserInput
+        unvalidatedUserInput,
       );
     if (validatedUserInput.validationError) {
       return { validationError: validatedUserInput.validationError };
@@ -69,7 +67,7 @@ export class NoteInteractor {
 
     const updateResponse = await this.noteRepository.updateNoteRequest(
       noteId,
-      validNoteEntity
+      validNoteEntity,
     );
     if (!updateResponse.success) {
       return this.noteOutputPort.formatFailedRequest(updateResponse);
@@ -79,9 +77,8 @@ export class NoteInteractor {
   }
 
   async deleteNote(noteId) {
-    const deletionResponse = await this.noteRepository.deleteNoteRequest(
-      noteId
-    );
+    const deletionResponse =
+      await this.noteRepository.deleteNoteRequest(noteId);
     if (!deletionResponse.success) {
       return this.noteOutputPort.formatFailedRequest(deletionResponse);
     }

@@ -10,8 +10,6 @@ export const DashboardSecurityCheck = ({ securityCheckResult }) => {
     return;
   }
 
-  console.log(securityCheckResult);
-
   const {
     securityScore,
     emptyAccounts,

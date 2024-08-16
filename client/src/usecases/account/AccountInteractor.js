@@ -21,7 +21,7 @@ export class AccountInteractor {
   async validateUserInputForCreateAccount(unvalidatedUserInput) {
     const validatedUserInput =
       this.accountInputPort.validatePreEncryptionInputForCreateAccount(
-        unvalidatedUserInput
+        unvalidatedUserInput,
       );
     if (validatedUserInput.validationError) {
       const validationError = validatedUserInput.validationError;
@@ -34,16 +34,14 @@ export class AccountInteractor {
   async createAccount(encryptedAccountData) {
     const validAccountEntity =
       this.accountInputPort.validateEncryptedDataForCreateAccount(
-        encryptedAccountData
+        encryptedAccountData,
       );
-    console.log(validAccountEntity);
     if (validAccountEntity.validationError) {
       return { validationError: validAccountEntity.validationError };
     }
 
-    const creationResponse = await this.accountRepository.createAccountRequest(
-      validAccountEntity
-    );
+    const creationResponse =
+      await this.accountRepository.createAccountRequest(validAccountEntity);
     if (!creationResponse.success) {
       return this.accountOutputPort.formatFailedRequest(creationResponse);
     }
@@ -54,7 +52,7 @@ export class AccountInteractor {
   async validateUserInputForUpdateAccount(unvalidatedUserInput) {
     const validatedUserInput =
       this.accountInputPort.validatePreEncryptionInputForUpdateAccount(
-        unvalidatedUserInput
+        unvalidatedUserInput,
       );
     if (validatedUserInput.validationError) {
       return { validationError: validatedUserInput.validationError };
@@ -66,7 +64,7 @@ export class AccountInteractor {
   async updateAccount(accountId, encryptedAccountData) {
     const validAccountEntity =
       this.accountInputPort.validateEncryptedDataForUpdateAccount(
-        encryptedAccountData
+        encryptedAccountData,
       );
     if (validAccountEntity.validationError) {
       return { validationError: validAccountEntity.validationError };
@@ -74,7 +72,7 @@ export class AccountInteractor {
 
     const updateResponse = await this.accountRepository.updateAccountRequest(
       accountId,
-      validAccountEntity
+      validAccountEntity,
     );
     if (!updateResponse.success) {
       return this.accountOutputPort.formatFailedRequest(updateResponse);
@@ -84,9 +82,8 @@ export class AccountInteractor {
   }
 
   async deleteAccount(accountId) {
-    const deletionResponse = await this.accountRepository.deleteAccountRequest(
-      accountId
-    );
+    const deletionResponse =
+      await this.accountRepository.deleteAccountRequest(accountId);
     if (!deletionResponse.success) {
       return this.accountOutputPort.formatFailedRequest(deletionResponse);
     }

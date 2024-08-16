@@ -46,7 +46,6 @@ export class CryptographyOutputPort {
     duplicatePasswords,
     calculatedSecurityScore,
   ) {
-    console.log(calculatedSecurityScore);
     return {
       success: true,
       emptyAccounts: withoutPassword,

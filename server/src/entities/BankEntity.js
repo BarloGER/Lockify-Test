@@ -32,7 +32,7 @@ exports.BankEntity = class BankEntity {
   validateValidFields(validFields) {
     const fields = Object.keys(this);
     const specifiedFields = fields.filter(
-      (field) => this[field] !== undefined && this[field] !== ""
+      (field) => this[field] !== undefined && this[field] !== "",
     );
     if (specifiedFields.length === 0) {
       return "BANK_VALIDATION_001";
@@ -118,7 +118,7 @@ exports.BankEntity = class BankEntity {
       "cardType",
     ];
     const fieldsToUpdate = validFields.filter(
-      (field) => this[field] !== undefined
+      (field) => this[field] !== undefined,
     );
     if (fieldsToUpdate.length === 0) {
       return "BANK_VALIDATION_001";
@@ -130,7 +130,6 @@ exports.BankEntity = class BankEntity {
         field.charAt(0).toUpperCase() + field.slice(1)
       }`;
       const error = this[validateMethod](true);
-      console.log(error);
       if (error) return error;
     }
 
@@ -140,7 +139,7 @@ exports.BankEntity = class BankEntity {
   validateForDelete() {
     const validFields = [];
     const extraFields = validFields.filter(
-      (field) => this[field] !== undefined
+      (field) => this[field] !== undefined,
     );
 
     if (extraFields.length > 0) {
