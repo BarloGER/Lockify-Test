@@ -90,6 +90,24 @@ export const UserRepository = class UserRepository {
     }
   }
 
+  async logoutUserRequest() {
+    try {
+      const response = await fetch(`${URL}/user/logout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept-Language": language,
+        },
+        body: JSON.stringify({}),
+        credentials: "include",
+      });
+      return response.json();
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  }
+
   async confirmEmailAddressRequest(verificationData) {
     try {
       const response = await fetch(`${URL}/user/confirm-email`, {

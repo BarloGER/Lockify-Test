@@ -199,7 +199,8 @@
     "submit": "Save",
     "delete": "Delete Account",
     "submitDelete": "Yes, Delete",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "logout": "Logout"
   },
 
   "verificationPage": {

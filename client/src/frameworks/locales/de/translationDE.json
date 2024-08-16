@@ -199,7 +199,8 @@
     "submit": "Speichern",
     "delete": "Benutzerkonto löschen",
     "submitDelete": "Ja, löschen",
-    "cancel": "Abbrechen"
+    "cancel": "Abbrechen",
+    "logout": "Ausloggen"
   },
 
   "verificationPage": {

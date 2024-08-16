@@ -12,7 +12,7 @@ exports.validateRequestMetadata = () => async (req, res, next) => {
     return next(
       new ErrorResponse({
         errorCode: validationError,
-      })
+      }),
     );
   }
 
@@ -22,7 +22,7 @@ exports.validateRequestMetadata = () => async (req, res, next) => {
     return next(
       new ErrorResponse({
         errorCode: validationError,
-      })
+      }),
     );
   }
 
@@ -32,7 +32,7 @@ exports.validateRequestMetadata = () => async (req, res, next) => {
     return next(
       new ErrorResponse({
         errorCode: validationError,
-      })
+      }),
     );
   }
 

@@ -16,6 +16,7 @@ export const UserProfileForm = ({
   handleChange,
   processUpdateUser,
   processDeleteUser,
+  processLogoutUser,
   message,
   setMessage,
   messageType,
@@ -101,6 +102,9 @@ export const UserProfileForm = ({
           </Button>
         </>
       )}
+      <Button type="button" onClick={() => processLogoutUser()}>
+        {"userProfilePage.logout"}
+      </Button>
       <FlashMessage
         message={message}
         setMessage={setMessage}
@@ -125,6 +129,7 @@ UserProfileForm.propTypes = {
   handleChange: PropTypes.func.isRequired,
   processUpdateUser: PropTypes.func.isRequired,
   processDeleteUser: PropTypes.func.isRequired,
+  processLogoutUser: PropTypes.func.isRequired,
   message: PropTypes.string,
   setMessage: PropTypes.func.isRequired,
   messageType: PropTypes.string,

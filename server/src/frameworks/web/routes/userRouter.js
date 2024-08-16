@@ -11,6 +11,7 @@ const {
   getUser,
   updateUser,
   deleteUser,
+  logoutUser,
   confirmEmailAddress,
   sendNewVerificationCode,
   sendNewPassword,
@@ -20,40 +21,46 @@ const userRouter = Router();
 
 userRouter.post("/register", validateRequestMetadata(), registerUser);
 userRouter.post("/login", validateRequestMetadata(), loginUser);
+userRouter.post(
+  "/logout",
+  validateRequestMetadata(),
+  validateSession,
+  logoutUser,
+);
 userRouter.get(
   "/get-user",
   validateRequestMetadata(),
   validateSession,
-  getUser
+  getUser,
 );
 userRouter.put(
   "/update",
   validateRequestMetadata(),
   validateSession,
-  updateUser
+  updateUser,
 );
 userRouter.delete(
   "/delete",
   validateRequestMetadata(),
   validateSession,
-  deleteUser
+  deleteUser,
 );
 userRouter.post(
   "/confirm-email",
   validateRequestMetadata(),
   validateSession,
-  confirmEmailAddress
+  confirmEmailAddress,
 );
 userRouter.post(
   "/send-new-code",
   validateRequestMetadata(),
   validateSession,
-  sendNewVerificationCode
+  sendNewVerificationCode,
 );
 userRouter.post(
   "/send-new-password",
   validateRequestMetadata(),
-  sendNewPassword
+  sendNewPassword,
 );
 
 exports.userRouter = userRouter;

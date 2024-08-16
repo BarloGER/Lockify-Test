@@ -23,7 +23,7 @@ export class UserInteractor {
   async validateUserInputForRegisterUser(unvalidatedUserInput) {
     const validatedUserInput =
       this.userInputPort.validatePreEncryptionInputForRegisterUser(
-        unvalidatedUserInput
+        unvalidatedUserInput,
       );
     if (validatedUserInput.validationError) {
       const validationError = validatedUserInput.validationError;
@@ -36,16 +36,15 @@ export class UserInteractor {
   async registerUser(encryptedUserData) {
     const validUserEntity =
       this.userInputPort.validateEncryptedDataForRegisterUser(
-        encryptedUserData
+        encryptedUserData,
       );
     if (validUserEntity.validationError) {
       const validationError = validUserEntity.validationError;
       return this.userOutputPort.formatValidationError(validationError);
     }
 
-    const registrationResponse = await this.userRepository.registerUserRequest(
-      validUserEntity
-    );
+    const registrationResponse =
+      await this.userRepository.registerUserRequest(validUserEntity);
     if (!registrationResponse.success) {
       return this.userOutputPort.formatFailedRequest(registrationResponse);
     }
@@ -79,9 +78,8 @@ export class UserInteractor {
       return this.userOutputPort.formatValidationError(validationError);
     }
 
-    const updateResponse = await this.userRepository.updateUserRequest(
-      validUserEntity
-    );
+    const updateResponse =
+      await this.userRepository.updateUserRequest(validUserEntity);
     if (!updateResponse.success) {
       return this.userOutputPort.formatFailedRequest(updateResponse);
     }
@@ -96,6 +94,15 @@ export class UserInteractor {
     }
 
     return this.userOutputPort.formatSuccessfulResponse(deletionResponse);
+  }
+
+  async logoutUser() {
+    const logoutResponse = await this.userRepository.logoutUserRequest();
+    if (!logoutResponse.success) {
+      return this.userOutputPort.formatFailedRequest(logoutResponse);
+    }
+
+    return this.userOutputPort.formatSuccessfulResponse(logoutResponse);
   }
 
   async confirmEmailAddress(unvalidatedUserInput) {
@@ -141,9 +148,8 @@ export class UserInteractor {
       return this.userOutputPort.formatValidationError(validationError);
     }
 
-    const newPasswordResponse = await this.userRepository.newPasswordRequest(
-      validUserEntity
-    );
+    const newPasswordResponse =
+      await this.userRepository.newPasswordRequest(validUserEntity);
     if (!newPasswordResponse.success) {
       return this.userOutputPort.formatFailedRequest(newPasswordResponse);
     }
