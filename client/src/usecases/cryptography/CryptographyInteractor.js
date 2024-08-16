@@ -249,8 +249,6 @@ export class CryptographyInteractor {
     actualSecurityScore += veryStrongPasswords.length * 3;
     actualSecurityScore -= duplicatePasswords.length;
 
-    console.log(actualSecurityScore);
-
     const calculatedSecurityScore = Math.floor(
       (100 / maxSecurityScore) * actualSecurityScore,
     );

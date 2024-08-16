@@ -5,7 +5,7 @@ export const DesignContext = createContext();
 
 export const DesignProvider = ({ children }) => {
   const [design, setDesign] = useState(
-    localStorage.getItem("currentDesign") || "design1"
+    localStorage.getItem("currentDesign") || "design1",
   );
 
   useEffect(() => {
@@ -26,8 +26,6 @@ export const DesignProvider = ({ children }) => {
     if (selectedClass) {
       root.classList.add(selectedClass);
     }
-
-    console.log(`Design geändert zu: ${selectedClass}`);
   }, [design]);
 
   const changeDesign = (newDesign) => {

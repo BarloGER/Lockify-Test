@@ -29,7 +29,6 @@ export const ForgotPasswordPage = () => {
     const passwordRequestResponse = await userInteractor.requestNewPassword({
       email,
     });
-    console.log(passwordRequestResponse);
     if (
       !passwordRequestResponse.success &&
       passwordRequestResponse.message === "Failed to fetch"

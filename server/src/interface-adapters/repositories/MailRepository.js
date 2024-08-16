@@ -2,7 +2,6 @@ const URL = process.env.MAILSERVER_URL;
 
 exports.MailRepository = class MailRepository {
   async sendMail(mailEntity) {
-    console.log(mailEntity);
     try {
       const response = await fetch(`${URL}/mail/send-mail`, {
         method: "POST",

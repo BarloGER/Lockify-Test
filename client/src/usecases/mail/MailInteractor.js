@@ -15,10 +15,8 @@ export class MailInteractor {
       return { validationError: validMailEntity.validationError };
     }
 
-    const sendMailResponse = await this.mailRepository.sendSupportMail(
-      validMailEntity
-    );
-    console.log(sendMailResponse);
+    const sendMailResponse =
+      await this.mailRepository.sendSupportMail(validMailEntity);
 
     return this.mailOutputPort.formatSuccessfulResponse(sendMailResponse);
   }

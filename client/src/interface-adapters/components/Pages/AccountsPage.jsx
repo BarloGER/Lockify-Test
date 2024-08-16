@@ -40,7 +40,7 @@ export const AccountsPage = () => {
     { value: "accountUrl" },
   ];
   const filteredAccounts = accounts.filter((account) =>
-    account[selectedOption].toLowerCase().includes(searchTerm.toLowerCase())
+    account[selectedOption].toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const handleChange = (event) => {
@@ -55,7 +55,7 @@ export const AccountsPage = () => {
     const unvalidatedUserInput = newAccountFormData;
     const validateUserInput =
       await accountInteractor.validateUserInputForCreateAccount(
-        unvalidatedUserInput
+        unvalidatedUserInput,
       );
     if (!validateUserInput.success) {
       setIsAccountLoading(false);
@@ -104,9 +104,8 @@ export const AccountsPage = () => {
       notesEncryptionSalt: encryptedNotes.salt,
     };
 
-    const createAccountResponse = await accountInteractor.createAccount(
-      encryptedAccountData
-    );
+    const createAccountResponse =
+      await accountInteractor.createAccount(encryptedAccountData);
     if (
       !createAccountResponse.success &&
       createAccountResponse.message === "Failed to fetch"
@@ -161,7 +160,7 @@ export const AccountsPage = () => {
     e,
     accountId,
     updateAccountFormData,
-    setIsEditing
+    setIsEditing,
   ) => {
     e.preventDefault();
     setIsAccountLoading(true);
@@ -176,7 +175,7 @@ export const AccountsPage = () => {
     const unvalidatedUserInput = updateAccountFormData;
     const validateUserInput =
       await accountInteractor.validateUserInputForUpdateAccount(
-        unvalidatedUserInput
+        unvalidatedUserInput,
       );
     if (!validateUserInput.success) {
       setIsAccountLoading(false);
@@ -185,7 +184,6 @@ export const AccountsPage = () => {
       return;
     }
     const validAccountEntity = validateUserInput.validAccountEntity;
-    console.log(validAccountEntity);
 
     let encryptedPassword = {
       success: true,
@@ -228,7 +226,7 @@ export const AccountsPage = () => {
 
     const updateAccountResponse = await accountInteractor.updateAccount(
       accountId,
-      encryptedAccountData
+      encryptedAccountData,
     );
     if (!updateAccountResponse.success) {
       setIsAccountLoading(false);
@@ -277,7 +275,7 @@ export const AccountsPage = () => {
 
     // Update local state
     const updatedAccounts = accounts.filter(
-      (account) => account.accountId !== accountId
+      (account) => account.accountId !== accountId,
     );
 
     setAccounts(updatedAccounts);

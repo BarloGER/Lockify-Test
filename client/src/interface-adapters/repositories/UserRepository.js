@@ -103,7 +103,6 @@ export const UserRepository = class UserRepository {
       });
       return response.json();
     } catch (error) {
-      console.log(error);
       return error;
     }
   }

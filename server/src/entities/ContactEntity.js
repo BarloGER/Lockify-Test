@@ -28,7 +28,7 @@ exports.ContactEntity = class ContactEntity {
   validateValidFields(validFields) {
     const fields = Object.keys(this);
     const specifiedFields = fields.filter(
-      (field) => this[field] !== undefined && this[field] !== ""
+      (field) => this[field] !== undefined && this[field] !== "",
     );
     if (specifiedFields.length === 0) {
       return "CONTACT_VALIDATION_001";
@@ -102,7 +102,7 @@ exports.ContactEntity = class ContactEntity {
       "notesEncryptionSalt",
     ];
     const fieldsToUpdate = validFields.filter(
-      (field) => this[field] !== undefined
+      (field) => this[field] !== undefined,
     );
     if (fieldsToUpdate.length === 0) {
       return "CONTACT_VALIDATION_001";
@@ -114,7 +114,6 @@ exports.ContactEntity = class ContactEntity {
         field.charAt(0).toUpperCase() + field.slice(1)
       }`;
       const error = this[validateMethod](true);
-      console.log(error);
       if (error) return error;
     }
 
@@ -124,7 +123,7 @@ exports.ContactEntity = class ContactEntity {
   validateForDelete() {
     const validFields = [];
     const extraFields = validFields.filter(
-      (field) => this[field] !== undefined
+      (field) => this[field] !== undefined,
     );
 
     if (extraFields.length > 0) {
