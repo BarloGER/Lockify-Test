@@ -109,7 +109,7 @@ export const AccountCard = ({
                   id={`password-${account.accountId}`}
                   label={"accountsPage.password"}
                   value={editedAccount.password}
-                  onChange={handleChange}
+                  onChange={(e) => handleChange(e, "password")}
                   name="password"
                 />
                 <Input

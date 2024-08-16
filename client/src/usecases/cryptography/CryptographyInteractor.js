@@ -31,7 +31,7 @@ export class CryptographyInteractor {
         enc.encode(validCryptoEntity.masterPassword),
         { name: "PBKDF2" },
         false,
-        ["deriveKey"]
+        ["deriveKey"],
       );
 
       const key = await crypto.subtle.deriveKey(
@@ -44,7 +44,7 @@ export class CryptographyInteractor {
         keyMaterial,
         { name: "AES-CBC", length: 256 },
         true,
-        ["encrypt", "decrypt"]
+        ["encrypt", "decrypt"],
       );
 
       const iv = crypto.getRandomValues(new Uint8Array(16));
@@ -54,7 +54,7 @@ export class CryptographyInteractor {
           iv,
         },
         key,
-        enc.encode(validCryptoEntity.text)
+        enc.encode(validCryptoEntity.text),
       );
 
       return {
@@ -76,11 +76,11 @@ export class CryptographyInteractor {
       const enc = new TextEncoder();
 
       const saltUint8Array = this.convertHexToUint8Array(
-        validCryptoEntity.salt
+        validCryptoEntity.salt,
       );
       const ivArray = this.convertHexToUint8Array(validCryptoEntity.iv);
       const encryptedArray = this.convertHexToUint8Array(
-        validCryptoEntity.encryptedData
+        validCryptoEntity.encryptedData,
       );
 
       const keyMaterial = await crypto.subtle.importKey(
@@ -88,7 +88,7 @@ export class CryptographyInteractor {
         enc.encode(validCryptoEntity.masterPassword),
         { name: "PBKDF2" },
         false,
-        ["deriveKey"]
+        ["deriveKey"],
       );
 
       const key = await crypto.subtle.deriveKey(
@@ -101,7 +101,7 @@ export class CryptographyInteractor {
         keyMaterial,
         { name: "AES-CBC", length: 256 },
         true,
-        ["encrypt", "decrypt"]
+        ["encrypt", "decrypt"],
       );
 
       const decrypted = await crypto.subtle.decrypt(
@@ -110,7 +110,7 @@ export class CryptographyInteractor {
           iv: ivArray,
         },
         key,
-        encryptedArray
+        encryptedArray,
       );
 
       return {
@@ -125,7 +125,7 @@ export class CryptographyInteractor {
   async encryptData(unvalidatedEncryptionInput) {
     const validCryptoEntity =
       this.cryptographyInputPort.validateEncryptionInput(
-        unvalidatedEncryptionInput
+        unvalidatedEncryptionInput,
       );
     validCryptoEntity;
     if (validCryptoEntity.validationError) {
@@ -145,7 +145,7 @@ export class CryptographyInteractor {
   async decryptData(unvalidatedDecryptionInput) {
     const validCryptoEntity =
       this.cryptographyInputPort.validateDecryptionInput(
-        unvalidatedDecryptionInput
+        unvalidatedDecryptionInput,
       );
     if (validCryptoEntity.validationError) {
       const validationError = validCryptoEntity.validationError;
@@ -155,7 +155,7 @@ export class CryptographyInteractor {
     const decryptionResult = await this.decrypt(validCryptoEntity);
     if (!decryptionResult.success) {
       return this.cryptographyOutputPort.formatDecryptionError(
-        decryptionResult
+        decryptionResult,
       );
     }
 
@@ -171,6 +171,7 @@ export class CryptographyInteractor {
     const numbers = /[0123456789]/g;
     const specialChars = /[!@#$%^&*()_+{}:"<>?|[\]\\;',./`~]/g;
 
+    const withoutPassword = [];
     const unsecurePasswords = [];
     const sufficientPasswords = [];
     const strongPasswords = [];
@@ -178,8 +179,26 @@ export class CryptographyInteractor {
     const passwordMap = {};
     const duplicatePasswords = [];
 
+    if (accountsData.length === 0) {
+      const calculatedSecurityScore = 100;
+
+      return this.cryptographyOutputPort.formatSecurityCheck(
+        withoutPassword,
+        unsecurePasswords,
+        sufficientPasswords,
+        strongPasswords,
+        veryStrongPasswords,
+        duplicatePasswords,
+        calculatedSecurityScore,
+      );
+    }
+
     for (const account of accountsData) {
       const passwordLength = account.accountPassword.length;
+      if (!passwordLength) {
+        withoutPassword.push(account);
+        continue;
+      }
 
       const foundLowerCaseLetters =
         account.accountPassword.match(lowerCaseLetters) || [];
@@ -230,17 +249,20 @@ export class CryptographyInteractor {
     actualSecurityScore += veryStrongPasswords.length * 3;
     actualSecurityScore -= duplicatePasswords.length;
 
+    console.log(actualSecurityScore);
+
     const calculatedSecurityScore = Math.floor(
-      (100 / maxSecurityScore) * actualSecurityScore
+      (100 / maxSecurityScore) * actualSecurityScore,
     );
 
     return this.cryptographyOutputPort.formatSecurityCheck(
+      withoutPassword,
       unsecurePasswords,
       sufficientPasswords,
       strongPasswords,
       veryStrongPasswords,
       duplicatePasswords,
-      calculatedSecurityScore
+      calculatedSecurityScore,
     );
   }
 }

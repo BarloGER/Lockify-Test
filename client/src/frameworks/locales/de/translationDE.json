@@ -111,7 +111,8 @@
     "strongAccount": "Stark gesichert",
     "veryStrongAccount": "Sehr stark gesichert",
     "unsecureAccounts": "Unsichere Passwörter",
-    "duplicateAccounts": "Doppelte Passwörter"
+    "duplicateAccounts": "Doppelte Passwörter",
+    "emptyAccounts": "Ohne Passwörter"
   },
 
   "dataVaultPage": {

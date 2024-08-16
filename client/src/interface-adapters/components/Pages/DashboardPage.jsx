@@ -34,6 +34,7 @@ export const DashboardPage = () => {
     if (!result.success) {
       return;
     }
+
     setSecurityCheckResult(result);
   }, [accounts, cryptographyInteractor]);
 
@@ -63,8 +64,6 @@ export const DashboardPage = () => {
   if (dataVaultLoadingRequest) {
     return <div>Loading...</div>; // or a loading component
   }
-
-  console.log(securityCheckResult);
 
   return (
     <DashboardTemplate>

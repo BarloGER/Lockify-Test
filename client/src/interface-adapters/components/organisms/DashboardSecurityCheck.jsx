@@ -7,11 +7,14 @@ export const DashboardSecurityCheck = ({ securityCheckResult }) => {
   const { t } = useTranslation();
 
   if (!securityCheckResult) {
-    return <p>Loading...</p>;
+    return;
   }
+
+  console.log(securityCheckResult);
 
   const {
     securityScore,
+    emptyAccounts,
     unsecureAccounts,
     sufficientAccounts,
     strongAccounts,
@@ -50,8 +53,8 @@ export const DashboardSecurityCheck = ({ securityCheckResult }) => {
             strokeDasharray={circumference + " " + circumference}
             style={{
               strokeDashoffset,
-              transform: `rotate(-90deg)`, // Anpassung für Startpunkt oben
-              transformOrigin: "50% 50%", // Ursprung der Transformation ist die Mitte des Kreises
+              transform: `rotate(-90deg)`,
+              transformOrigin: "50% 50%",
             }}
             r={normalizedRadius}
             cx={radius}
@@ -107,6 +110,16 @@ export const DashboardSecurityCheck = ({ securityCheckResult }) => {
           </div>
         ))}
       </div>
+      <div className="dashboard-security-check__duplicate-accounts">
+        <h3 className="dashboard-security-check__section-title">
+          {t("dashboardPage.emptyAccounts")}
+        </h3>
+        {emptyAccounts.map((account, index) => (
+          <div key={index} className="dashboard-security-check__account">
+            {account.accountName}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
@@ -114,6 +127,11 @@ export const DashboardSecurityCheck = ({ securityCheckResult }) => {
 DashboardSecurityCheck.propTypes = {
   securityCheckResult: PropTypes.shape({
     securityScore: PropTypes.number.isRequired,
+    emptyAccounts: PropTypes.arrayOf(
+      PropTypes.shape({
+        accountName: PropTypes.string.isRequired,
+      }),
+    ).isRequired,
     unsecureAccounts: PropTypes.arrayOf(
       PropTypes.shape({
         accountName: PropTypes.string.isRequired,
@@ -139,5 +157,5 @@ DashboardSecurityCheck.propTypes = {
         accountName: PropTypes.string.isRequired,
       }),
     ).isRequired,
-  }).isRequired,
+  }),
 };
