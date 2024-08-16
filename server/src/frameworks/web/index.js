@@ -18,12 +18,13 @@ app.use(
     origin: process.env.CLIENT_URL,
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  })
+  }),
 );
 
 app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ extended: true }));
 
+app.set("trust proxy", 1);
 app.use(sessionConfig);
 
 app.use("/user", userRouter);
