@@ -30,7 +30,8 @@
     "linkButton": "Registrieren",
     "linkMessage": "Noch nicht registriert?",
     "forgotMessage": "Passwort vergessen?",
-    "forgotLink": "Passwort vergessen?"
+    "forgotLink": "Passwort vergessen?",
+    "infoText": "Test Nutzer für Recruiter und Developer."
   },
 
   "banksPage": {
@@ -121,7 +122,8 @@
     "submitButton": "Datentresor öffnen",
     "text": "Gebe hier dein Master Passwort ein, um den Datensafe zu öffnen.",
     "decryptSuccess": "Master Passwort erfolgreich verifiziert.",
-    "decryptError": "Falsches Master-Passwort eingegeben."
+    "decryptError": "Falsches Master-Passwort eingegeben.",
+    "inactivity": "Du warst länger als 5 Minuten inaktiv, deshalb wurde dein Datentresor gesperrt."
   },
 
   "forgotPasswordPage": {
@@ -157,7 +159,9 @@
     }
   },
 
-  "loadingScreenPage": {},
+  "loadingScreenPage": {
+    "text": "Bitte Warten"
+  },
 
   "notesPage": {
     "noteTitle": "Notiz Titel",
@@ -183,10 +187,26 @@
     "confirmPassword": "Passwort Bestätigen",
     "masterPassword": "Master-Passwort",
     "confirmMasterPassword": "Master-Passwort Bestätigen",
-    "newsletter": "Newsletter",
+    "newsletter": "Newsletter abonnieren",
     "registerButton": "Registrieren",
     "linkButton": "Anmelden",
-    "linkMessage": "Bereits registriert?"
+    "linkMessage": "Bereits registriert?",
+    "passwordModal": {
+      "text": "Dein Passwort muss folgende Voraussetzungen erfüllen:",
+      "length": "Es muss mindestens 8 Zeichen lang sein.",
+      "lowercase": "Es muss mindestens 1 Kleinbuchstaben enthalten.",
+      "uppercase": "Es muss mindestens 1 Großbuchstaben enthalten.",
+      "number": "Es muss mindestens 1 Zahl enthalten",
+      "specialCharacters": "Es muss mindestens 1 Sonderzeichen enthalten"
+    },
+    "masterPasswordModal": {
+      "text": "Dein Master-Passwort muss folgende Voraussetzungen erfüllen:",
+      "length": "Es muss mindestens 16 Zeichen lang sein.",
+      "lowercase": "Es muss mindestens 3 Kleinbuchstaben enthalten.",
+      "uppercase": "Es muss mindestens 3 Großbuchstaben enthalten.",
+      "number": "Es muss mindestens 3 Zahlen enthalten",
+      "specialCharacters": "Es muss mindestens 3 Sonderzeichen enthalten"
+    }
   },
 
   "userProfilePage": {
@@ -195,7 +215,7 @@
     "email": "E-Mail Adresse",
     "password": "Passwort",
     "confirmPassword": "Passwort Bestätigen",
-    "newsletter": "Newsletter",
+    "newsletter": "Newsletter abboniert",
     "submit": "Speichern",
     "delete": "Benutzerkonto löschen",
     "submitDelete": "Ja, löschen",
@@ -222,8 +242,8 @@
   },
 
   "setting": {
-    "darkMode": "Dunkler Modus",
-    "lightMode": "Heller Modus"
+    "darkMode": "Design 1",
+    "lightMode": "Design 2"
   },
 
   "navBar": {

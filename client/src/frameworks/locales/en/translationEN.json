@@ -30,7 +30,8 @@
     "linkButton": "Register",
     "linkMessage": "Not registered yet?",
     "forgotMessage": "Forgot your password?",
-    "forgotLink": "Forgot Password?"
+    "forgotLink": "Forgot Password?",
+    "infoText": "Test user for recruiter and developer."
   },
 
   "banksPage": {
@@ -121,7 +122,8 @@
     "submitButton": "Open Data Vault",
     "text": "Enter your master password here to unlock the data vault.",
     "decryptSuccess": "Master password successfully verified.",
-    "decryptError": "Incorrect master password entered."
+    "decryptError": "Incorrect master password entered.",
+    "inactivity": "You have been inactive for more than 5 minutes, so your data vault has been locked."
   },
 
   "forgotPasswordPage": {
@@ -157,7 +159,9 @@
     }
   },
 
-  "loadingScreenPage": {},
+  "loadingScreenPage": {
+    "text": "Please wait"
+  },
 
   "notesPage": {
     "noteTitle": "Note Title",
@@ -183,10 +187,26 @@
     "confirmPassword": "Confirm Password",
     "masterPassword": "Master Password",
     "confirmMasterPassword": "Confirm Master Password",
-    "newsletter": "Newsletter",
+    "newsletter": "Subscribe newsletter",
     "registerButton": "Register",
     "linkButton": "Login",
-    "linkMessage": "Already registered?"
+    "linkMessage": "Already registered?",
+    "passwordModal": {
+      "text": "Your password must meet the following requirements:",
+      "length": "It must be at least 8 characters long.",
+      "lowercase": "It must contain at least 1 lowercase letter.",
+      "uppercase": "It must contain at least 1 uppercase letter.",
+      "number": "It must contain at least 1 number.",
+      "specialCharacters": "It must contain at least 1 special character."
+    },
+    "masterPasswordModal": {
+      "text": "Your master password must meet the following requirements:",
+      "length": "It must be at least 16 characters long.",
+      "lowercase": "It must contain at least 3 lowercase letters.",
+      "uppercase": "It must contain at least 3 uppercase letters.",
+      "number": "It must contain at least 3 numbers.",
+      "specialCharacters": "It must contain at least 3 special characters."
+    }
   },
 
   "userProfilePage": {
@@ -195,7 +215,7 @@
     "email": "Email Address",
     "password": "Password",
     "confirmPassword": "Confirm Password",
-    "newsletter": "Newsletter",
+    "newsletter": "Newsletter subscribed",
     "submit": "Save",
     "delete": "Delete Account",
     "submitDelete": "Yes, Delete",
@@ -222,8 +242,8 @@
   },
 
   "setting": {
-    "darkMode": "Dark Mode",
-    "lightMode": "Light Mode"
+    "darkMode": "Design 1",
+    "lightMode": "Design 2"
   },
 
   "navBar": {

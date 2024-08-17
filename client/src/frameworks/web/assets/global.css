@@ -28,44 +28,52 @@
   --gap-sm: calc(var(--spacing-unit) * 1);
   --gap-md: calc(var(--spacing-unit) * 1.5);
   --gap-lg: calc(var(--spacing-unit) * 2);
+
+  color-scheme: light dark;
 }
 
 .theme-design1 {
-  /* dark mode */
-  --primary-color: #3a8dca;
-  --primary-color-hover: #2b3348;
-  --background-color: #1c2029;
-  --component-background-color: #252c41;
-  --text-color: #d1d1d1;
-  --button-color: #1a74af;
-  --button-hover-color: #d1d1d1;
-  --input-background-color: #2a3147;
-  --input-focus-color: #3a8dca;
-  --border-color: #3a3f4b;
-  --success-color: #27ae60;
-  --warning-color: #f2c94c;
-  --error-color: #cd1605;
-  --secondary-background-color: #2b3348;
-  --secondary-text-color: #a3a3a3;
-  --crypto-lock-color: #00ff00;
+  --primary-color: light-dark(#0056b3, #3a8dca);
+  --primary-color-hover: light-dark(#004494, #2b3348);
+  --background-color: light-dark(#f7f9fc, #1c2029);
+  --component-background-color: light-dark(#9ba4b4, #252c41);
+  --text-color: light-dark(#2e3440, #d1d1d1);
+  --button-color: light-dark(#007bff, #1a74af);
+  --button-text-color: light-dark(#ffffff, #d1d1d1);
+  --button-hover-color: light-dark(#0056b3, #294b8d);
+  --input-background-color: light-dark(#e5e9f0, #2a3147);
+  --input-focus-color: light-dark(#88c0d0, #3a8dca);
+  --border-color: light-dark(#c3cbd6, #3a3f4b);
+  --success-color: light-dark(#15bd4a, #27ae60);
+  --warning-color: light-dark(#d08770, #f2c94c);
+  --error-color: light-dark(#cd1605, #cd1605);
+  --secondary-background-color: light-dark(#dce0e8, #2b3348);
+  --secondary-text-color: light-dark(#4c566a, #a3a3a3);
+  --crypto-lock-color: light-dark(#6192f0, #00ff00);
+  --security-check-positive-color: light-dark(#1a74af, #1a74af);
+  --security-check-negative-color: light-dark(#57346b, #57346b);
 }
 
 .theme-design2 {
-  /* light mode */
-  --primary-color: #007bff;
-  --primary-color-hover: #0056b3;
-  --background-color: #ffffff;
-  --component-background-color: #f0f0f0;
-  --text-color: #2e3440;
-  --input-background-color: #e5e9f0;
-  --input-focus-color: #88c0d0;
-  --border-color: #d8dee9;
-  --success-color: #15bd4a;
-  --warning-color: #d08770;
-  --error-color: #bf616a;
-  --secondary-background-color: #e5e9f0;
-  --secondary-text-color: #4c566a;
-  --crypto-lock-color: #00ff00;
+  --primary-color: light-dark(#3a8dca, #0056b3);
+  --primary-color-hover: light-dark(#2b3348, #004494);
+  --background-color: light-dark(#1c2029, #f7f9fc);
+  --component-background-color: light-dark(#252c41, #9ba4b4);
+  --text-color: light-dark(#d1d1d1, #2e3440);
+  --button-color: light-dark(#1a74af, #007bff);
+  --button-text-color: light-dark(#d1d1d1, #ffffff);
+  --button-hover-color: light-dark(#294b8d, #0056b3);
+  --input-background-color: light-dark(#2a3147, #e5e9f0);
+  --input-focus-color: light-dark(#3a8dca, #88c0d0);
+  --border-color: light-dark(#3a3f4b, #c3cbd6);
+  --success-color: light-dark(#27ae60, #15bd4a);
+  --warning-color: light-dark(#f2c94c, #d08770);
+  --error-color: light-dark(#cd1605, #cd1605);
+  --secondary-background-color: light-dark(#2b3348, #dce0e8);
+  --secondary-text-color: light-dark(#a3a3a3, #4c566a);
+  --crypto-lock-color: light-dark(#00ff00, #6192f0);
+  --security-check-positive-color: light-dark(#1a74af, #1a74af);
+  --security-check-negative-color: light-dark(#57346b, #57346b);
 }
 
 * {
@@ -96,7 +104,11 @@ ul {
 
 a {
   text-decoration: none;
-  color: var(--text-color);
+  color: var(--button-text-color);
+}
+
+input {
+  outline: none;
 }
 
 ::-webkit-scrollbar {

@@ -23,26 +23,26 @@ export const DataVaultProvider = ({ children }) => {
   const accountRepository = useMemo(() => new AccountRepository(), []);
   const accountInteractor = useMemo(
     () => new AccountInteractor(accountRepository),
-    [accountRepository]
+    [accountRepository],
   );
   const contactRepository = useMemo(() => new ContactRepository(), []);
   const contactInteractor = useMemo(
     () => new ContactInteractor(contactRepository),
-    [contactRepository]
+    [contactRepository],
   );
   const noteRepository = useMemo(() => new NoteRepository(), []);
   const noteInteractor = useMemo(
     () => new NoteInteractor(noteRepository),
-    [noteRepository]
+    [noteRepository],
   );
   const bankRepository = useMemo(() => new BankRepository(), []);
   const bankInteractor = useMemo(
     () => new BankInteractor(bankRepository),
-    [bankRepository]
+    [bankRepository],
   );
   const cryptographyInteractor = useMemo(
     () => new CryptographyInteractor(),
-    []
+    [],
   );
 
   const [accounts, setAccounts] = useState(null);
@@ -56,6 +56,7 @@ export const DataVaultProvider = ({ children }) => {
   const [masterPassword, setMasterPassword] = useState("");
   const [dataVaultLoadingRequest, setDataVaultLoadingRequest] = useState(false);
   const [isDataVaultUnlocked, setIsDataVaultUnlocked] = useState(false);
+  const [inactivity, setInactivity] = useState(false);
 
   const fetchAndDecryptAccounts = useCallback(async () => {
     setIsAccountLoading(true);
@@ -105,7 +106,7 @@ export const DataVaultProvider = ({ children }) => {
         }
 
         return { ...account, decryptedPassword, decryptedNotes };
-      })
+      }),
     );
 
     setAccounts(decryptedAccounts);
@@ -144,7 +145,7 @@ export const DataVaultProvider = ({ children }) => {
         }
 
         return { ...contact, decryptedNotes };
-      })
+      }),
     );
 
     setContacts(decryptedContacts);
@@ -190,7 +191,7 @@ export const DataVaultProvider = ({ children }) => {
           }
         }
         return { ...note, decryptedNoteTitle, decryptedNoteContent };
-      })
+      }),
     );
 
     setNotes(decryptedNotes);
@@ -266,7 +267,7 @@ export const DataVaultProvider = ({ children }) => {
           decryptedCardNumber,
           decryptedCardCvvCvc,
         };
-      })
+      }),
     );
 
     setBanks(decryptedBanks);
@@ -299,6 +300,46 @@ export const DataVaultProvider = ({ children }) => {
     fetchAndDecryptBanks,
   ]);
 
+  const resetMasterPassword = useCallback(() => {
+    setMasterPassword("");
+    setInactivity(true);
+    setIsDataVaultUnlocked(false);
+  }, [setMasterPassword, setInactivity, setIsDataVaultUnlocked]);
+
+  useEffect(() => {
+    let timeoutId;
+
+    const resetTimeout = () => {
+      if (timeoutId) clearTimeout(timeoutId);
+      timeoutId = setTimeout(resetMasterPassword, 5 * 60 * 1000); // 5 minute timeout
+    };
+
+    const handleUserActivity = () => {
+      resetTimeout();
+    };
+
+    if (isDataVaultUnlocked) {
+      // Set initial timeout and add event listeners if the vault is unlocked
+      resetTimeout();
+      window.addEventListener("mousemove", handleUserActivity);
+      window.addEventListener("click", handleUserActivity);
+      window.addEventListener("touchstart", handleUserActivity);
+      window.addEventListener("keydown", handleUserActivity);
+    } else if (timeoutId) {
+      // Clear timeout if the vault is locked
+      clearTimeout(timeoutId);
+    }
+
+    // Cleanup function
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+      window.removeEventListener("mousemove", handleUserActivity);
+      window.removeEventListener("click", handleUserActivity);
+      window.removeEventListener("touchstart", handleUserActivity);
+      window.removeEventListener("keydown", handleUserActivity);
+    };
+  }, [resetMasterPassword, isDataVaultUnlocked]);
+
   return (
     <DataVaultContext.Provider
       value={{
@@ -329,6 +370,8 @@ export const DataVaultProvider = ({ children }) => {
         noteInteractor,
         bankInteractor,
         cryptographyInteractor,
+        inactivity,
+        setInactivity,
       }}
     >
       {children}
