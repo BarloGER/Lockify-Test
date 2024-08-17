@@ -20,6 +20,7 @@
 
 .new-account-form__inner span {
   font-size: var(--font-xl);
+  color: var(--button-color);
 }
 
 .new-account-form__button-wrapper {

@@ -9,6 +9,7 @@
 }
 
 .register-template__section {
+  height: 100dvh;
   padding: var(--padding-lg);
   display: flex;
   align-items: center;

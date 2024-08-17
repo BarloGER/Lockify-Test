@@ -4,14 +4,14 @@
 }
 
 .landing-page-template__section:first-child {
-  height: 100vh;
+  height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .landing-page-template__section {
-  height: 100vh;
+  height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;

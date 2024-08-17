@@ -20,6 +20,7 @@
 
 .new-note-form__inner span {
   font-size: var(--font-xl);
+  color: var(--button-color);
 }
 
 .new-note-form__button-wrapper {

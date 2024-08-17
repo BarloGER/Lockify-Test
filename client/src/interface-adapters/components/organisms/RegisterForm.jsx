@@ -5,6 +5,7 @@ import {
   Checkbox,
   FlashMessage,
   HiddenInput,
+  MasterPasswordInput,
   PasswordInput,
 } from "../molecules";
 import "./assets/register-form.css";
@@ -39,7 +40,7 @@ export const RegisterForm = ({
           value={newUserFormData.email}
           onChange={handleChange}
         />
-        <HiddenInput
+        <PasswordInput
           id="password"
           name="password"
           label="registerPage.password"
@@ -55,7 +56,7 @@ export const RegisterForm = ({
           value={newUserFormData.confirmPassword}
           onChange={handleChange}
         />
-        <PasswordInput
+        <MasterPasswordInput
           id="masterPassword"
           name="masterPassword"
           label="registerPage.masterPassword"

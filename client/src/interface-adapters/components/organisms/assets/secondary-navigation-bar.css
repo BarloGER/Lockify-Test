@@ -20,6 +20,10 @@
   padding: var(--padding-sm);
 }
 
+.secondary-navigation-bar__link.active {
+  color: var(--button-color);
+}
+
 .secondary-navigation-bar__lock-button {
   background: none;
   color: var(--error-color);
@@ -30,4 +34,9 @@
   justify-content: center;
   align-items: center;
   font-size: var(--font-md);
+}
+
+.secondary-navigation-bar__lock-button:hover {
+  cursor: pointer;
+  color: var(--warning-color);
 }

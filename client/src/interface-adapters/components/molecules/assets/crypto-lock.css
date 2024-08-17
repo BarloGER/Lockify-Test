@@ -1,6 +1,7 @@
 .crypto-lock {
   line-height: 1;
   width: 100%;
+  max-width: 500px;
 }
 
 .crypto-lock__rows {

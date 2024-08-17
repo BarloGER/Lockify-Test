@@ -2,6 +2,6 @@
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  width: 90%;
+  width: 100%;
   padding: var(--padding-lg);
 }

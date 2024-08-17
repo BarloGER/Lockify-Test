@@ -1,0 +1,23 @@
+.modal-icon {
+  top: 3px;
+  right: 0;
+  font-size: var(--font-md);
+  position: absolute;
+  color: var(--text-color);
+}
+
+.modal-overlay {
+  top: 30px;
+  position: absolute;
+  background-color: var(--component-background-color);
+  z-index: 2;
+  font-size: var(--font-xs);
+  color: var(--button-text-color);
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+  padding: var(--padding-md);
+}

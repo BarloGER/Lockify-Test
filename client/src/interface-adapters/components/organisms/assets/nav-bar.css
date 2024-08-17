@@ -9,6 +9,7 @@
   width: 100%;
   z-index: 1000;
   min-height: 50px;
+  color: var(--button-text-color);
 }
 
 .nav-bar__container {
@@ -19,7 +20,6 @@
 
 .nav-bar__brand {
   font-size: var(--font-md);
-  color: var(--text-color);
 }
 
 .nav-bar__links {
@@ -31,13 +31,12 @@
 .nav-bar__button {
   background: none;
   border: none;
-  color: var(--text-color);
   font-size: var(--font-xs);
   cursor: pointer;
+  color: var(--button-text-color);
 }
 
 .nav-bar__link {
-  color: var(--text-color);
   font-size: var(--font-sm);
   padding: var(--padding-xs);
 }

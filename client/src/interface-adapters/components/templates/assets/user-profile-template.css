@@ -1,7 +1,6 @@
 .user-profile-template {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   margin-top: 50px;
   position: fixed;
   top: 0;
@@ -12,6 +11,8 @@
 }
 
 .user-profile-template__section {
+  margin-top: 10px;
+  height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;

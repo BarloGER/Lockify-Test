@@ -19,17 +19,37 @@ export const SecondaryNavigationBar = () => {
     <nav className="secondary-navigation-bar">
       <ul className="secondary-navigation-bar__list">
         <li>
-          <NavLink to="/data-vault/accounts">{t("navBar.accounts")}</NavLink>
+          <NavLink
+            className={"secondary-navigation-bar__link"}
+            to="/data-vault/accounts"
+          >
+            {t("navBar.accounts")}
+          </NavLink>
         </li>
         <li>
-          <NavLink to="/data-vault/contacts">{t("navBar.contacts")}</NavLink>
+          <NavLink
+            className={"secondary-navigation-bar__link"}
+            to="/data-vault/contacts"
+          >
+            {t("navBar.contacts")}
+          </NavLink>
         </li>
         <li>
           {" "}
-          <NavLink to="/data-vault/notes">{t("navBar.notes")}</NavLink>
+          <NavLink
+            className={"secondary-navigation-bar__link"}
+            to="/data-vault/notes"
+          >
+            {t("navBar.notes")}
+          </NavLink>
         </li>
         <li>
-          <NavLink to="/data-vault/banks">{t("navBar.bankInfo")}</NavLink>
+          <NavLink
+            className={"secondary-navigation-bar__link"}
+            to="/data-vault/banks"
+          >
+            {t("navBar.bankInfo")}
+          </NavLink>
         </li>
         <li>
           <button

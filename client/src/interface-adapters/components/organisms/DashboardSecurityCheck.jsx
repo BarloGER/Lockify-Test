@@ -62,7 +62,6 @@ export const DashboardSecurityCheck = ({ securityCheckResult }) => {
             x="50%"
             y="50%"
             textAnchor="middle"
-            fill="#fff"
             dy=".3em"
             className="security-status-text"
           >
@@ -73,7 +72,7 @@ export const DashboardSecurityCheck = ({ securityCheckResult }) => {
       <div className="dashboard-security-check__details">
         <div className="dashboard-security-check__detail">
           <Span text="dashboardPage.securityScore" />
-          <Span text={`${securityScore}%`} />
+          <Span text={`${securityScore}`} />
         </div>
         <div className="dashboard-security-check__detail">
           <Span text="dashboardPage.sufficientAccount" />

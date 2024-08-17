@@ -7,7 +7,7 @@ export const Button = ({
   onClick,
   type = "button",
   className = "button",
-  modifier = "",
+  modifier = "hover",
 }) => {
   const { t } = useTranslation();
 

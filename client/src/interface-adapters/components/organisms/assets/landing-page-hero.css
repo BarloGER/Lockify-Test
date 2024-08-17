@@ -26,8 +26,9 @@
   border: none;
   cursor: pointer;
   font-size: var(--font-sm);
+  color: var(--button-text-color);
 }
 
 .landing-page-hero__button:hover {
-  background-color: var(--button-color-hover);
+  background-color: var(--button-hover-color);
 }

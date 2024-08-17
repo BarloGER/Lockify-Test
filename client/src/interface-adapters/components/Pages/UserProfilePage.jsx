@@ -4,6 +4,8 @@ import { UserProfileTemplate } from "../templates";
 import { UserProfileForm } from "../organisms";
 import { Settings } from "../organisms";
 
+const testUser = import.meta.env.VITE_TEST_EMAIL;
+
 export const UserProfilePage = () => {
   const { user, setUser, userInteractor, isAuthenticated, setIsAuthenticated } =
     useContext(AuthContext);
@@ -34,6 +36,12 @@ export const UserProfilePage = () => {
   const processUpdateUser = async (e) => {
     // ! Add masterPassword
     e.preventDefault();
+    if (user.email === testUser) {
+      setMessage("Test User cant be updated!");
+      setMessageType("error");
+      return;
+    }
+
     setIsUserLoading(true);
 
     const dataToUpdate = Object.keys(updateUserFormData).reduce((acc, key) => {
@@ -95,6 +103,12 @@ export const UserProfilePage = () => {
   };
 
   const processDeleteUser = async () => {
+    if (user.email === testUser) {
+      setMessage("Test User cant be deleted!");
+      setMessageType("error");
+      return;
+    }
+
     setIsUserLoading(true);
 
     const deletionResponse = await userInteractor.deleteUser();
@@ -152,9 +166,7 @@ export const UserProfilePage = () => {
           messageType={messageType}
         />
       </section>
-      <section className="user-profile-template__section">
-        <Settings />
-      </section>
+      <Settings />
     </UserProfileTemplate>
   );
 };
