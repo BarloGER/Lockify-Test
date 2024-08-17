@@ -1,3 +1,5 @@
+const CLIENT_URLS = process.env.CLIENT_URLS;
+
 exports.RequestEntity = class RequestEntity {
   constructor(metadataInput) {
     this.metadataInput = metadataInput;
@@ -28,10 +30,7 @@ exports.RequestEntity = class RequestEntity {
 
   validateHeaders() {
     const headers = this.metadataInput;
-    const allowedOrigins = [
-      "http://localhost:5173",
-      "https://barlo-lockify.netlify.app",
-    ];
+    const allowedOrigins = CLIENT_URLS;
 
     // Validations for the host header
     if (headers.host && !headers.host.match(/^[a-z0-9.:-]+$/i)) {
@@ -46,7 +45,8 @@ exports.RequestEntity = class RequestEntity {
     });
 
     // Validation of content type
-    if (!["application/json", "text/plain"].includes(headers["content-type"])) {
+    const contentType = headers["content-type"] || "application/json";
+    if (!["application/json", "text/plain"].includes(contentType)) {
       return "REQUEST_VALIDATION_003";
     }
 

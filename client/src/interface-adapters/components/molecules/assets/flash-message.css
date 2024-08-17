@@ -2,7 +2,7 @@
   font-size: var(--font-xs);
   padding: var(--padding-sm);
   width: 100%;
-  color: var(--text-color);
+  color: var(--button-text-color);
 }
 
 .flash-message--success {

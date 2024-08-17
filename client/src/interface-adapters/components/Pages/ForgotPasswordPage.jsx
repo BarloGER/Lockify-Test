@@ -24,6 +24,12 @@ export const ForgotPasswordPage = () => {
 
   const handleNewPasswordRequest = async (e) => {
     e.preventDefault();
+    if (email === "test@test.com") {
+      setMessage("Test user can't request a new password!");
+      setMessageType("error");
+      return;
+    }
+
     setIsPasswordRequestLoading(true);
 
     const passwordRequestResponse = await userInteractor.requestNewPassword({

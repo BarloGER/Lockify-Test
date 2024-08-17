@@ -4,7 +4,7 @@ import { Input, Modal, ToggleVisibilityButton } from "../atoms";
 import { PiPasswordFill } from "react-icons/pi";
 import "./assets/password-input.css";
 
-export const PasswordInput = ({ id, name, label, value, onChange }) => {
+export const MasterPasswordInput = ({ id, name, label, value, onChange }) => {
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
   const generatePassword = () => {
@@ -22,15 +22,15 @@ export const PasswordInput = ({ id, name, label, value, onChange }) => {
 
     let newPassword = [];
     // Ensure minimum requirements
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 3; i++) {
       newPassword.push(getRandomChar(numbers));
       newPassword.push(getRandomChar(lowerCaseLetters));
       newPassword.push(getRandomChar(upperCaseLetters));
       newPassword.push(getRandomChar(specialChars));
     }
 
-    // Fill the rest up to 12 characters
-    while (newPassword.length < 12) {
+    // Fill the rest up to 16 characters
+    while (newPassword.length < 16) {
       const allChars =
         numbers + upperCaseLetters + specialChars + lowerCaseLetters;
       newPassword.push(getRandomChar(allChars));
@@ -48,13 +48,13 @@ export const PasswordInput = ({ id, name, label, value, onChange }) => {
   return (
     <div className="password-input__container">
       <Modal
-        text="registerPage.passwordModal.text"
+        text="registerPage.masterPasswordModal.text"
         points={[
-          "registerPage.passwordModal.length",
-          "registerPage.passwordModal.lowercase",
-          "registerPage.passwordModal.uppercase",
-          "registerPage.passwordModal.number",
-          "registerPage.passwordModal.specialCharacters",
+          "registerPage.masterPasswordModal.length",
+          "registerPage.masterPasswordModal.lowercase",
+          "registerPage.masterPasswordModal.uppercase",
+          "registerPage.masterPasswordModal.number",
+          "registerPage.masterPasswordModal.specialCharacters",
         ]}
       />
       <Input
@@ -82,7 +82,7 @@ export const PasswordInput = ({ id, name, label, value, onChange }) => {
   );
 };
 
-PasswordInput.propTypes = {
+MasterPasswordInput.propTypes = {
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,

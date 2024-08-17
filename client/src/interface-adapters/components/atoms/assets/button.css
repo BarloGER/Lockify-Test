@@ -1,6 +1,6 @@
 .button {
   background-color: var(--button-color);
-  color: var(--text-color);
+  color: var(--button-text-color);
   padding: var(--padding-sm);
   border: none;
   cursor: pointer;
@@ -9,5 +9,5 @@
 }
 
 .button--hover:hover {
-  background-color: var(--button-color-hover);
+  background-color: var(--button-hover-color);
 }

@@ -8,7 +8,7 @@ export const SubmitButton = ({
   isLoading,
   type = "submit",
   className = "submit-button",
-  modifier = "",
+  modifier = "hover",
 }) => {
   const { t } = useTranslation();
 

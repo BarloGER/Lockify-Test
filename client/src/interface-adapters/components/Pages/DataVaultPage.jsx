@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { DataVaultContext } from "../../context/DataVaultContext";
@@ -13,13 +13,26 @@ const cryptographyInteractor = new CryptographyInteractor();
 
 export const DataVaultPage = () => {
   const { user, isBlocked, isAuthenticated } = useContext(AuthContext);
-  const { masterPassword, setMasterPassword, setIsDataVaultUnlocked } =
-    useContext(DataVaultContext);
+  const {
+    masterPassword,
+    setMasterPassword,
+    setIsDataVaultUnlocked,
+    inactivity,
+    setInactivity,
+  } = useContext(DataVaultContext);
   const navigate = useNavigate();
 
+  const [isTestUser, setIsTestUser] = useState(false);
   const [isDataVaultLoading, setIsDataVaultLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
+
+  useEffect(() => {
+    const testUser = import.meta.env.VITE_TEST_EMAIL;
+    if (user && user.email === testUser) {
+      setIsTestUser(true);
+    }
+  }, [user]);
 
   if (isBlocked || !isAuthenticated) {
     return;
@@ -46,6 +59,7 @@ export const DataVaultPage = () => {
     setIsDataVaultLoading(false);
     setMessage(decryptionResult.message);
     setMessageType("success");
+    setInactivity(false);
     setIsDataVaultUnlocked(true);
     navigate("/data-vault/dashboard");
   };
@@ -58,6 +72,8 @@ export const DataVaultPage = () => {
           setMasterPassword={setMasterPassword}
           processMasterPasswordVerification={processMasterPasswordVerification}
           isDataVaultLoading={isDataVaultLoading}
+          inactivity={inactivity}
+          isTestUser={isTestUser}
           message={message}
           setMessage={setMessage}
           messageType={messageType}

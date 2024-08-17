@@ -6,6 +6,7 @@
   align-items: center;
   width: fit-content;
   min-width: 300px;
+  max-width: 90%;
   height: fit-content;
   min-height: 250px;
   border: 1px solid var(--border-color);

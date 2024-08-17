@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Heading1, Input, RouterLink } from "../atoms";
+import { Heading1, Input, Paragraph, RouterLink } from "../atoms";
 import { FlashMessage, HiddenInput, SubmitButton } from "../molecules";
 import "./assets/authentication-form.css";
 
@@ -15,6 +15,14 @@ export const AuthenticationForm = ({
   return (
     <form className="authentication-form" onSubmit={processAuthentication}>
       <Heading1 text="authenticationPage.title" />
+
+      <div className="authentication-form__info-box">
+        <Paragraph text="authenticationPage.infoText" />
+        <ul>
+          <li>{`E-Mail: ${import.meta.env.VITE_TEST_EMAIL}`}</li>
+          <li>{`Password: ${import.meta.env.VITE_TEST_PASSWORD}`}</li>
+        </ul>
+      </div>
 
       <div className="authentication-form__input-container">
         <Input

@@ -6,6 +6,7 @@
   align-items: center;
   width: fit-content;
   min-width: 300px;
+  max-width: 90%;
   height: fit-content;
   min-height: 400px;
   border: 1px solid var(--border-color);
@@ -37,4 +38,12 @@
 
 .authentication-form .flash-message {
   padding: var(--padding-lg);
+}
+
+.authentication-form__info-box {
+  font-size: var(--font-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+  color: var(--text-color);
 }
