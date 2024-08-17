@@ -10,6 +10,6 @@ exports.sessionConfig = session({
     httpOnly: true,
     secure: true,
     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-    sameSite: process.env.NODE_ENV === "production" ? "strict" : "none",
+    sameSite: "none",
   },
 });
