@@ -15,7 +15,8 @@ const app = express();
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin:
+      process.env.NODE_ENV === "production" ? process.env.CLIENT_URL : true,
     credentials: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   }),
