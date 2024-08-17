@@ -13,14 +13,24 @@ const { bankRouter } = require("./routes/bankRouter");
 
 const app = express();
 
-app.use(
-  cors({
-    origin:
-      process.env.NODE_ENV === "production" ? process.env.CLIENT_URL : true,
-    credentials: true,
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  }),
-);
+const whitelist = process.env.CLIENT_URLS
+  ? process.env.CLIENT_URLS.split(",")
+  : [];
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ extended: true }));

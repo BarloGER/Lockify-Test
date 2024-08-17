@@ -7,8 +7,9 @@ exports.sessionConfig = session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: process.env.NODE_ENV === "production",
+    httpOnly: true,
+    secure: true,
     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-    sameSite: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "strict" : "none",
   },
 });
