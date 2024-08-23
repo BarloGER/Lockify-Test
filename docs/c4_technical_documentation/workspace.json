@@ -1,14 +1,12 @@
 {
-  "configuration" : {
-    "scope" : "SoftwareSystem"
-  },
+  "configuration" : { },
   "description" : "Description",
   "documentation" : { },
   "id" : 1,
-  "lastModifiedAgent" : "structurizr-javascript",
-  "lastModifiedDate" : "2024-08-19T14:56:32Z",
+  "lastModifiedDate" : "2024-08-23T15:17:04Z",
   "model" : {
     "people" : [ {
+      "description" : "A user of Lockify, with an account.",
       "id" : "1",
       "location" : "Unspecified",
       "name" : "User",
@@ -16,60 +14,1630 @@
         "structurizr.dsl.identifier" : "user"
       },
       "relationships" : [ {
-        "description" : "Uses",
-        "destinationId" : "2",
-        "id" : "3",
+        "description" : "Views and saves securely encrypted informations using",
+        "destinationId" : "3",
+        "id" : "49",
         "properties" : {
-          "structurizr.dsl.identifier" : "9b34042b-1496-4534-a096-4b1057396b55"
+          "structurizr.dsl.identifier" : "ce082b88-313f-4304-8c0b-9bf5a768ad3d"
         },
         "sourceId" : "1",
         "tags" : "Relationship"
+      }, {
+        "description" : "Views and saves securely encrypted informations using",
+        "destinationId" : "2",
+        "id" : "50",
+        "linkedRelationshipId" : "49",
+        "sourceId" : "1"
       } ],
       "tags" : "Element,Person"
     } ],
+    "properties" : {
+      "structurizr.groupSeparator" : "/"
+    },
     "softwareSystems" : [ {
+      "containers" : [ {
+        "components" : [ {
+          "description" : "Entry Point",
+          "documentation" : { },
+          "id" : "4",
+          "name" : "App",
+          "properties" : {
+            "structurizr.dsl.identifier" : "app"
+          },
+          "relationships" : [ {
+            "description" : "Renders first component",
+            "destinationId" : "8",
+            "id" : "72",
+            "properties" : {
+              "structurizr.dsl.identifier" : "a35f8dee-81df-4e52-8a4e-0fb63396ca99"
+            },
+            "sourceId" : "4",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,SPA",
+          "technology" : "Vite-React"
+        }, {
+          "description" : "Checks if the user is authenticated.",
+          "documentation" : { },
+          "group" : "Context",
+          "id" : "5",
+          "name" : "Auth Context",
+          "properties" : {
+            "structurizr.dsl.identifier" : "authcontext"
+          },
+          "relationships" : [ {
+            "description" : "Uses context",
+            "destinationId" : "9",
+            "id" : "74",
+            "properties" : {
+              "structurizr.dsl.identifier" : "20300eb2-658e-4b30-9814-3c279bacf973"
+            },
+            "sourceId" : "5",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Uses context",
+            "destinationId" : "15",
+            "id" : "76",
+            "properties" : {
+              "structurizr.dsl.identifier" : "56916345-286e-4afd-8031-6dfd8bd3aee4"
+            },
+            "sourceId" : "5",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Uses context",
+            "destinationId" : "16",
+            "id" : "79",
+            "properties" : {
+              "structurizr.dsl.identifier" : "9af8c225-abc6-4104-b2cb-e26c592d6b55"
+            },
+            "sourceId" : "5",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Uses context",
+            "destinationId" : "12",
+            "id" : "81",
+            "properties" : {
+              "structurizr.dsl.identifier" : "5e815971-4e5e-4a99-88fb-49576d970dcc"
+            },
+            "sourceId" : "5",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Uses context",
+            "destinationId" : "10",
+            "id" : "83",
+            "properties" : {
+              "structurizr.dsl.identifier" : "6dbb1f8b-69cb-4717-a2b2-f2c8fa4a4e6b"
+            },
+            "sourceId" : "5",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Uses context",
+            "destinationId" : "14",
+            "id" : "84",
+            "properties" : {
+              "structurizr.dsl.identifier" : "04d171c0-d740-4e3c-904b-5b1fd94dd4ba"
+            },
+            "sourceId" : "5",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Uses context",
+            "destinationId" : "11",
+            "id" : "85",
+            "properties" : {
+              "structurizr.dsl.identifier" : "a8954d74-7c69-4a7f-b0a3-280bc59f9026"
+            },
+            "sourceId" : "5",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Uses context",
+            "destinationId" : "13",
+            "id" : "86",
+            "properties" : {
+              "structurizr.dsl.identifier" : "c7c60afb-8907-4ad2-a571-dc243291f2d8"
+            },
+            "sourceId" : "5",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,SPA,Context",
+          "technology" : "React/Context"
+        }, {
+          "description" : "Gets and decrypts data-vault data. Resets master-password after 5 minutes inactivity.",
+          "documentation" : { },
+          "group" : "Context",
+          "id" : "6",
+          "name" : "Data Vault Context",
+          "properties" : {
+            "structurizr.dsl.identifier" : "datavaultcontext"
+          },
+          "relationships" : [ {
+            "description" : "Uses context",
+            "destinationId" : "18",
+            "id" : "73",
+            "properties" : {
+              "structurizr.dsl.identifier" : "7f209cc4-6081-4324-b0fb-7c2f11c24e36"
+            },
+            "sourceId" : "6",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Uses context",
+            "destinationId" : "19",
+            "id" : "75",
+            "properties" : {
+              "structurizr.dsl.identifier" : "79ee10d0-d773-4310-9c76-7e1158c8980a"
+            },
+            "sourceId" : "6",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Uses context",
+            "destinationId" : "20",
+            "id" : "77",
+            "properties" : {
+              "structurizr.dsl.identifier" : "687f6de7-7c08-4785-a2c8-30fc59aefbac"
+            },
+            "sourceId" : "6",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Uses context",
+            "destinationId" : "17",
+            "id" : "78",
+            "properties" : {
+              "structurizr.dsl.identifier" : "0cdce74e-c1a7-4d89-8430-4724bac757c6"
+            },
+            "sourceId" : "6",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Uses context",
+            "destinationId" : "16",
+            "id" : "80",
+            "properties" : {
+              "structurizr.dsl.identifier" : "61953496-e194-4949-b3cb-a90515b41815"
+            },
+            "sourceId" : "6",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Uses context",
+            "destinationId" : "21",
+            "id" : "82",
+            "properties" : {
+              "structurizr.dsl.identifier" : "677ec9f9-1470-4860-95f1-25eb89b27da3"
+            },
+            "sourceId" : "6",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,SPA,Context",
+          "technology" : "React/Context"
+        }, {
+          "description" : "Provides design-provider as wrapper for app routes, to select between light and dark design.",
+          "documentation" : { },
+          "group" : "Context",
+          "id" : "7",
+          "name" : "Design Context",
+          "properties" : {
+            "structurizr.dsl.identifier" : "designcontext"
+          },
+          "tags" : "Element,Component,SPA,Context",
+          "technology" : "React/Context"
+        }, {
+          "description" : "Home Page with informations about the application.",
+          "documentation" : { },
+          "id" : "8",
+          "name" : "Landing Page",
+          "properties" : {
+            "structurizr.dsl.identifier" : "landingpage"
+          },
+          "tags" : "Element,Component,SPA,Page"
+        }, {
+          "description" : "Allows user to login, using a login-form.",
+          "documentation" : { },
+          "id" : "9",
+          "name" : "Authentication Page",
+          "properties" : {
+            "structurizr.dsl.identifier" : "authenticationpage"
+          },
+          "relationships" : [ {
+            "description" : "Sends unvalidated data to",
+            "destinationId" : "28",
+            "id" : "89",
+            "properties" : {
+              "structurizr.dsl.identifier" : "d746808b-a8e0-4617-a1fb-f7b6ea240b06"
+            },
+            "sourceId" : "9",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,SPA,Page"
+        }, {
+          "description" : "Allows the user to register, using the register-form.",
+          "documentation" : { },
+          "id" : "10",
+          "name" : "Register Page",
+          "properties" : {
+            "structurizr.dsl.identifier" : "registerpage"
+          },
+          "relationships" : [ {
+            "description" : "Sends unvalidated data to",
+            "destinationId" : "28",
+            "id" : "100",
+            "properties" : {
+              "structurizr.dsl.identifier" : "e919b135-6e69-41a9-adba-a48e2e588142"
+            },
+            "sourceId" : "10",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Encrypts/Decrypts data using",
+            "destinationId" : "25",
+            "id" : "101",
+            "properties" : {
+              "structurizr.dsl.identifier" : "78cc34fc-0576-4210-ad60-fba8008e52fb"
+            },
+            "sourceId" : "10",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,SPA,Page"
+        }, {
+          "description" : "Allows the user to edit his user account and access settings.",
+          "documentation" : { },
+          "id" : "11",
+          "name" : "User Profile Page",
+          "properties" : {
+            "structurizr.dsl.identifier" : "userprofilepage"
+          },
+          "relationships" : [ {
+            "description" : "Sends unvalidated data to",
+            "destinationId" : "28",
+            "id" : "103",
+            "properties" : {
+              "structurizr.dsl.identifier" : "e2195823-d23b-4183-a1c6-134722dc6988"
+            },
+            "sourceId" : "11",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,SPA,Page"
+        }, {
+          "description" : "Allows the user to request a new password.",
+          "documentation" : { },
+          "id" : "12",
+          "name" : "Forgot Password Page",
+          "properties" : {
+            "structurizr.dsl.identifier" : "forgotpasswordpage"
+          },
+          "relationships" : [ {
+            "description" : "Sends unvalidated data to",
+            "destinationId" : "28",
+            "id" : "97",
+            "properties" : {
+              "structurizr.dsl.identifier" : "e03f8e37-30d5-4a12-984e-1927fb43558f"
+            },
+            "sourceId" : "12",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,SPA,Page"
+        }, {
+          "description" : "Allows the user to confirm his email-address.",
+          "documentation" : { },
+          "id" : "13",
+          "name" : "Verification Page",
+          "properties" : {
+            "structurizr.dsl.identifier" : "verificationpage"
+          },
+          "relationships" : [ {
+            "description" : "Sends unvalidated data to",
+            "destinationId" : "28",
+            "id" : "104",
+            "properties" : {
+              "structurizr.dsl.identifier" : "c0653adf-4807-4700-bedc-a5e4edd9e8ec"
+            },
+            "sourceId" : "13",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,SPA,Page"
+        }, {
+          "description" : "Allows the user to contact the support.",
+          "documentation" : { },
+          "id" : "14",
+          "name" : "Support Page",
+          "properties" : {
+            "structurizr.dsl.identifier" : "supportpage"
+          },
+          "relationships" : [ {
+            "description" : "Sends unvalidated data to",
+            "destinationId" : "26",
+            "id" : "102",
+            "properties" : {
+              "structurizr.dsl.identifier" : "81419e0d-a92e-4db7-a4af-468702dc006e"
+            },
+            "sourceId" : "14",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,SPA,Page"
+        }, {
+          "description" : "Shows blocked users a support contact-form.",
+          "documentation" : { },
+          "id" : "15",
+          "name" : "Blocked Page",
+          "properties" : {
+            "structurizr.dsl.identifier" : "blockedpage"
+          },
+          "relationships" : [ {
+            "description" : "Sends unvalidated data to",
+            "destinationId" : "26",
+            "id" : "92",
+            "properties" : {
+              "structurizr.dsl.identifier" : "929b6814-bdd2-4374-a080-cbc2fd6f1bd8"
+            },
+            "sourceId" : "15",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,SPA,Page"
+        }, {
+          "description" : "Allows the user to access his data-vault.",
+          "documentation" : { },
+          "id" : "16",
+          "name" : "Data Vault Page",
+          "properties" : {
+            "structurizr.dsl.identifier" : "datavaultpage"
+          },
+          "relationships" : [ {
+            "description" : "Encrypts/Decrypts data using",
+            "destinationId" : "25",
+            "id" : "96",
+            "properties" : {
+              "structurizr.dsl.identifier" : "3308f989-5cc2-4696-965e-b9e997358929"
+            },
+            "sourceId" : "16",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,SPA,Page"
+        }, {
+          "description" : "Shows the user detailed security informations.",
+          "documentation" : { },
+          "id" : "17",
+          "name" : "Dashboard Page",
+          "properties" : {
+            "structurizr.dsl.identifier" : "dashboardpage"
+          },
+          "relationships" : [ {
+            "description" : "Encrypts/Decrypts data using",
+            "destinationId" : "25",
+            "id" : "95",
+            "properties" : {
+              "structurizr.dsl.identifier" : "e84472b8-7381-420e-b087-d8b21bcf74d6"
+            },
+            "sourceId" : "17",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,SPA,Page"
+        }, {
+          "description" : "Allows the user to read, create, update and delete accounts.",
+          "documentation" : { },
+          "id" : "18",
+          "name" : "Accounts Page",
+          "properties" : {
+            "structurizr.dsl.identifier" : "accountspage"
+          },
+          "relationships" : [ {
+            "description" : "Sends unvalidated data to",
+            "destinationId" : "22",
+            "id" : "87",
+            "properties" : {
+              "structurizr.dsl.identifier" : "d62df416-2262-4d8f-97cb-9ef46259c7b6"
+            },
+            "sourceId" : "18",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Encrypts/Decrypts data using",
+            "destinationId" : "25",
+            "id" : "88",
+            "properties" : {
+              "structurizr.dsl.identifier" : "12d6546f-632f-4438-a63c-ca10f77b137e"
+            },
+            "sourceId" : "18",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,SPA,Page"
+        }, {
+          "description" : "Allows the user to read, create, update and delete bank-accounts.",
+          "documentation" : { },
+          "id" : "19",
+          "name" : "Banks Page",
+          "properties" : {
+            "structurizr.dsl.identifier" : "bankspage"
+          },
+          "relationships" : [ {
+            "description" : "Sends unvalidated data to",
+            "destinationId" : "23",
+            "id" : "90",
+            "properties" : {
+              "structurizr.dsl.identifier" : "df7575b5-917f-4fe8-8147-84522e8bfd16"
+            },
+            "sourceId" : "19",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Encrypts/Decrypts data using",
+            "destinationId" : "25",
+            "id" : "91",
+            "properties" : {
+              "structurizr.dsl.identifier" : "24db4ac5-434e-4026-8d0f-e113ad8da64c"
+            },
+            "sourceId" : "19",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,SPA,Page"
+        }, {
+          "description" : "Allows the user to read, create, update and delete contacts.",
+          "documentation" : { },
+          "id" : "20",
+          "name" : "Contacts Page",
+          "properties" : {
+            "structurizr.dsl.identifier" : "contactspage"
+          },
+          "relationships" : [ {
+            "description" : "Sends unvalidated data to",
+            "destinationId" : "24",
+            "id" : "93",
+            "properties" : {
+              "structurizr.dsl.identifier" : "38442f88-5bdf-45f9-a8a7-5e92ace114f9"
+            },
+            "sourceId" : "20",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Encrypts/Decrypts data using",
+            "destinationId" : "25",
+            "id" : "94",
+            "properties" : {
+              "structurizr.dsl.identifier" : "f7267765-d6d4-4468-83d8-f6f4bb6780ad"
+            },
+            "sourceId" : "20",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,SPA,Page"
+        }, {
+          "description" : "Allows the user to read, create, update and delete notes.",
+          "documentation" : { },
+          "id" : "21",
+          "name" : "NotesPage",
+          "properties" : {
+            "structurizr.dsl.identifier" : "notespage"
+          },
+          "relationships" : [ {
+            "description" : "Sends unvalidated data to",
+            "destinationId" : "27",
+            "id" : "98",
+            "properties" : {
+              "structurizr.dsl.identifier" : "45fafed3-011a-4602-b460-55ac3c5881ce"
+            },
+            "sourceId" : "21",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Encrypts/Decrypts data using",
+            "destinationId" : "25",
+            "id" : "99",
+            "properties" : {
+              "structurizr.dsl.identifier" : "a571687d-705f-47f9-9ba0-387d631cecf2"
+            },
+            "sourceId" : "21",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,SPA,Page"
+        }, {
+          "description" : "Validates data against entity, executes use-cases and makes api calls.",
+          "documentation" : { },
+          "group" : "Interactor",
+          "id" : "22",
+          "name" : "Account Interactor",
+          "properties" : {
+            "structurizr.dsl.identifier" : "accountinteractorf"
+          },
+          "relationships" : [ {
+            "description" : "Makes API calls to",
+            "destinationId" : "29",
+            "id" : "105",
+            "properties" : {
+              "structurizr.dsl.identifier" : "fae2d2a1-64e1-47b6-bf72-b95e57278554"
+            },
+            "sourceId" : "22",
+            "tags" : "Relationship",
+            "technology" : "JSON/HTTPS"
+          } ],
+          "tags" : "Element,Component,SPA,Interactor"
+        }, {
+          "description" : "Validates data against entity, executes use-cases and makes api calls.",
+          "documentation" : { },
+          "group" : "Interactor",
+          "id" : "23",
+          "name" : "Bank Interactor",
+          "properties" : {
+            "structurizr.dsl.identifier" : "bankinteractorf"
+          },
+          "relationships" : [ {
+            "description" : "Makes API calls to",
+            "destinationId" : "29",
+            "id" : "106",
+            "properties" : {
+              "structurizr.dsl.identifier" : "22662257-b66a-4a81-895c-2d1fab4bae71"
+            },
+            "sourceId" : "23",
+            "tags" : "Relationship",
+            "technology" : "JSON/HTTPS"
+          } ],
+          "tags" : "Element,Component,SPA,Interactor"
+        }, {
+          "description" : "Validates data against entity, executes use-cases and makes api calls.",
+          "documentation" : { },
+          "group" : "Interactor",
+          "id" : "24",
+          "name" : "Contact Interactor",
+          "properties" : {
+            "structurizr.dsl.identifier" : "contactinteractorf"
+          },
+          "relationships" : [ {
+            "description" : "Makes API calls to",
+            "destinationId" : "29",
+            "id" : "107",
+            "properties" : {
+              "structurizr.dsl.identifier" : "7544e484-362d-4d4e-8c72-3f30b8db0ab3"
+            },
+            "sourceId" : "24",
+            "tags" : "Relationship",
+            "technology" : "JSON/HTTPS"
+          } ],
+          "tags" : "Element,Component,SPA,Interactor"
+        }, {
+          "description" : "Validates data against entity, encrypts/decrypts data.",
+          "documentation" : { },
+          "group" : "Interactor",
+          "id" : "25",
+          "name" : "Cryptography Interactor",
+          "properties" : {
+            "structurizr.dsl.identifier" : "cryptographyinteractorf"
+          },
+          "tags" : "Element,Component,SPA,Interactor"
+        }, {
+          "description" : "Validates data against entity, executes use-cases and makes api calls.",
+          "documentation" : { },
+          "group" : "Interactor",
+          "id" : "26",
+          "name" : "Mail Interactor",
+          "properties" : {
+            "structurizr.dsl.identifier" : "mailinteractorf"
+          },
+          "relationships" : [ {
+            "description" : "Sends mail data to",
+            "destinationId" : "44",
+            "id" : "110",
+            "properties" : {
+              "structurizr.dsl.identifier" : "9cd87544-2560-4280-a1a2-ea7c9b51d46c"
+            },
+            "sourceId" : "26",
+            "tags" : "Relationship",
+            "technology" : "JSON/HTTPS"
+          } ],
+          "tags" : "Element,Component,SPA,Interactor"
+        }, {
+          "description" : "Validates data against entity, executes use-cases and makes api calls.",
+          "documentation" : { },
+          "group" : "Interactor",
+          "id" : "27",
+          "name" : "Note Interactor",
+          "properties" : {
+            "structurizr.dsl.identifier" : "noteinteractorf"
+          },
+          "relationships" : [ {
+            "description" : "Makes API calls to",
+            "destinationId" : "29",
+            "id" : "108",
+            "properties" : {
+              "structurizr.dsl.identifier" : "da7d0e6c-a8ec-4920-95f7-6d19ef582ff9"
+            },
+            "sourceId" : "27",
+            "tags" : "Relationship",
+            "technology" : "JSON/HTTPS"
+          } ],
+          "tags" : "Element,Component,SPA,Interactor"
+        }, {
+          "description" : "Validates data against entity, executes use-cases and makes api calls.",
+          "documentation" : { },
+          "group" : "Interactor",
+          "id" : "28",
+          "name" : "User Interactor",
+          "properties" : {
+            "structurizr.dsl.identifier" : "userinteractorf"
+          },
+          "relationships" : [ {
+            "description" : "Makes API calls to",
+            "destinationId" : "29",
+            "id" : "109",
+            "properties" : {
+              "structurizr.dsl.identifier" : "17337b22-68cc-4080-aff7-5b8c51dcee20"
+            },
+            "sourceId" : "28",
+            "tags" : "Relationship",
+            "technology" : "JSON/HTTPS"
+          } ],
+          "tags" : "Element,Component,SPA,Interactor"
+        } ],
+        "documentation" : { },
+        "id" : "3",
+        "name" : "Single-Page Application",
+        "properties" : {
+          "structurizr.dsl.identifier" : "spa"
+        },
+        "relationships" : [ {
+          "description" : "Sends support form data",
+          "destinationId" : "44",
+          "id" : "46",
+          "properties" : {
+            "structurizr.dsl.identifier" : "b81805e9-651c-4b46-a0f0-a0b4bb7eaba1"
+          },
+          "sourceId" : "3",
+          "tags" : "Relationship",
+          "technology" : "JSON/HTTPS"
+        }, {
+          "description" : "Makes API calls to",
+          "destinationId" : "29",
+          "id" : "51",
+          "properties" : {
+            "structurizr.dsl.identifier" : "9e2ffad9-090c-46b0-b1eb-715155e76d68"
+          },
+          "sourceId" : "3",
+          "tags" : "Relationship",
+          "technology" : "JSON/HTTPS"
+        }, {
+          "description" : "Make API call",
+          "destinationId" : "30",
+          "id" : "53",
+          "properties" : {
+            "structurizr.dsl.identifier" : "7920719f-885f-4a68-b9c3-6f9228ca2965"
+          },
+          "sourceId" : "3",
+          "tags" : "Relationship",
+          "technology" : "JSON/HTTPS"
+        } ],
+        "tags" : "Element,Container,SPA",
+        "technology" : "JavaScript/React"
+      }, {
+        "components" : [ {
+          "description" : "Splites every incoming request in headers, params and query to validate it seperately. Body is validated later.",
+          "documentation" : { },
+          "group" : "Middlewares",
+          "id" : "30",
+          "name" : "Middleware: Validate Request Metadata",
+          "properties" : {
+            "structurizr.dsl.identifier" : "requestmiddleware"
+          },
+          "relationships" : [ {
+            "description" : "Passes valid request to",
+            "destinationId" : "31",
+            "id" : "54",
+            "properties" : {
+              "structurizr.dsl.identifier" : "3a97022d-96ea-4171-8ff3-8a71e4d21abb"
+            },
+            "sourceId" : "30",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,API,Middleware",
+          "technology" : "ExpressJS Middleware"
+        }, {
+          "description" : "Validates Session",
+          "documentation" : { },
+          "group" : "Middlewares",
+          "id" : "31",
+          "name" : "Middleware: Validate Session",
+          "properties" : {
+            "structurizr.dsl.identifier" : "sessionmiddleware"
+          },
+          "relationships" : [ {
+            "destinationId" : "32",
+            "id" : "55",
+            "properties" : {
+              "structurizr.dsl.identifier" : "dc0fdc50-effe-4431-8dad-62904ab81eeb"
+            },
+            "sourceId" : "31",
+            "tags" : "Relationship"
+          }, {
+            "destinationId" : "34",
+            "id" : "56",
+            "properties" : {
+              "structurizr.dsl.identifier" : "0a429c55-1b1e-470e-95d7-5c3c52a390f8"
+            },
+            "sourceId" : "31",
+            "tags" : "Relationship"
+          }, {
+            "destinationId" : "36",
+            "id" : "57",
+            "properties" : {
+              "structurizr.dsl.identifier" : "dc970fbf-89a6-4563-b508-344fe2a63c2c"
+            },
+            "sourceId" : "31",
+            "tags" : "Relationship"
+          }, {
+            "destinationId" : "38",
+            "id" : "58",
+            "properties" : {
+              "structurizr.dsl.identifier" : "7257f184-1b4c-45a7-94bb-57637661e709"
+            },
+            "sourceId" : "31",
+            "tags" : "Relationship"
+          }, {
+            "destinationId" : "40",
+            "id" : "59",
+            "properties" : {
+              "structurizr.dsl.identifier" : "78c81089-2885-493c-ab3c-56c3d6f1b113"
+            },
+            "sourceId" : "31",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,API,Middleware",
+          "technology" : "ExpressJS Middleware"
+        }, {
+          "description" : "Allows user to read, create, update and delete accounts",
+          "documentation" : { },
+          "group" : "Account Components",
+          "id" : "32",
+          "name" : "Account Controller",
+          "properties" : {
+            "structurizr.dsl.identifier" : "accountcontroller"
+          },
+          "relationships" : [ {
+            "description" : "Passes unvalidated body to",
+            "destinationId" : "33",
+            "id" : "60",
+            "properties" : {
+              "structurizr.dsl.identifier" : "d7559420-ff33-43fb-970c-64d2b8ca14aa"
+            },
+            "sourceId" : "32",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,API,Controller"
+        }, {
+          "description" : "Validates body against entity and executes use-cases",
+          "documentation" : { },
+          "group" : "Account Components",
+          "id" : "33",
+          "name" : "Account Interactor",
+          "properties" : {
+            "structurizr.dsl.identifier" : "accountinteractor"
+          },
+          "relationships" : [ {
+            "description" : "Reads from, writes to",
+            "destinationId" : "43",
+            "id" : "61",
+            "properties" : {
+              "structurizr.dsl.identifier" : "1e30953b-e372-4110-b12e-37805d989ca5"
+            },
+            "sourceId" : "33",
+            "tags" : "Relationship",
+            "technology" : "Sequelize"
+          } ],
+          "tags" : "Element,Component,API,Interactor"
+        }, {
+          "description" : "Allows user to read, create, update and delete bank accounts",
+          "documentation" : { },
+          "group" : "Bank Components",
+          "id" : "34",
+          "name" : "Bank Controller",
+          "properties" : {
+            "structurizr.dsl.identifier" : "bankcontroller"
+          },
+          "relationships" : [ {
+            "description" : "Passes unvalidated body to",
+            "destinationId" : "35",
+            "id" : "62",
+            "properties" : {
+              "structurizr.dsl.identifier" : "1b6472bd-074a-444b-9fcf-a4bc66b0c8f4"
+            },
+            "sourceId" : "34",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,API,Controller"
+        }, {
+          "description" : "Validates body against entity and executes use-cases",
+          "documentation" : { },
+          "group" : "Bank Components",
+          "id" : "35",
+          "name" : "Bank Interactor",
+          "properties" : {
+            "structurizr.dsl.identifier" : "bankinteractor"
+          },
+          "relationships" : [ {
+            "description" : "Reads from, writes to",
+            "destinationId" : "43",
+            "id" : "63",
+            "properties" : {
+              "structurizr.dsl.identifier" : "17a08d42-1034-4d7a-bdcc-732f382e1662"
+            },
+            "sourceId" : "35",
+            "tags" : "Relationship",
+            "technology" : "Sequelize"
+          } ],
+          "tags" : "Element,Component,API,Interactor"
+        }, {
+          "description" : "Allows user to read, create, update and delete contacts",
+          "documentation" : { },
+          "group" : "Contact Components",
+          "id" : "36",
+          "name" : "Contact Controller",
+          "properties" : {
+            "structurizr.dsl.identifier" : "contactcontroller"
+          },
+          "relationships" : [ {
+            "description" : "Passes unvalidated body to",
+            "destinationId" : "37",
+            "id" : "64",
+            "properties" : {
+              "structurizr.dsl.identifier" : "4f75267f-64b6-4e79-bde3-c75029468111"
+            },
+            "sourceId" : "36",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,API,Controller"
+        }, {
+          "description" : "Validates body against entity and executes use-cases",
+          "documentation" : { },
+          "group" : "Contact Components",
+          "id" : "37",
+          "name" : "Contact Interactor",
+          "properties" : {
+            "structurizr.dsl.identifier" : "contactinteractor"
+          },
+          "relationships" : [ {
+            "description" : "Reads from, writes to",
+            "destinationId" : "43",
+            "id" : "65",
+            "properties" : {
+              "structurizr.dsl.identifier" : "7c759f7c-791b-482d-98ce-cb6c856c1ae0"
+            },
+            "sourceId" : "37",
+            "tags" : "Relationship",
+            "technology" : "Sequelize"
+          } ],
+          "tags" : "Element,Component,API,Interactor"
+        }, {
+          "description" : "Allows user to read, create, update and delete notes",
+          "documentation" : { },
+          "group" : "Note Components",
+          "id" : "38",
+          "name" : "Note Controller",
+          "properties" : {
+            "structurizr.dsl.identifier" : "notecontroller"
+          },
+          "relationships" : [ {
+            "description" : "Passes unvalidated body to",
+            "destinationId" : "39",
+            "id" : "66",
+            "properties" : {
+              "structurizr.dsl.identifier" : "e39fb2bf-0515-4085-acd6-90722bed4a18"
+            },
+            "sourceId" : "38",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,API,Controller"
+        }, {
+          "description" : "Validates body against entity and executes use-cases",
+          "documentation" : { },
+          "group" : "Note Components",
+          "id" : "39",
+          "name" : "Note Interactor",
+          "properties" : {
+            "structurizr.dsl.identifier" : "noteinteractor"
+          },
+          "relationships" : [ {
+            "description" : "Reads from, writes to",
+            "destinationId" : "43",
+            "id" : "67",
+            "properties" : {
+              "structurizr.dsl.identifier" : "a76cc65a-f3bd-43f8-b9b7-5733ed3bd9d7"
+            },
+            "sourceId" : "39",
+            "tags" : "Relationship",
+            "technology" : "Sequelize"
+          } ],
+          "tags" : "Element,Component,API,Interactor"
+        }, {
+          "description" : "Allows user to read, create, update and delete their account and also to reset their password or validate their email.",
+          "documentation" : { },
+          "group" : "User Components",
+          "id" : "40",
+          "name" : "User Controller",
+          "properties" : {
+            "structurizr.dsl.identifier" : "usercontroller"
+          },
+          "relationships" : [ {
+            "description" : "Passes unvalidated body to",
+            "destinationId" : "41",
+            "id" : "68",
+            "properties" : {
+              "structurizr.dsl.identifier" : "31a58efa-6514-4a15-9777-7552f8579b26"
+            },
+            "sourceId" : "40",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,API,Controller"
+        }, {
+          "description" : "Validates body against entity and executes use-cases",
+          "documentation" : { },
+          "group" : "User Components",
+          "id" : "41",
+          "name" : "User Interactor",
+          "properties" : {
+            "structurizr.dsl.identifier" : "userinteractor"
+          },
+          "relationships" : [ {
+            "description" : "Reads from, writes to",
+            "destinationId" : "43",
+            "id" : "69",
+            "properties" : {
+              "structurizr.dsl.identifier" : "e9f3f29e-a46c-455d-b39b-41fc587eaa2f"
+            },
+            "sourceId" : "41",
+            "tags" : "Relationship",
+            "technology" : "Sequelize"
+          }, {
+            "description" : "Sends mail data to",
+            "destinationId" : "42",
+            "id" : "70",
+            "properties" : {
+              "structurizr.dsl.identifier" : "729d15ec-f5d9-420d-9231-40b70f549771"
+            },
+            "sourceId" : "41",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,API,Interactor"
+        }, {
+          "description" : "Validates body against entity and executes use-cases",
+          "documentation" : { },
+          "id" : "42",
+          "name" : "Mail Interactor",
+          "properties" : {
+            "structurizr.dsl.identifier" : "mailinteractor"
+          },
+          "relationships" : [ {
+            "description" : "Sends mail data to using",
+            "destinationId" : "44",
+            "id" : "71",
+            "properties" : {
+              "structurizr.dsl.identifier" : "c6780eb6-ebf7-476d-9f43-25fbce35153a"
+            },
+            "sourceId" : "42",
+            "tags" : "Relationship",
+            "technology" : "JSON/HTTP"
+          } ],
+          "tags" : "Element,Component,API,Interactor"
+        } ],
+        "documentation" : { },
+        "id" : "29",
+        "name" : "API Application",
+        "properties" : {
+          "structurizr.dsl.identifier" : "api"
+        },
+        "relationships" : [ {
+          "description" : "Send mail data",
+          "destinationId" : "44",
+          "id" : "47",
+          "properties" : {
+            "structurizr.dsl.identifier" : "0e154962-84d0-450b-9969-237507f8f43b"
+          },
+          "sourceId" : "29",
+          "tags" : "Relationship",
+          "technology" : "JSON/HTTPS"
+        }, {
+          "description" : "Reads from and writes to",
+          "destinationId" : "43",
+          "id" : "52",
+          "properties" : {
+            "structurizr.dsl.identifier" : "4ea4fe15-2189-4cd1-9ce6-f29a61e2012b"
+          },
+          "sourceId" : "29",
+          "tags" : "Relationship",
+          "technology" : "SQL/TCP"
+        } ],
+        "tags" : "Element,Container,API",
+        "technology" : "JavaScript/ExpressJS"
+      }, {
+        "documentation" : { },
+        "id" : "43",
+        "name" : "Database",
+        "properties" : {
+          "structurizr.dsl.identifier" : "db"
+        },
+        "tags" : "Element,Container,DB",
+        "technology" : "PostgreSQL"
+      } ],
+      "description" : "Allows users to securely view and save: Online-service-accounts, bank informations, notes and contacts.",
       "documentation" : { },
       "id" : "2",
       "location" : "Unspecified",
-      "name" : "Software System",
+      "name" : "Lockify System",
       "properties" : {
-        "structurizr.dsl.identifier" : "softwaresystem"
+        "structurizr.dsl.identifier" : "internalsoftwaresystem"
       },
-      "tags" : "Element,Software System"
+      "relationships" : [ {
+        "description" : "Sends mail data to",
+        "destinationId" : "44",
+        "id" : "45",
+        "properties" : {
+          "structurizr.dsl.identifier" : "f70f0d96-2f03-4789-9b24-aabbb677d38d"
+        },
+        "sourceId" : "2",
+        "tags" : "Relationship"
+      } ],
+      "tags" : "Element,Software System,Internal"
+    }, {
+      "description" : "An external API.",
+      "documentation" : { },
+      "id" : "44",
+      "location" : "Unspecified",
+      "name" : "E-mail API",
+      "properties" : {
+        "structurizr.dsl.identifier" : "externalsoftwaresystem"
+      },
+      "relationships" : [ {
+        "description" : "Sends e-mail to",
+        "destinationId" : "1",
+        "id" : "48",
+        "properties" : {
+          "structurizr.dsl.identifier" : "5595a617-07ce-479a-84ba-85077d73fddb"
+        },
+        "sourceId" : "44",
+        "tags" : "Relationship"
+      } ],
+      "tags" : "Element,Software System,External"
     } ]
   },
   "name" : "Name",
   "properties" : {
-    "structurizr.dsl" : "d29ya3NwYWNlIHsKCiAgICBtb2RlbCB7CiAgICAgICAgdXNlciA9IHBlcnNvbiAiVXNlciIKICAgICAgICBzb2Z0d2FyZVN5c3RlbSA9IHNvZnR3YXJlU3lzdGVtICJTb2Z0d2FyZSBTeXN0ZW0iCgogICAgICAgIHVzZXIgLT4gc29mdHdhcmVTeXN0ZW0gIlVzZXMiCiAgICB9CgogICAgdmlld3MgewogICAgICAgIHN5c3RlbUNvbnRleHQgc29mdHdhcmVTeXN0ZW0gIkRpYWdyYW0xIiB7CiAgICAgICAgICAgIGluY2x1ZGUgKgogICAgICAgIH0KICAgIH0KCiAgICBjb25maWd1cmF0aW9uIHsKICAgICAgICBzY29wZSBzb2Z0d2FyZXN5c3RlbQogICAgfQoKfQo="
+    "structurizr.dsl" : "d29ya3NwYWNlIHsKCiAgICBtb2RlbCB7CiAgICAgICAgcHJvcGVydGllcyB7CiAgICAgICAgICAgICJzdHJ1Y3R1cml6ci5ncm91cFNlcGFyYXRvciIgIi8iCiAgICAgICAgfQoKICAgICAgICB1c2VyID0gcGVyc29uICJVc2VyIiB7CiAgICAgICAgICAgIGRlc2NyaXB0aW9uICJBIHVzZXIgb2YgTG9ja2lmeSwgd2l0aCBhbiBhY2NvdW50LiIKICAgICAgICB9CgogICAgICAgIGludGVybmFsU29mdHdhcmVTeXN0ZW0gPSBzb2Z0d2FyZVN5c3RlbSAiTG9ja2lmeSBTeXN0ZW0iIHsKICAgICAgICAgICAgdGFncyAiSW50ZXJuYWwiCiAgICAgICAgICAgIGRlc2NyaXB0aW9uICJBbGxvd3MgdXNlcnMgdG8gc2VjdXJlbHkgdmlldyBhbmQgc2F2ZTogT25saW5lLXNlcnZpY2UtYWNjb3VudHMsIGJhbmsgaW5mb3JtYXRpb25zLCBub3RlcyBhbmQgY29udGFjdHMuIgoKICAgICAgICAgICAgc3BhID0gY29udGFpbmVyICJTaW5nbGUtUGFnZSBBcHBsaWNhdGlvbiIgewogICAgICAgICAgICAgICAgdGFncyAiU1BBIgogICAgICAgICAgICAgICAgdGVjaG5vbG9neSAiSmF2YVNjcmlwdC9SZWFjdCIKCiAgICAgICAgICAgICAgICBhcHAgPSBjb21wb25lbnQgIkFwcCIgewogICAgICAgICAgICAgICAgICAgIHRhZ3MgIlNQQSIKICAgICAgICAgICAgICAgICAgICB0ZWNobm9sb2d5ICJWaXRlLVJlYWN0IgogICAgICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJFbnRyeSBQb2ludCIKICAgICAgICAgICAgICAgIH0KCiAgICAgICAgICAgICAgICBncm91cCAiQ29udGV4dCIgewogICAgICAgICAgICAgICAgICAgIGF1dGhDb250ZXh0ID0gY29tcG9uZW50ICJBdXRoIENvbnRleHQiIHsKICAgICAgICAgICAgICAgICAgICAgICAgdGFncyAiU1BBIiAiQ29udGV4dCIKICAgICAgICAgICAgICAgICAgICAgICAgdGVjaG5vbG9neSAiUmVhY3QvQ29udGV4dCIKICAgICAgICAgICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIkNoZWNrcyBpZiB0aGUgdXNlciBpcyBhdXRoZW50aWNhdGVkLiIKICAgICAgICAgICAgICAgICAgICB9CgogICAgICAgICAgICAgICAgICAgIGRhdGFWYXVsdENvbnRleHQgPSBjb21wb25lbnQgIkRhdGEgVmF1bHQgQ29udGV4dCIgewogICAgICAgICAgICAgICAgICAgICAgICB0YWdzICJTUEEiICJDb250ZXh0IgogICAgICAgICAgICAgICAgICAgICAgICB0ZWNobm9sb2d5ICJSZWFjdC9Db250ZXh0IgogICAgICAgICAgICAgICAgICAgICAgICBkZXNjcmlwdGlvbiAiR2V0cyBhbmQgZGVjcnlwdHMgZGF0YS12YXVsdCBkYXRhLiBSZXNldHMgbWFzdGVyLXBhc3N3b3JkIGFmdGVyIDUgbWludXRlcyBpbmFjdGl2aXR5LiIKICAgICAgICAgICAgICAgICAgICB9CgogICAgICAgICAgICAgICAgICAgIGRlc2lnbkNvbnRleHQgPSBjb21wb25lbnQgIkRlc2lnbiBDb250ZXh0IiB7CiAgICAgICAgICAgICAgICAgICAgICAgIHRhZ3MgIlNQQSIgIkNvbnRleHQiCiAgICAgICAgICAgICAgICAgICAgICAgIHRlY2hub2xvZ3kgIlJlYWN0L0NvbnRleHQiCiAgICAgICAgICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJQcm92aWRlcyBkZXNpZ24tcHJvdmlkZXIgYXMgd3JhcHBlciBmb3IgYXBwIHJvdXRlcywgdG8gc2VsZWN0IGJldHdlZW4gbGlnaHQgYW5kIGRhcmsgZGVzaWduLiIKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICB9CgogICAgICAgICAgICAgICAgbGFuZGluZ1BhZ2UgPSBjb21wb25lbnQgIkxhbmRpbmcgUGFnZSIgewogICAgICAgICAgICAgICAgICAgIHRhZ3MgIlNQQSIgIlBhZ2UiCiAgICAgICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIkhvbWUgUGFnZSB3aXRoIGluZm9ybWF0aW9ucyBhYm91dCB0aGUgYXBwbGljYXRpb24uIgogICAgICAgICAgICAgICAgfQoKICAgICAgICAgICAgICAgIGF1dGhlbnRpY2F0aW9uUGFnZSA9IGNvbXBvbmVudCAiQXV0aGVudGljYXRpb24gUGFnZSIgewogICAgICAgICAgICAgICAgICAgIHRhZ3MgIlNQQSIgIlBhZ2UiCiAgICAgICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIkFsbG93cyB1c2VyIHRvIGxvZ2luLCB1c2luZyBhIGxvZ2luLWZvcm0uIgogICAgICAgICAgICAgICAgfQoKICAgICAgICAgICAgICAgIHJlZ2lzdGVyUGFnZSA9IGNvbXBvbmVudCAiUmVnaXN0ZXIgUGFnZSIgewogICAgICAgICAgICAgICAgICAgIHRhZ3MgIlNQQSIgIlBhZ2UiCiAgICAgICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIkFsbG93cyB0aGUgdXNlciB0byByZWdpc3RlciwgdXNpbmcgdGhlIHJlZ2lzdGVyLWZvcm0uIgogICAgICAgICAgICAgICAgfQoKICAgICAgICAgICAgICAgIHVzZXJQcm9maWxlUGFnZSA9IGNvbXBvbmVudCAiVXNlciBQcm9maWxlIFBhZ2UiIHsKICAgICAgICAgICAgICAgICAgICB0YWdzICJTUEEiICJQYWdlIgogICAgICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJBbGxvd3MgdGhlIHVzZXIgdG8gZWRpdCBoaXMgdXNlciBhY2NvdW50IGFuZCBhY2Nlc3Mgc2V0dGluZ3MuIgogICAgICAgICAgICAgICAgfQoKICAgICAgICAgICAgICAgIGZvcmdvdFBhc3N3b3JkUGFnZSA9IGNvbXBvbmVudCAiRm9yZ290IFBhc3N3b3JkIFBhZ2UiIHsKICAgICAgICAgICAgICAgICAgICB0YWdzICJTUEEiICJQYWdlIgogICAgICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJBbGxvd3MgdGhlIHVzZXIgdG8gcmVxdWVzdCBhIG5ldyBwYXNzd29yZC4iCiAgICAgICAgICAgICAgICB9CgogICAgICAgICAgICAgICAgdmVyaWZpY2F0aW9uUGFnZSA9IGNvbXBvbmVudCAiVmVyaWZpY2F0aW9uIFBhZ2UiIHsKICAgICAgICAgICAgICAgICAgICB0YWdzICJTUEEiICJQYWdlIgogICAgICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJBbGxvd3MgdGhlIHVzZXIgdG8gY29uZmlybSBoaXMgZW1haWwtYWRkcmVzcy4iCiAgICAgICAgICAgICAgICB9CgogICAgICAgICAgICAgICAgc3VwcG9ydFBhZ2UgPSBjb21wb25lbnQgIlN1cHBvcnQgUGFnZSIgewogICAgICAgICAgICAgICAgICAgIHRhZ3MgIlNQQSIgIlBhZ2UiCiAgICAgICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIkFsbG93cyB0aGUgdXNlciB0byBjb250YWN0IHRoZSBzdXBwb3J0LiIKICAgICAgICAgICAgICAgIH0KCiAgICAgICAgICAgICAgICBibG9ja2VkUGFnZSA9IGNvbXBvbmVudCAiQmxvY2tlZCBQYWdlIiB7CiAgICAgICAgICAgICAgICAgICAgdGFncyAiU1BBIiAiUGFnZSIKICAgICAgICAgICAgICAgICAgICBkZXNjcmlwdGlvbiAiU2hvd3MgYmxvY2tlZCB1c2VycyBhIHN1cHBvcnQgY29udGFjdC1mb3JtLiIKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgCiAgICAgICAgICAgICAgICBkYXRhVmF1bHRQYWdlID0gY29tcG9uZW50ICJEYXRhIFZhdWx0IFBhZ2UiIHsKICAgICAgICAgICAgICAgICAgICB0YWdzICJTUEEiICJQYWdlIgogICAgICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJBbGxvd3MgdGhlIHVzZXIgdG8gYWNjZXNzIGhpcyBkYXRhLXZhdWx0LiIKICAgICAgICAgICAgICAgIH0KCiAgICAgICAgICAgICAgICBkYXNoYm9hcmRQYWdlID0gY29tcG9uZW50ICJEYXNoYm9hcmQgUGFnZSIgewogICAgICAgICAgICAgICAgICAgIHRhZ3MgIlNQQSIgIlBhZ2UiCiAgICAgICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIlNob3dzIHRoZSB1c2VyIGRldGFpbGVkIHNlY3VyaXR5IGluZm9ybWF0aW9ucy4iCiAgICAgICAgICAgICAgICB9CgogICAgICAgICAgICAgICAgYWNjb3VudHNQYWdlID0gY29tcG9uZW50ICJBY2NvdW50cyBQYWdlIiB7CiAgICAgICAgICAgICAgICAgICAgdGFncyAiU1BBIiAiUGFnZSIKICAgICAgICAgICAgICAgICAgICBkZXNjcmlwdGlvbiAiQWxsb3dzIHRoZSB1c2VyIHRvIHJlYWQsIGNyZWF0ZSwgdXBkYXRlIGFuZCBkZWxldGUgYWNjb3VudHMuIgogICAgICAgICAgICAgICAgfQoKICAgICAgICAgICAgICAgIGJhbmtzUGFnZSA9IGNvbXBvbmVudCAiQmFua3MgUGFnZSIgewogICAgICAgICAgICAgICAgICAgIHRhZ3MgIlNQQSIgIlBhZ2UiCiAgICAgICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIkFsbG93cyB0aGUgdXNlciB0byByZWFkLCBjcmVhdGUsIHVwZGF0ZSBhbmQgZGVsZXRlIGJhbmstYWNjb3VudHMuIgogICAgICAgICAgICAgICAgfQoKICAgICAgICAgICAgICAgIGNvbnRhY3RzUGFnZSA9IGNvbXBvbmVudCAiQ29udGFjdHMgUGFnZSIgewogICAgICAgICAgICAgICAgICAgIHRhZ3MgIlNQQSIgIlBhZ2UiCiAgICAgICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIkFsbG93cyB0aGUgdXNlciB0byByZWFkLCBjcmVhdGUsIHVwZGF0ZSBhbmQgZGVsZXRlIGNvbnRhY3RzLiIKICAgICAgICAgICAgICAgIH0KCiAgICAgICAgICAgICAgICBub3Rlc1BhZ2UgPSBjb21wb25lbnQgIk5vdGVzUGFnZSIgewogICAgICAgICAgICAgICAgICAgIHRhZ3MgIlNQQSIgIlBhZ2UiCiAgICAgICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIkFsbG93cyB0aGUgdXNlciB0byByZWFkLCBjcmVhdGUsIHVwZGF0ZSBhbmQgZGVsZXRlIG5vdGVzLiIKICAgICAgICAgICAgICAgIH0KCiAgICAgICAgICAgICAgICBncm91cCAiSW50ZXJhY3RvciIgewogICAgICAgICAgICAgICAgICAgIGFjY291bnRJbnRlcmFjdG9yRiA9IGNvbXBvbmVudCAiQWNjb3VudCBJbnRlcmFjdG9yIiB7CiAgICAgICAgICAgICAgICAgICAgICAgIHRhZ3MgIlNQQSIgIkludGVyYWN0b3IiCiAgICAgICAgICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJWYWxpZGF0ZXMgZGF0YSBhZ2FpbnN0IGVudGl0eSwgZXhlY3V0ZXMgdXNlLWNhc2VzIGFuZCBtYWtlcyBhcGkgY2FsbHMuIgogICAgICAgICAgICAgICAgICAgIH0KCiAgICAgICAgICAgICAgICAgICAgYmFua0ludGVyYWN0b3JGID0gY29tcG9uZW50ICJCYW5rIEludGVyYWN0b3IiIHsKICAgICAgICAgICAgICAgICAgICAgICAgdGFncyAiU1BBIiAiSW50ZXJhY3RvciIKICAgICAgICAgICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIlZhbGlkYXRlcyBkYXRhIGFnYWluc3QgZW50aXR5LCBleGVjdXRlcyB1c2UtY2FzZXMgYW5kIG1ha2VzIGFwaSBjYWxscy4iCiAgICAgICAgICAgICAgICAgICAgfQoKICAgICAgICAgICAgICAgICAgICBjb250YWN0SW50ZXJhY3RvckYgPSBjb21wb25lbnQgIkNvbnRhY3QgSW50ZXJhY3RvciIgewogICAgICAgICAgICAgICAgICAgICAgICB0YWdzICJTUEEiICJJbnRlcmFjdG9yIgogICAgICAgICAgICAgICAgICAgICAgICBkZXNjcmlwdGlvbiAiVmFsaWRhdGVzIGRhdGEgYWdhaW5zdCBlbnRpdHksIGV4ZWN1dGVzIHVzZS1jYXNlcyBhbmQgbWFrZXMgYXBpIGNhbGxzLiIKICAgICAgICAgICAgICAgICAgICB9CgogICAgICAgICAgICAgICAgICAgIGNyeXB0b2dyYXBoeUludGVyYWN0b3JGID0gY29tcG9uZW50ICJDcnlwdG9ncmFwaHkgSW50ZXJhY3RvciIgewogICAgICAgICAgICAgICAgICAgICAgICB0YWdzICJTUEEiICJJbnRlcmFjdG9yIgogICAgICAgICAgICAgICAgICAgICAgICBkZXNjcmlwdGlvbiAiVmFsaWRhdGVzIGRhdGEgYWdhaW5zdCBlbnRpdHksIGVuY3J5cHRzL2RlY3J5cHRzIGRhdGEuIgogICAgICAgICAgICAgICAgICAgIH0KCiAgICAgICAgICAgICAgICAgICAgbWFpbEludGVyYWN0b3JGID0gY29tcG9uZW50ICJNYWlsIEludGVyYWN0b3IiIHsKICAgICAgICAgICAgICAgICAgICAgICAgdGFncyAiU1BBIiAiSW50ZXJhY3RvciIKICAgICAgICAgICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIlZhbGlkYXRlcyBkYXRhIGFnYWluc3QgZW50aXR5LCBleGVjdXRlcyB1c2UtY2FzZXMgYW5kIG1ha2VzIGFwaSBjYWxscy4iCiAgICAgICAgICAgICAgICAgICAgfQoKICAgICAgICAgICAgICAgICAgICBub3RlSW50ZXJhY3RvckYgPSBjb21wb25lbnQgIk5vdGUgSW50ZXJhY3RvciIgewogICAgICAgICAgICAgICAgICAgICAgICB0YWdzICJTUEEiICJJbnRlcmFjdG9yIgogICAgICAgICAgICAgICAgICAgICAgICBkZXNjcmlwdGlvbiAiVmFsaWRhdGVzIGRhdGEgYWdhaW5zdCBlbnRpdHksIGV4ZWN1dGVzIHVzZS1jYXNlcyBhbmQgbWFrZXMgYXBpIGNhbGxzLiIKICAgICAgICAgICAgICAgICAgICB9CgogICAgICAgICAgICAgICAgICAgIHVzZXJJbnRlcmFjdG9yRiA9IGNvbXBvbmVudCAiVXNlciBJbnRlcmFjdG9yIiB7CiAgICAgICAgICAgICAgICAgICAgICAgIHRhZ3MgIlNQQSIgIkludGVyYWN0b3IiCiAgICAgICAgICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJWYWxpZGF0ZXMgZGF0YSBhZ2FpbnN0IGVudGl0eSwgZXhlY3V0ZXMgdXNlLWNhc2VzIGFuZCBtYWtlcyBhcGkgY2FsbHMuIgogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgfQoKICAgICAgICAgICAgYXBpID0gY29udGFpbmVyICJBUEkgQXBwbGljYXRpb24iIHsKICAgICAgICAgICAgICAgIHRhZ3MgIkFQSSIKICAgICAgICAgICAgICAgIHRlY2hub2xvZ3kgIkphdmFTY3JpcHQvRXhwcmVzc0pTIgoKICAgICAgICAgICAgICAgIGdyb3VwICJNaWRkbGV3YXJlcyIgewogICAgICAgICAgICAgICAgICAgIHJlcXVlc3RNaWRkbGV3YXJlID0gY29tcG9uZW50ICJNaWRkbGV3YXJlOiBWYWxpZGF0ZSBSZXF1ZXN0IE1ldGFkYXRhIiB7CiAgICAgICAgICAgICAgICAgICAgICAgIHRhZ3MgIkFQSSIgIk1pZGRsZXdhcmUiCiAgICAgICAgICAgICAgICAgICAgICAgIHRlY2hub2xvZ3kgIkV4cHJlc3NKUyBNaWRkbGV3YXJlIgogICAgICAgICAgICAgICAgICAgICAgICBkZXNjcmlwdGlvbiAiU3BsaXRlcyBldmVyeSBpbmNvbWluZyByZXF1ZXN0IGluIGhlYWRlcnMsIHBhcmFtcyBhbmQgcXVlcnkgdG8gdmFsaWRhdGUgaXQgc2VwZXJhdGVseS4gQm9keSBpcyB2YWxpZGF0ZWQgbGF0ZXIuIgogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICBzZXNzaW9uTWlkZGxld2FyZSA9IGNvbXBvbmVudCAiTWlkZGxld2FyZTogVmFsaWRhdGUgU2Vzc2lvbiIgewogICAgICAgICAgICAgICAgICAgICAgICB0YWdzICJBUEkiICJNaWRkbGV3YXJlIgogICAgICAgICAgICAgICAgICAgICAgICB0ZWNobm9sb2d5ICJFeHByZXNzSlMgTWlkZGxld2FyZSIKICAgICAgICAgICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIlZhbGlkYXRlcyBTZXNzaW9uIiAgICAgICAgIAogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgZ3JvdXAgIkFjY291bnQgQ29tcG9uZW50cyIgewogICAgICAgICAgICAgICAgICAgIGFjY291bnRDb250cm9sbGVyID0gY29tcG9uZW50ICJBY2NvdW50IENvbnRyb2xsZXIiIHsKICAgICAgICAgICAgICAgICAgICAgICAgdGFncyAiQVBJIiAiQ29udHJvbGxlciIKICAgICAgICAgICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIkFsbG93cyB1c2VyIHRvIHJlYWQsIGNyZWF0ZSwgdXBkYXRlIGFuZCBkZWxldGUgYWNjb3VudHMiCiAgICAgICAgICAgICAgICAgICAgfQoKICAgICAgICAgICAgICAgICAgICBhY2NvdW50SW50ZXJhY3RvciA9IGNvbXBvbmVudCAiQWNjb3VudCBJbnRlcmFjdG9yIiB7CiAgICAgICAgICAgICAgICAgICAgICAgIHRhZ3MgIkFQSSIgIkludGVyYWN0b3IiCiAgICAgICAgICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJWYWxpZGF0ZXMgYm9keSBhZ2FpbnN0IGVudGl0eSBhbmQgZXhlY3V0ZXMgdXNlLWNhc2VzIgogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgZ3JvdXAgIkJhbmsgQ29tcG9uZW50cyIgewogICAgICAgICAgICAgICAgICAgIGJhbmtDb250cm9sbGVyID0gY29tcG9uZW50ICJCYW5rIENvbnRyb2xsZXIiIHsKICAgICAgICAgICAgICAgICAgICAgICAgdGFncyAiQVBJIiAiQ29udHJvbGxlciIKICAgICAgICAgICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIkFsbG93cyB1c2VyIHRvIHJlYWQsIGNyZWF0ZSwgdXBkYXRlIGFuZCBkZWxldGUgYmFuayBhY2NvdW50cyIKICAgICAgICAgICAgICAgICAgICB9CgogICAgICAgICAgICAgICAgICAgIGJhbmtJbnRlcmFjdG9yID0gY29tcG9uZW50ICJCYW5rIEludGVyYWN0b3IiIHsKICAgICAgICAgICAgICAgICAgICAgICAgdGFncyAiQVBJIiAiSW50ZXJhY3RvciIKICAgICAgICAgICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIlZhbGlkYXRlcyBib2R5IGFnYWluc3QgZW50aXR5IGFuZCBleGVjdXRlcyB1c2UtY2FzZXMiCiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgfQoKICAgICAgICAgICAgICAgIGdyb3VwICJDb250YWN0IENvbXBvbmVudHMiIHsKICAgICAgICAgICAgICAgICAgICBjb250YWN0Q29udHJvbGxlciA9IGNvbXBvbmVudCAiQ29udGFjdCBDb250cm9sbGVyIiB7CiAgICAgICAgICAgICAgICAgICAgICAgIHRhZ3MgIkFQSSIgIkNvbnRyb2xsZXIiCiAgICAgICAgICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJBbGxvd3MgdXNlciB0byByZWFkLCBjcmVhdGUsIHVwZGF0ZSBhbmQgZGVsZXRlIGNvbnRhY3RzIgogICAgICAgICAgICAgICAgICAgIH0KCiAgICAgICAgICAgICAgICAgICAgY29udGFjdEludGVyYWN0b3IgPSBjb21wb25lbnQgIkNvbnRhY3QgSW50ZXJhY3RvciIgewogICAgICAgICAgICAgICAgICAgICAgICB0YWdzICJBUEkiICJJbnRlcmFjdG9yIgogICAgICAgICAgICAgICAgICAgICAgICBkZXNjcmlwdGlvbiAiVmFsaWRhdGVzIGJvZHkgYWdhaW5zdCBlbnRpdHkgYW5kIGV4ZWN1dGVzIHVzZS1jYXNlcyIKICAgICAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICB9CgogICAgICAgICAgICAgICAgZ3JvdXAgIk5vdGUgQ29tcG9uZW50cyIgewogICAgICAgICAgICAgICAgICAgIG5vdGVDb250cm9sbGVyID0gY29tcG9uZW50ICJOb3RlIENvbnRyb2xsZXIiIHsKICAgICAgICAgICAgICAgICAgICAgICAgdGFncyAiQVBJIiAiQ29udHJvbGxlciIKICAgICAgICAgICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIkFsbG93cyB1c2VyIHRvIHJlYWQsIGNyZWF0ZSwgdXBkYXRlIGFuZCBkZWxldGUgbm90ZXMiCiAgICAgICAgICAgICAgICAgICAgfQoKICAgICAgICAgICAgICAgICAgICBub3RlSW50ZXJhY3RvciA9IGNvbXBvbmVudCAiTm90ZSBJbnRlcmFjdG9yIiB7CiAgICAgICAgICAgICAgICAgICAgICAgIHRhZ3MgIkFQSSIgIkludGVyYWN0b3IiCiAgICAgICAgICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJWYWxpZGF0ZXMgYm9keSBhZ2FpbnN0IGVudGl0eSBhbmQgZXhlY3V0ZXMgdXNlLWNhc2VzIgogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgIH0KCiAgICAgICAgICAgICAgICBncm91cCAiVXNlciBDb21wb25lbnRzIiB7CiAgICAgICAgICAgICAgICAgICAgdXNlckNvbnRyb2xsZXIgPSBjb21wb25lbnQgIlVzZXIgQ29udHJvbGxlciIgewogICAgICAgICAgICAgICAgICAgICAgICB0YWdzICJBUEkiICJDb250cm9sbGVyIgogICAgICAgICAgICAgICAgICAgICAgICBkZXNjcmlwdGlvbiAiQWxsb3dzIHVzZXIgdG8gcmVhZCwgY3JlYXRlLCB1cGRhdGUgYW5kIGRlbGV0ZSB0aGVpciBhY2NvdW50IGFuZCBhbHNvIHRvIHJlc2V0IHRoZWlyIHBhc3N3b3JkIG9yIHZhbGlkYXRlIHRoZWlyIGVtYWlsLiIKICAgICAgICAgICAgICAgICAgICB9CgogICAgICAgICAgICAgICAgICAgIHVzZXJJbnRlcmFjdG9yID0gY29tcG9uZW50ICJVc2VyIEludGVyYWN0b3IiIHsKICAgICAgICAgICAgICAgICAgICAgICAgdGFncyAiQVBJIiAiSW50ZXJhY3RvciIKICAgICAgICAgICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIlZhbGlkYXRlcyBib2R5IGFnYWluc3QgZW50aXR5IGFuZCBleGVjdXRlcyB1c2UtY2FzZXMiCiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgfQoKICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgbWFpbEludGVyYWN0b3IgPSBjb21wb25lbnQgIk1haWwgSW50ZXJhY3RvciIgewogICAgICAgICAgICAgICAgICAgIHRhZ3MgIkFQSSIgIkludGVyYWN0b3IiCiAgICAgICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIlZhbGlkYXRlcyBib2R5IGFnYWluc3QgZW50aXR5IGFuZCBleGVjdXRlcyB1c2UtY2FzZXMiCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIH0KCiAgICAgICAgICAgIGRiID0gY29udGFpbmVyICJEYXRhYmFzZSIgewogICAgICAgICAgICAgICAgdGFncyAiREIiCiAgICAgICAgICAgICAgICB0ZWNobm9sb2d5ICJQb3N0Z3JlU1FMIgogICAgICAgICAgICB9IAogICAgICAgIH0KCiAgICAgICAgZXh0ZXJuYWxTb2Z0d2FyZVN5c3RlbSA9IHNvZnR3YXJlU3lzdGVtICJFLW1haWwgQVBJIiB7CiAgICAgICAgICAgIHRhZ3MgIkV4dGVybmFsIgogICAgICAgICAgICBkZXNjcmlwdGlvbiAiQW4gZXh0ZXJuYWwgQVBJLiIKICAgICAgICB9CgogICAgICAgIC8vIExldmVsIDEgU3lzdGVtIENvbnRleHQgRGlhZ3JhbTEKICAgICAgICBpbnRlcm5hbFNvZnR3YXJlU3lzdGVtIC0+IGV4dGVybmFsU29mdHdhcmVTeXN0ZW0gIlNlbmRzIG1haWwgZGF0YSB0byIKICAgICAgICAKICAgICAgICAvLyBMZXZlbCAyIENvbnRhaW5lciBEaWFncmFtMgogICAgICAgIHNwYSAtPiBleHRlcm5hbFNvZnR3YXJlU3lzdGVtICJTZW5kcyBzdXBwb3J0IGZvcm0gZGF0YSIgIkpTT04vSFRUUFMiCiAgICAgICAgYXBpIC0+IGV4dGVybmFsU29mdHdhcmVTeXN0ZW0gIlNlbmQgbWFpbCBkYXRhIiAiSlNPTi9IVFRQUyIKICAgICAgICBleHRlcm5hbFNvZnR3YXJlU3lzdGVtIC0+IHVzZXIgIlNlbmRzIGUtbWFpbCB0byIKCiAgICAgICAgdXNlciAtPiBzcGEgIlZpZXdzIGFuZCBzYXZlcyBzZWN1cmVseSBlbmNyeXB0ZWQgaW5mb3JtYXRpb25zIHVzaW5nIgogICAgICAgIHNwYSAtPiBhcGkgIk1ha2VzIEFQSSBjYWxscyB0byIgIkpTT04vSFRUUFMiCiAgICAgICAgYXBpIC0+IGRiICJSZWFkcyBmcm9tIGFuZCB3cml0ZXMgdG8iICJTUUwvVENQIgoKICAgICAgICAvLyBMZXZlbCAzIENvbXBvbmVudCBEaWFncmFtMwogICAgICAgIHNwYSAtPiByZXF1ZXN0TWlkZGxld2FyZSAiTWFrZSBBUEkgY2FsbCIgIkpTT04vSFRUUFMiCiAgICAgICAgcmVxdWVzdE1pZGRsZXdhcmUgLT4gc2Vzc2lvbk1pZGRsZXdhcmUgIlBhc3NlcyB2YWxpZCByZXF1ZXN0IHRvIgogICAgICAgIHNlc3Npb25NaWRkbGV3YXJlIC0+IGFjY291bnRDb250cm9sbGVyICIiCiAgICAgICAgc2Vzc2lvbk1pZGRsZXdhcmUgLT4gYmFua0NvbnRyb2xsZXIgIiIKICAgICAgICBzZXNzaW9uTWlkZGxld2FyZSAtPiBjb250YWN0Q29udHJvbGxlciAiIgogICAgICAgIHNlc3Npb25NaWRkbGV3YXJlIC0+IG5vdGVDb250cm9sbGVyICIiCiAgICAgICAgc2Vzc2lvbk1pZGRsZXdhcmUgLT4gdXNlckNvbnRyb2xsZXIgIiIKCiAgICAgICAgYWNjb3VudENvbnRyb2xsZXIgLT4gYWNjb3VudEludGVyYWN0b3IgIlBhc3NlcyB1bnZhbGlkYXRlZCBib2R5IHRvIgogICAgICAgIGFjY291bnRJbnRlcmFjdG9yIC0+IGRiICJSZWFkcyBmcm9tLCB3cml0ZXMgdG8iICJTZXF1ZWxpemUiCgogICAgICAgIGJhbmtDb250cm9sbGVyIC0+IGJhbmtJbnRlcmFjdG9yICJQYXNzZXMgdW52YWxpZGF0ZWQgYm9keSB0byIKICAgICAgICBiYW5rSW50ZXJhY3RvciAtPiBkYiAiUmVhZHMgZnJvbSwgd3JpdGVzIHRvIiAiU2VxdWVsaXplIgoKICAgICAgICBjb250YWN0Q29udHJvbGxlciAtPiBjb250YWN0SW50ZXJhY3RvciAiUGFzc2VzIHVudmFsaWRhdGVkIGJvZHkgdG8iCiAgICAgICAgY29udGFjdEludGVyYWN0b3IgLT4gZGIgIlJlYWRzIGZyb20sIHdyaXRlcyB0byIgIlNlcXVlbGl6ZSIKCiAgICAgICAgbm90ZUNvbnRyb2xsZXIgLT4gbm90ZUludGVyYWN0b3IgIlBhc3NlcyB1bnZhbGlkYXRlZCBib2R5IHRvIgogICAgICAgIG5vdGVJbnRlcmFjdG9yIC0+IGRiICJSZWFkcyBmcm9tLCB3cml0ZXMgdG8iICJTZXF1ZWxpemUiCgogICAgICAgIHVzZXJDb250cm9sbGVyIC0+IHVzZXJJbnRlcmFjdG9yICJQYXNzZXMgdW52YWxpZGF0ZWQgYm9keSB0byIKICAgICAgICB1c2VySW50ZXJhY3RvciAtPiBkYiAiUmVhZHMgZnJvbSwgd3JpdGVzIHRvIiAiU2VxdWVsaXplIgogICAgICAgIHVzZXJJbnRlcmFjdG9yIC0+IG1haWxJbnRlcmFjdG9yICJTZW5kcyBtYWlsIGRhdGEgdG8iCgogICAgICAgIG1haWxJbnRlcmFjdG9yIC0+IGV4dGVybmFsU29mdHdhcmVTeXN0ZW0gIlNlbmRzIG1haWwgZGF0YSB0byB1c2luZyIgIkpTT04vSFRUUCIgICAgCgogICAgICAgIC8vIExldmVsIDMgQ29tcG9uZW50ICJEaWFncmFtNCIKICAgICAgICBhcHAgLT4gbGFuZGluZ1BhZ2UgIlJlbmRlcnMgZmlyc3QgY29tcG9uZW50IgoKICAgICAgICBkYXRhVmF1bHRDb250ZXh0IC0+IGFjY291bnRzUGFnZSAiVXNlcyBjb250ZXh0IgogICAgICAgIGF1dGhDb250ZXh0IC0+IGF1dGhlbnRpY2F0aW9uUGFnZSAiVXNlcyBjb250ZXh0IgogICAgICAgIGRhdGFWYXVsdENvbnRleHQgLT4gYmFua3NQYWdlICJVc2VzIGNvbnRleHQiCiAgICAgICAgYXV0aENvbnRleHQgLT4gYmxvY2tlZFBhZ2UgIlVzZXMgY29udGV4dCIKICAgICAgICBkYXRhVmF1bHRDb250ZXh0IC0+IGNvbnRhY3RzUGFnZSAiVXNlcyBjb250ZXh0IgogICAgICAgIGRhdGFWYXVsdENvbnRleHQgLT4gZGFzaGJvYXJkUGFnZSAiVXNlcyBjb250ZXh0IgoKICAgICAgICBhdXRoQ29udGV4dCAtPiBkYXRhVmF1bHRQYWdlICJVc2VzIGNvbnRleHQiCiAgICAgICAgZGF0YVZhdWx0Q29udGV4dCAtPiBkYXRhVmF1bHRQYWdlICJVc2VzIGNvbnRleHQiCgogICAgICAgIGF1dGhDb250ZXh0IC0+IGZvcmdvdFBhc3N3b3JkUGFnZSAiVXNlcyBjb250ZXh0IgogICAgICAgIGRhdGFWYXVsdENvbnRleHQgLT4gbm90ZXNQYWdlICJVc2VzIGNvbnRleHQiCiAgICAgICAgYXV0aENvbnRleHQgLT4gcmVnaXN0ZXJQYWdlICJVc2VzIGNvbnRleHQiCiAgICAgICAgYXV0aENvbnRleHQgLT4gc3VwcG9ydFBhZ2UgIlVzZXMgY29udGV4dCIKICAgICAgICBhdXRoQ29udGV4dCAtPiB1c2VyUHJvZmlsZVBhZ2UgIlVzZXMgY29udGV4dCIKICAgICAgICBhdXRoQ29udGV4dCAtPiB2ZXJpZmljYXRpb25QYWdlICJVc2VzIGNvbnRleHQiCiAgICAgICAgCgogICAgICAgIGFjY291bnRzUGFnZSAtPiBhY2NvdW50SW50ZXJhY3RvckYgIlNlbmRzIHVudmFsaWRhdGVkIGRhdGEgdG8iCiAgICAgICAgYWNjb3VudHNQYWdlIC0+IGNyeXB0b2dyYXBoeUludGVyYWN0b3JGICJFbmNyeXB0cy9EZWNyeXB0cyBkYXRhIHVzaW5nIgogICAgICAgIGF1dGhlbnRpY2F0aW9uUGFnZSAtPiB1c2VySW50ZXJhY3RvckYgIlNlbmRzIHVudmFsaWRhdGVkIGRhdGEgdG8iCiAgICAgICAgYmFua3NQYWdlIC0+IGJhbmtJbnRlcmFjdG9yRiAiU2VuZHMgdW52YWxpZGF0ZWQgZGF0YSB0byIKICAgICAgICBiYW5rc1BhZ2UgLT4gY3J5cHRvZ3JhcGh5SW50ZXJhY3RvckYgIkVuY3J5cHRzL0RlY3J5cHRzIGRhdGEgdXNpbmciCiAgICAgICAgYmxvY2tlZFBhZ2UgLT4gbWFpbEludGVyYWN0b3JGICJTZW5kcyB1bnZhbGlkYXRlZCBkYXRhIHRvIgogICAgICAgIGNvbnRhY3RzUGFnZSAtPiBjb250YWN0SW50ZXJhY3RvckYgIlNlbmRzIHVudmFsaWRhdGVkIGRhdGEgdG8iCiAgICAgICAgY29udGFjdHNQYWdlIC0+IGNyeXB0b2dyYXBoeUludGVyYWN0b3JGICJFbmNyeXB0cy9EZWNyeXB0cyBkYXRhIHVzaW5nIgogICAgICAgIGRhc2hib2FyZFBhZ2UgLT4gY3J5cHRvZ3JhcGh5SW50ZXJhY3RvckYgIkVuY3J5cHRzL0RlY3J5cHRzIGRhdGEgdXNpbmciCiAgICAgICAgZGF0YVZhdWx0UGFnZSAtPiBjcnlwdG9ncmFwaHlJbnRlcmFjdG9yRiAiRW5jcnlwdHMvRGVjcnlwdHMgZGF0YSB1c2luZyIKICAgICAgICBmb3Jnb3RQYXNzd29yZFBhZ2UgLT4gdXNlckludGVyYWN0b3JGICJTZW5kcyB1bnZhbGlkYXRlZCBkYXRhIHRvIgogICAgICAgIG5vdGVzUGFnZSAtPiBub3RlSW50ZXJhY3RvckYgIlNlbmRzIHVudmFsaWRhdGVkIGRhdGEgdG8iCiAgICAgICAgbm90ZXNQYWdlIC0+IGNyeXB0b2dyYXBoeUludGVyYWN0b3JGICJFbmNyeXB0cy9EZWNyeXB0cyBkYXRhIHVzaW5nIgogICAgICAgIHJlZ2lzdGVyUGFnZSAtPiB1c2VySW50ZXJhY3RvckYgIlNlbmRzIHVudmFsaWRhdGVkIGRhdGEgdG8iCiAgICAgICAgcmVnaXN0ZXJQYWdlIC0+IGNyeXB0b2dyYXBoeUludGVyYWN0b3JGICJFbmNyeXB0cy9EZWNyeXB0cyBkYXRhIHVzaW5nIgogICAgICAgIHN1cHBvcnRQYWdlIC0+IG1haWxJbnRlcmFjdG9yRiAiU2VuZHMgdW52YWxpZGF0ZWQgZGF0YSB0byIKICAgICAgICB1c2VyUHJvZmlsZVBhZ2UgLT4gdXNlckludGVyYWN0b3JGICJTZW5kcyB1bnZhbGlkYXRlZCBkYXRhIHRvIgogICAgICAgIHZlcmlmaWNhdGlvblBhZ2UgLT4gdXNlckludGVyYWN0b3JGICJTZW5kcyB1bnZhbGlkYXRlZCBkYXRhIHRvIgoKICAgICAgICBhY2NvdW50SW50ZXJhY3RvckYgLT4gYXBpICJNYWtlcyBBUEkgY2FsbHMgdG8iICJKU09OL0hUVFBTCiAgICAgICAgYmFua0ludGVyYWN0b3JGIC0+IGFwaSAiTWFrZXMgQVBJIGNhbGxzIHRvIiAiSlNPTi9IVFRQUwogICAgICAgIGNvbnRhY3RJbnRlcmFjdG9yRiAtPiBhcGkgIk1ha2VzIEFQSSBjYWxscyB0byIgIkpTT04vSFRUUFMKICAgICAgICBub3RlSW50ZXJhY3RvckYgLT4gYXBpICJNYWtlcyBBUEkgY2FsbHMgdG8iICJKU09OL0hUVFBTCiAgICAgICAgdXNlckludGVyYWN0b3JGIC0+IGFwaSAiTWFrZXMgQVBJIGNhbGxzIHRvIiAiSlNPTi9IVFRQUwogICAgICAgIG1haWxJbnRlcmFjdG9yRiAtPiBleHRlcm5hbFNvZnR3YXJlU3lzdGVtICJTZW5kcyBtYWlsIGRhdGEgdG8iICJKU09OL0hUVFBTIgogICAgfQoKICAgIHZpZXdzIHsKICAgICAgICBzeXN0ZW1Db250ZXh0IGludGVybmFsU29mdHdhcmVTeXN0ZW0gIkRpYWdyYW0xIiB7CiAgICAgICAgICAgIGluY2x1ZGUgKgogICAgICAgIH0KCiAgICAgICAgY29udGFpbmVyIGludGVybmFsU29mdHdhcmVTeXN0ZW0gIkRpYWdyYW0yIiB7CiAgICAgICAgICAgIGluY2x1ZGUgKgogICAgICAgIH0gICAgIAoKICAgICAgICBjb21wb25lbnQgYXBpICJEaWFncmFtMyIgewogICAgICAgICAgICBpbmNsdWRlICoKICAgICAgICB9CgogICAgICAgIGNvbXBvbmVudCBzcGEgIkRpYWdyYW00IiB7CiAgICAgICAgICAgIGluY2x1ZGUgKgogICAgICAgIH0KCiAgICAgICAgc3R5bGVzIHsKICAgICAgICAgICAgZWxlbWVudCAiRWxlbWVudCIgewogICAgICAgICAgICAgICAgY29sb3Igd2hpdGUKICAgICAgICAgICAgfQogICAgICAgICAgICBlbGVtZW50ICJQZXJzb24iIHsKICAgICAgICAgICAgICAgIHNoYXBlIFBlcnNvbgogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjMDA1ZGI1CiAgICAgICAgICAgIH0KICAgICAgICAgICAgZWxlbWVudCAiSW50ZXJuYWwiIHsKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIzAwODRmZgogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsZW1lbnQgIkV4dGVybmFsIiB7CiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kICM2MjYzNjMKICAgICAgICAgICAgfQogICAgICAgICAgICBlbGVtZW50ICJTUEEiIHsKICAgICAgICAgICAgICAgIHNoYXBlIFdlYkJyb3dzZXIKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIzAwODRmZgogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsZW1lbnQgIkFQSSIgewogICAgICAgICAgICAgICAgc2hhcGUgUm91bmRlZEJveAogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjMDJjNzFjICAgICAKICAgICAgICAgICAgfQogICAgICAgICAgICBlbGVtZW50ICJEQiIgewogICAgICAgICAgICAgICAgc2hhcGUgQ3lsaW5kZXIKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgI2JmMDUwMgogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsZW1lbnQgIk1pZGRsZXdhcmUiIHsKICAgICAgICAgICAgICAgIHNoYXBlIFBpcGUKICAgICAgICAgICAgfQogICAgICAgICAgICBlbGVtZW50ICJDb250cm9sbGVyIiB7CiAgICAgICAgICAgICAgICBzaGFwZSBDb21wb25lbnQKICAgICAgICAgICAgfQogICAgICAgICAgICBlbGVtZW50ICJJbnRlcmFjdG9yIiB7CiAgICAgICAgICAgICAgICBzaGFwZSBIZXhhZ29uCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZWxlbWVudCAiUG9ydCIgewogICAgICAgICAgICAgICAgc2hhcGUgRGlhbW9uZAogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsZW1lbnQgIkVudGl0eSIgewogICAgICAgICAgICAgICAgc2hhcGUgUm9ib3QKICAgICAgICAgICAgfQogICAgICAgICAgICBlbGVtZW50ICJSZXBvc2l0b3J5IiB7CiAgICAgICAgICAgICAgICBzaGFwZSBGb2xkZXIKICAgICAgICAgICAgfQogICAgICAgICAgICBlbGVtZW50ICJQcmVzZW50ZXIiIHsKICAgICAgICAgICAgICAgIHNoYXBlIEVsbGlwc2UKICAgICAgICAgICAgfQogICAgICAgICAgICBlbGVtZW50ICJVbnVzZWQiIHsKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIzYyNjM2MwogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsZW1lbnQgIlBhZ2UiIHsKICAgICAgICAgICAgICAgIHNoYXBlIFJvdW5kZWRCb3gKICAgICAgICAgICAgfQogICAgICAgIH0KICAgIH0KfQo="
   },
   "views" : {
+    "componentViews" : [ {
+      "containerId" : "29",
+      "dimensions" : {
+        "height" : 3962,
+        "width" : 4279
+      },
+      "elements" : [ {
+        "id" : "3",
+        "x" : 1765,
+        "y" : 200
+      }, {
+        "id" : "30",
+        "x" : 1765,
+        "y" : 800
+      }, {
+        "id" : "31",
+        "x" : 1765,
+        "y" : 1400
+      }, {
+        "id" : "32",
+        "x" : 240,
+        "y" : 2000
+      }, {
+        "id" : "33",
+        "x" : 240,
+        "y" : 2600
+      }, {
+        "id" : "34",
+        "x" : 1002,
+        "y" : 2000
+      }, {
+        "id" : "35",
+        "x" : 1002,
+        "y" : 2600
+      }, {
+        "id" : "36",
+        "x" : 1765,
+        "y" : 2000
+      }, {
+        "id" : "37",
+        "x" : 1765,
+        "y" : 2600
+      }, {
+        "id" : "38",
+        "x" : 2527,
+        "y" : 2000
+      }, {
+        "id" : "39",
+        "x" : 2527,
+        "y" : 2600
+      }, {
+        "id" : "40",
+        "x" : 3285,
+        "y" : 2000
+      }, {
+        "id" : "41",
+        "x" : 3285,
+        "y" : 2600
+      }, {
+        "id" : "42",
+        "x" : 3285,
+        "y" : 755
+      }, {
+        "id" : "43",
+        "x" : 1765,
+        "y" : 3462
+      }, {
+        "id" : "44",
+        "x" : 3290,
+        "y" : 200
+      } ],
+      "externalContainerBoundariesVisible" : false,
+      "key" : "Diagram3",
+      "order" : 3,
+      "relationships" : [ {
+        "id" : "46"
+      }, {
+        "id" : "53"
+      }, {
+        "id" : "54"
+      }, {
+        "id" : "55"
+      }, {
+        "id" : "56"
+      }, {
+        "id" : "57"
+      }, {
+        "id" : "58"
+      }, {
+        "id" : "59"
+      }, {
+        "id" : "60"
+      }, {
+        "id" : "61"
+      }, {
+        "id" : "62"
+      }, {
+        "id" : "63"
+      }, {
+        "id" : "64"
+      }, {
+        "id" : "65"
+      }, {
+        "id" : "66"
+      }, {
+        "id" : "67"
+      }, {
+        "id" : "68"
+      }, {
+        "id" : "69"
+      }, {
+        "id" : "70",
+        "vertices" : [ {
+          "x" : 3990,
+          "y" : 2793
+        }, {
+          "x" : 3987,
+          "y" : 1372
+        }, {
+          "x" : 3990,
+          "y" : 953
+        } ]
+      }, {
+        "id" : "71"
+      } ]
+    }, {
+      "containerId" : "3",
+      "dimensions" : {
+        "height" : 5358,
+        "width" : 9558
+      },
+      "elements" : [ {
+        "id" : "4",
+        "x" : 329,
+        "y" : 433
+      }, {
+        "id" : "5",
+        "x" : 4879,
+        "y" : 433
+      }, {
+        "id" : "6",
+        "x" : 5529,
+        "y" : 433
+      }, {
+        "id" : "7",
+        "x" : 4229,
+        "y" : 433
+      }, {
+        "id" : "8",
+        "x" : 329,
+        "y" : 1533
+      }, {
+        "id" : "9",
+        "x" : 2279,
+        "y" : 1533
+      }, {
+        "id" : "10",
+        "x" : 4879,
+        "y" : 1533
+      }, {
+        "id" : "11",
+        "x" : 2929,
+        "y" : 1533
+      }, {
+        "id" : "12",
+        "x" : 3579,
+        "y" : 1533
+      }, {
+        "id" : "13",
+        "x" : 4229,
+        "y" : 1533
+      }, {
+        "id" : "14",
+        "x" : 979,
+        "y" : 1533
+      }, {
+        "id" : "15",
+        "x" : 1629,
+        "y" : 1533
+      }, {
+        "id" : "16",
+        "x" : 6179,
+        "y" : 1533
+      }, {
+        "id" : "17",
+        "x" : 6829,
+        "y" : 1533
+      }, {
+        "id" : "18",
+        "x" : 8779,
+        "y" : 1533
+      }, {
+        "id" : "19",
+        "x" : 5529,
+        "y" : 1533
+      }, {
+        "id" : "20",
+        "x" : 7479,
+        "y" : 1533
+      }, {
+        "id" : "21",
+        "x" : 8129,
+        "y" : 1533
+      }, {
+        "id" : "22",
+        "x" : 8129,
+        "y" : 2633
+      }, {
+        "id" : "23",
+        "x" : 5529,
+        "y" : 2633
+      }, {
+        "id" : "24",
+        "x" : 6829,
+        "y" : 2633
+      }, {
+        "id" : "25",
+        "x" : 6179,
+        "y" : 2633
+      }, {
+        "id" : "26",
+        "x" : 4229,
+        "y" : 2633
+      }, {
+        "id" : "27",
+        "x" : 7479,
+        "y" : 2633
+      }, {
+        "id" : "28",
+        "x" : 4879,
+        "y" : 2633
+      }, {
+        "id" : "29",
+        "x" : 6179,
+        "y" : 3733
+      }, {
+        "id" : "44",
+        "x" : 4229,
+        "y" : 3733
+      } ],
+      "externalContainerBoundariesVisible" : false,
+      "key" : "Diagram4",
+      "order" : 4,
+      "paperSize" : "A1_Landscape",
+      "relationships" : [ {
+        "id" : "100"
+      }, {
+        "id" : "101",
+        "vertices" : [ {
+          "x" : 5415,
+          "y" : 2355
+        } ]
+      }, {
+        "id" : "102",
+        "vertices" : [ {
+          "x" : 1529,
+          "y" : 1833
+        } ]
+      }, {
+        "id" : "103",
+        "vertices" : [ {
+          "x" : 4779,
+          "y" : 2529
+        } ]
+      }, {
+        "id" : "104"
+      }, {
+        "id" : "105",
+        "vertices" : [ {
+          "x" : 8029,
+          "y" : 3141
+        } ]
+      }, {
+        "id" : "106"
+      }, {
+        "id" : "107"
+      }, {
+        "id" : "108",
+        "vertices" : [ {
+          "x" : 7379,
+          "y" : 3141
+        } ]
+      }, {
+        "id" : "109",
+        "vertices" : [ {
+          "x" : 5429,
+          "y" : 3141
+        } ]
+      }, {
+        "id" : "110"
+      }, {
+        "id" : "47"
+      }, {
+        "id" : "72"
+      }, {
+        "id" : "73",
+        "vertices" : [ {
+          "x" : 8679,
+          "y" : 1533
+        } ]
+      }, {
+        "id" : "74",
+        "vertices" : [ {
+          "x" : 4779,
+          "y" : 837
+        }, {
+          "x" : 2829,
+          "y" : 1533
+        } ]
+      }, {
+        "id" : "75"
+      }, {
+        "id" : "76",
+        "vertices" : [ {
+          "x" : 4779,
+          "y" : 837
+        }, {
+          "x" : 2179,
+          "y" : 1533
+        } ]
+      }, {
+        "id" : "77"
+      }, {
+        "id" : "78"
+      }, {
+        "id" : "79"
+      }, {
+        "id" : "80"
+      }, {
+        "id" : "81"
+      }, {
+        "id" : "82",
+        "vertices" : [ {
+          "x" : 8029,
+          "y" : 1533
+        } ]
+      }, {
+        "id" : "83"
+      }, {
+        "id" : "84",
+        "vertices" : [ {
+          "x" : 4779,
+          "y" : 837
+        }, {
+          "x" : 1529,
+          "y" : 1533
+        } ]
+      }, {
+        "id" : "85",
+        "vertices" : [ {
+          "x" : 4779,
+          "y" : 837
+        } ]
+      }, {
+        "id" : "86"
+      }, {
+        "id" : "87"
+      }, {
+        "id" : "88",
+        "vertices" : [ {
+          "x" : 8679,
+          "y" : 1833
+        }, {
+          "x" : 7675,
+          "y" : 2510
+        }, {
+          "x" : 6729,
+          "y" : 2529
+        } ]
+      }, {
+        "id" : "89",
+        "vertices" : [ {
+          "x" : 2829,
+          "y" : 1833
+        }, {
+          "x" : 4779,
+          "y" : 2529
+        } ]
+      }, {
+        "id" : "90"
+      }, {
+        "id" : "91"
+      }, {
+        "id" : "92",
+        "vertices" : [ {
+          "x" : 2179,
+          "y" : 1833
+        } ]
+      }, {
+        "id" : "93"
+      }, {
+        "id" : "94"
+      }, {
+        "id" : "95"
+      }, {
+        "id" : "96"
+      }, {
+        "id" : "97"
+      }, {
+        "id" : "98",
+        "vertices" : [ {
+          "x" : 8325,
+          "y" : 2465
+        } ]
+      }, {
+        "id" : "99",
+        "vertices" : [ {
+          "x" : 7715,
+          "y" : 2335
+        }, {
+          "x" : 6729,
+          "y" : 2529
+        } ]
+      } ]
+    } ],
     "configuration" : {
       "branding" : { },
-      "lastSavedView" : "Diagram1",
-      "metadataSymbols" : "SquareBrackets",
-      "styles" : { },
+      "lastSavedView" : "Diagram4",
+      "styles" : {
+        "elements" : [ {
+          "color" : "#ffffff",
+          "tag" : "Element"
+        }, {
+          "background" : "#005db5",
+          "shape" : "Person",
+          "tag" : "Person"
+        }, {
+          "background" : "#0084ff",
+          "tag" : "Internal"
+        }, {
+          "background" : "#626363",
+          "tag" : "External"
+        }, {
+          "background" : "#0084ff",
+          "shape" : "WebBrowser",
+          "tag" : "SPA"
+        }, {
+          "background" : "#02c71c",
+          "shape" : "RoundedBox",
+          "tag" : "API"
+        }, {
+          "background" : "#bf0502",
+          "shape" : "Cylinder",
+          "tag" : "DB"
+        }, {
+          "shape" : "Pipe",
+          "tag" : "Middleware"
+        }, {
+          "shape" : "Component",
+          "tag" : "Controller"
+        }, {
+          "shape" : "Hexagon",
+          "tag" : "Interactor"
+        }, {
+          "shape" : "Diamond",
+          "tag" : "Port"
+        }, {
+          "shape" : "Robot",
+          "tag" : "Entity"
+        }, {
+          "shape" : "Folder",
+          "tag" : "Repository"
+        }, {
+          "shape" : "Ellipse",
+          "tag" : "Presenter"
+        }, {
+          "background" : "#626363",
+          "tag" : "Unused"
+        }, {
+          "shape" : "RoundedBox",
+          "tag" : "Page"
+        } ]
+      },
       "terminology" : { }
     },
-    "systemContextViews" : [ {
+    "containerViews" : [ {
       "dimensions" : {
-        "height" : 1748,
-        "width" : 2480
+        "height" : 2366,
+        "width" : 2535
       },
       "elements" : [ {
         "id" : "1",
-        "x" : 0,
-        "y" : 0
+        "x" : 1075,
+        "y" : 200
+      }, {
+        "id" : "3",
+        "x" : 1050,
+        "y" : 1140
+      }, {
+        "id" : "29",
+        "x" : 1050,
+        "y" : 1770
+      }, {
+        "id" : "43",
+        "x" : 220,
+        "y" : 1770
+      }, {
+        "id" : "44",
+        "x" : 1885,
+        "y" : 1140
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "key" : "Diagram2",
+      "order" : 2,
+      "relationships" : [ {
+        "id" : "46"
+      }, {
+        "id" : "47"
+      }, {
+        "id" : "48"
+      }, {
+        "id" : "49"
+      }, {
+        "id" : "51"
+      }, {
+        "id" : "52"
+      } ],
+      "softwareSystemId" : "2"
+    } ],
+    "systemContextViews" : [ {
+      "dimensions" : {
+        "height" : 1625,
+        "width" : 1755
+      },
+      "elements" : [ {
+        "id" : "1",
+        "x" : 285,
+        "y" : 185
       }, {
         "id" : "2",
-        "x" : 1065,
-        "y" : 1065
+        "x" : 260,
+        "y" : 970
+      }, {
+        "id" : "44",
+        "x" : 1170,
+        "y" : 970
       } ],
       "enterpriseBoundaryVisible" : true,
       "key" : "Diagram1",
       "order" : 1,
-      "paperSize" : "A5_Landscape",
       "relationships" : [ {
-        "id" : "3"
+        "id" : "45",
+        "vertices" : [ {
+          "x" : 880,
+          "y" : 1120
+        } ]
+      }, {
+        "id" : "48"
+      }, {
+        "id" : "50"
       } ],
       "softwareSystemId" : "2"
     } ]
